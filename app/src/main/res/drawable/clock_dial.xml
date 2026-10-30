@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- Quarter-hour ticks (12, 3, 6, 9): longer and brighter -->
+    <path
+        android:pathData="M100,10 L100,30 M190,100 L170,100 M100,190 L100,170 M10,100 L30,100"
+        android:strokeColor="#F2FFFFFF"
+        android:strokeLineCap="round"
+        android:strokeWidth="4.5" />
+
+    <!-- Other hour ticks: shorter and softer -->
+    <path
+        android:pathData="M145,22.1 L140,30.7 M177.9,55 L169.3,60 M177.9,145 L169.3,140 M145,177.9 L140,169.3 M55,177.9 L60,169.3 M22.1,145 L30.7,140 M22.1,55 L30.7,60 M55,22.1 L60,30.7"
+        android:strokeColor="#99FFFFFF"
+        android:strokeLineCap="round"
+        android:strokeWidth="3" />
+
+</vector>

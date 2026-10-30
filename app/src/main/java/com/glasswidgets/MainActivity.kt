@@ -1,0 +1,68 @@
+package com.glasswidgets
+
+import android.app.Activity
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
+import android.graphics.Color
+import android.graphics.Typeface
+import android.os.Bundle
+import android.view.Gravity
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
+
+class MainActivity : Activity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val pad = (24 * resources.displayMetrics.density).toInt()
+
+        val root = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            gravity = Gravity.CENTER
+            setBackgroundColor(Color.parseColor("#0E1014"))
+            setPadding(pad, pad, pad, pad)
+        }
+
+        val title = TextView(this).apply {
+            text = getString(R.string.app_name)
+            setTextColor(Color.WHITE)
+            textSize = 28f
+            typeface = Typeface.create("sans-serif-light", Typeface.NORMAL)
+            gravity = Gravity.CENTER
+        }
+
+        val body = TextView(this).apply {
+            text = getString(R.string.main_hint)
+            setTextColor(Color.parseColor("#B3FFFFFF"))
+            textSize = 15f
+            gravity = Gravity.CENTER
+            setPadding(0, pad / 2, 0, pad)
+        }
+
+        val addButton = Button(this).apply {
+            text = getString(R.string.add_widget)
+            setOnClickListener { requestPinWidget() }
+        }
+
+        root.addView(title)
+        root.addView(body)
+        root.addView(addButton)
+        setContentView(root)
+    }
+
+    private fun requestPinWidget() {
+        val manager = getSystemService(AppWidgetManager::class.java)
+        if (manager != null && manager.isRequestPinAppWidgetSupported) {
+            manager.requestPinAppWidget(
+                ComponentName(this, GlassAnalogClockWidget::class.java),
+                null,
+                null
+            )
+        } else {
+            Toast.makeText(this, R.string.pin_not_supported, Toast.LENGTH_LONG).show()
+        }
+    }
+}

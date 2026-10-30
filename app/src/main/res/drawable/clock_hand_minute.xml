@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- Minute hand, pointing up (12 o'clock) from the centre -->
+    <path
+        android:pathData="M100,100 L100,34"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineCap="round"
+        android:strokeWidth="5" />
+
+    <!-- Centre cap -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M94,100 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0" />
+
+</vector>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Glass Widgets</string>
+    <string name="widget_glass_analog_clock">Glass Analog Clock</string>
+    <string name="widget_description">A transparent glass-style analog clock.</string>
+    <string name="main_hint">Add the glass analog clock to your home screen. You can also long-press your home screen, open Widgets, and pick Glass Widgets.</string>
+    <string name="add_widget">Add clock widget</string>
+    <string name="pin_not_supported">Your launcher can\'t add widgets from here. Long-press the home screen and choose Widgets instead.</string>
+</resources>
