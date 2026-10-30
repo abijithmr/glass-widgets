@@ -34,12 +34,16 @@ class GlassWeatherWidget : DailyWidget() {
             Glass.applyWeekStrip(views)
 
             val place = WeatherRepository.savedPlace(context)
-            val sample = WeatherRepository.Snapshot(28, 26, 29, 23, 1)
+            val sample = WeatherRepository.Snapshot(28, 26, 29, 23, 1, 62, 11)
             val snapshot = WeatherRepository.cached(context) ?: if (preview) sample else null
             val cityName = place?.name ?: if (preview) "Kochi" else ""
 
             views.setTextViewText(R.id.weather_city, cityName)
-            views.setTextViewText(R.id.weather_temp, tempText(snapshot?.temp))
+            val unit = WeatherRepository.unitLabel(context)
+            fun shown(celsius: Int?): Int? =
+                celsius?.let { WeatherRepository.temperature(context, it) }
+
+            views.setTextViewText(R.id.weather_temp, tempText(shown(snapshot?.temp), unit))
             views.setTextViewText(
                 R.id.weather_icon,
                 if (snapshot != null) WeatherRepository.symbolFor(snapshot.code) else "🌡️"
@@ -47,23 +51,24 @@ class GlassWeatherWidget : DailyWidget() {
             views.setTextViewText(
                 R.id.weather_feels,
                 when {
-                    snapshot != null -> "Feels like ${snapshot.feels}°"
+                    snapshot != null -> "Feels like ${shown(snapshot.feels)}°"
                     place == null -> "Tap to choose a city"
                     else -> "Updating…"
                 }
             )
-            views.setTextViewText(R.id.weather_high, "↑ ${snapshot?.hi?.toString() ?: "--"}°")
-            views.setTextViewText(R.id.weather_low, "↓ ${snapshot?.lo?.toString() ?: "--"}°")
+            views.setTextViewText(R.id.weather_high, "↑ ${shown(snapshot?.hi)?.toString() ?: "--"}°")
+            views.setTextViewText(R.id.weather_low, "↓ ${shown(snapshot?.lo)?.toString() ?: "--"}°")
 
             val setup = Intent(context, WeatherSetupActivity::class.java)
             views.setOnClickPendingIntent(R.id.widget_root, Glass.activity(context, setup, 3))
             return views
         }
 
-        private fun tempText(temp: Int?): CharSequence {
+        /** Big number with a smaller unit, e.g. 28°C. Also used by the weather card. */
+        fun tempText(temp: Int?, unit: String): CharSequence {
             val text = SpannableStringBuilder(temp?.toString() ?: "--")
             val unitStart = text.length
-            text.append("°C")
+            text.append(unit)
             text.setSpan(
                 RelativeSizeSpan(0.42f),
                 unitStart,

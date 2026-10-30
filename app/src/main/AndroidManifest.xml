@@ -30,6 +30,14 @@
             </intent-filter>
         </activity>
 
+        <!-- Runs a Focus tap, then closes. Needs an activity so it can open the access screen. -->
+        <activity
+            android:name=".FocusActionActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.NoDisplay" />
+
         <!-- Analog clock -->
         <receiver
             android:name=".GlassAnalogClockWidget"
@@ -118,6 +126,84 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/glass_controls_info" />
+        </receiver>
+
+        <!-- Mini clock -->
+        <receiver
+            android:name=".GlassMiniClockWidget"
+            android:exported="true"
+            android:label="@string/widget_glass_mini_clock">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/glass_mini_clock_info" />
+        </receiver>
+
+        <!-- Date tile -->
+        <receiver
+            android:name=".GlassDateWidget"
+            android:exported="true"
+            android:label="@string/widget_glass_date">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/glass_date_info" />
+        </receiver>
+
+        <!-- Weather card -->
+        <receiver
+            android:name=".GlassWeatherCardWidget"
+            android:exported="true"
+            android:label="@string/widget_glass_weather_card">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/glass_weather_card_info" />
+        </receiver>
+
+        <!-- Focus (Do Not Disturb) -->
+        <receiver
+            android:name=".GlassFocusWidget"
+            android:exported="true"
+            android:label="@string/widget_glass_focus">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/glass_focus_info" />
+        </receiver>
+
+        <!-- Dock -->
+        <receiver
+            android:name=".GlassDockWidget"
+            android:exported="true"
+            android:label="@string/widget_glass_dock">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/glass_dock_info" />
+        </receiver>
+
+        <!-- Search -->
+        <receiver
+            android:name=".GlassSearchWidget"
+            android:exported="true"
+            android:label="@string/widget_glass_search">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/glass_search_info" />
         </receiver>
 
         <!-- Battery -->

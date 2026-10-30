@@ -32,11 +32,19 @@ class MainActivity : AppCompatActivity() {
 
         val group = findViewById<MaterialButtonToggleGroup>(R.id.style_group)
         group.check(
-            if (Glass.style(this) == Glass.STYLE_SMOKED) R.id.btn_smoked else R.id.btn_frosted
+            when (Glass.style(this)) {
+                Glass.STYLE_SMOKED -> R.id.btn_smoked
+                Glass.STYLE_CLEAR -> R.id.btn_clear
+                else -> R.id.btn_frosted
+            }
         )
         group.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if (!isChecked) return@addOnButtonCheckedListener
-            val style = if (checkedId == R.id.btn_smoked) Glass.STYLE_SMOKED else Glass.STYLE_FROSTED
+            val style = when (checkedId) {
+                R.id.btn_smoked -> Glass.STYLE_SMOKED
+                R.id.btn_clear -> Glass.STYLE_CLEAR
+                else -> Glass.STYLE_FROSTED
+            }
             Glass.setStyle(this, style)
             adapter.notifyDataSetChanged() // redraw previews
             Glass.refreshAll(this) // and every widget already on the home screen

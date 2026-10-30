@@ -16,7 +16,45 @@ object WeatherRepository {
 
     data class Place(val name: String, val detail: String, val lat: Double, val lon: Double)
 
-    data class Snapshot(val temp: Int, val feels: Int, val hi: Int, val lo: Int, val code: Int)
+    /** Temperatures are always stored in °C; use [temperature] to show them. */
+    data class Snapshot(
+        val temp: Int,
+        val feels: Int,
+        val hi: Int,
+        val lo: Int,
+        val code: Int,
+        val humidity: Int,
+        val windKmh: Int
+    )
+
+    fun useFahrenheit(context: Context): Boolean =
+        Glass.prefs(context).getBoolean("w_fahrenheit", false)
+
+    fun toggleUnit(context: Context) {
+        Glass.prefs(context).edit().putBoolean("w_fahrenheit", !useFahrenheit(context)).apply()
+    }
+
+    /** A °C value converted to the chosen unit. */
+    fun temperature(context: Context, celsius: Int): Int =
+        if (useFahrenheit(context)) (celsius * 9 / 5.0 + 32).roundToInt() else celsius
+
+    fun unitLabel(context: Context): String = if (useFahrenheit(context)) "°F" else "°C"
+
+    /** Plain-words condition for a WMO weather code. */
+    fun describe(code: Int): String = when (code) {
+        0 -> "Clear sky"
+        1 -> "Mainly clear"
+        2 -> "Partly cloudy"
+        3 -> "Overcast"
+        45, 48 -> "Foggy"
+        in 51..57 -> "Drizzle"
+        in 61..67 -> "Rain"
+        in 71..77 -> "Snow"
+        in 80..82 -> "Rain showers"
+        in 85..86 -> "Snow showers"
+        in 95..99 -> "Thunderstorm"
+        else -> "Unknown"
+    }
 
     fun savedPlace(context: Context): Place? {
         val p = Glass.prefs(context)
@@ -42,13 +80,16 @@ object WeatherRepository {
 
     fun cached(context: Context): Snapshot? {
         val p = Glass.prefs(context)
-        if (!p.contains("w_temp")) return null
+        // "w_wind" is checked too, so an older cache without humidity/wind refetches.
+        if (!p.contains("w_temp") || !p.contains("w_wind")) return null
         return Snapshot(
             p.getInt("w_temp", 0),
             p.getInt("w_feels", 0),
             p.getInt("w_hi", 0),
             p.getInt("w_lo", 0),
-            p.getInt("w_code", 0)
+            p.getInt("w_code", 0),
+            p.getInt("w_hum", 0),
+            p.getInt("w_wind", 0)
         )
     }
 
@@ -81,7 +122,8 @@ object WeatherRepository {
         return try {
             val url = "https://api.open-meteo.com/v1/forecast" +
                 "?latitude=${place.lat}&longitude=${place.lon}" +
-                "&current=temperature_2m,apparent_temperature,weather_code" +
+                "&current=temperature_2m,apparent_temperature,weather_code," +
+                "relative_humidity_2m,wind_speed_10m" +
                 "&daily=temperature_2m_max,temperature_2m_min" +
                 "&forecast_days=1&timezone=auto"
             val json = JSONObject(httpGet(url))
@@ -91,6 +133,8 @@ object WeatherRepository {
                 .putInt("w_temp", current.getDouble("temperature_2m").roundToInt())
                 .putInt("w_feels", current.getDouble("apparent_temperature").roundToInt())
                 .putInt("w_code", current.getInt("weather_code"))
+                .putInt("w_hum", current.getDouble("relative_humidity_2m").roundToInt())
+                .putInt("w_wind", current.getDouble("wind_speed_10m").roundToInt())
                 .putInt("w_hi", daily.getJSONArray("temperature_2m_max").getDouble(0).roundToInt())
                 .putInt("w_lo", daily.getJSONArray("temperature_2m_min").getDouble(0).roundToInt())
                 .apply()

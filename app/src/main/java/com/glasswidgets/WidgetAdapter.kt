@@ -1,5 +1,6 @@
 package com.glasswidgets
 
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -56,7 +57,13 @@ class WidgetAdapter(
         try {
             holder.container.addView(entry.preview(context).apply(context, holder.container))
         } catch (e: Exception) {
-            // A preview that can't draw should never crash the library.
+            // A preview that can't draw must never crash the library, but say why.
+            Log.e("GlassWidgets", "Preview failed for ${entry.title}", e)
+            holder.container.addView(TextView(context).apply {
+                text = "Preview unavailable: ${e.javaClass.simpleName}"
+                setTextColor(0xFFFFFFFF.toInt())
+                textSize = 12f
+            })
         }
     }
 }

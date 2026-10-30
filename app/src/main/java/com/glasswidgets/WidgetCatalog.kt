@@ -21,6 +21,9 @@ data class WidgetEntry(
 
 object WidgetCatalog {
 
+    private val chooseCity: (Context) -> Unit =
+        { it.startActivity(Intent(it, WeatherSetupActivity::class.java)) }
+
     fun entries(): List<WidgetEntry> = listOf(
         WidgetEntry(
             title = "Digital Clock",
@@ -32,6 +35,15 @@ object WidgetCatalog {
             preview = { GlassDigitalClockWidget.create(it) }
         ),
         WidgetEntry(
+            title = "Mini Clock",
+            description = "A slim glass pill with the time and the date.",
+            sizeLabel = "3 × 1",
+            provider = GlassMiniClockWidget::class.java,
+            previewWidthDp = null,
+            previewHeightDp = 64,
+            preview = { GlassMiniClockWidget.create(it) }
+        ),
+        WidgetEntry(
             title = "Analog Clock",
             description = "A clean transparent dial with white hands.",
             sizeLabel = "2 × 2",
@@ -39,6 +51,15 @@ object WidgetCatalog {
             previewWidthDp = 130,
             previewHeightDp = 130,
             preview = { GlassAnalogClockWidget.create(it) }
+        ),
+        WidgetEntry(
+            title = "Date",
+            description = "The weekday, a big day number and the month.",
+            sizeLabel = "2 × 2",
+            provider = GlassDateWidget::class.java,
+            previewWidthDp = 130,
+            previewHeightDp = 130,
+            preview = { GlassDateWidget.create(it) }
         ),
         WidgetEntry(
             title = "Weather",
@@ -49,7 +70,18 @@ object WidgetCatalog {
             previewHeightDp = 140,
             preview = { GlassWeatherWidget.create(it, preview = true) },
             secondaryLabel = "Choose city",
-            onSecondary = { it.startActivity(Intent(it, WeatherSetupActivity::class.java)) }
+            onSecondary = chooseCity
+        ),
+        WidgetEntry(
+            title = "Weather Card",
+            description = "Humidity, wind and feels-like, with a °C / °F switch on the card.",
+            sizeLabel = "4 × 3",
+            provider = GlassWeatherCardWidget::class.java,
+            previewWidthDp = null,
+            previewHeightDp = 190,
+            preview = { GlassWeatherCardWidget.create(it, preview = true) },
+            secondaryLabel = "Choose city",
+            onSecondary = chooseCity
         ),
         WidgetEntry(
             title = "Week Calendar",
@@ -70,6 +102,16 @@ object WidgetCatalog {
             preview = { GlassCalendarMonthWidget.create(it) }
         ),
         WidgetEntry(
+            title = "Focus",
+            description = "Do Not Disturb for an hour, a day or until the weekend. " +
+                "Android asks you to allow access the first time you tap it.",
+            sizeLabel = "3 × 4",
+            provider = GlassFocusWidget::class.java,
+            previewWidthDp = 220,
+            previewHeightDp = 300,
+            preview = { GlassFocusWidget.create(it, preview = true) }
+        ),
+        WidgetEntry(
             title = "Control Tiles",
             description = "Round glass tiles that open Wi-Fi, Bluetooth, sound, display and camera.",
             sizeLabel = "2 × 3",
@@ -77,6 +119,24 @@ object WidgetCatalog {
             previewWidthDp = 146,
             previewHeightDp = 220,
             preview = { GlassControlsWidget.create(it) }
+        ),
+        WidgetEntry(
+            title = "Dock",
+            description = "A glass pill with shortcuts to Phone, Messages, Browser, Camera and Calendar.",
+            sizeLabel = "4 × 1",
+            provider = GlassDockWidget::class.java,
+            previewWidthDp = null,
+            previewHeightDp = 64,
+            preview = { GlassDockWidget.create(it) }
+        ),
+        WidgetEntry(
+            title = "Search",
+            description = "A glass search bar that opens your search app.",
+            sizeLabel = "4 × 1",
+            provider = GlassSearchWidget::class.java,
+            previewWidthDp = null,
+            previewHeightDp = 64,
+            preview = { GlassSearchWidget.create(it) }
         ),
         WidgetEntry(
             title = "Battery",

@@ -19,6 +19,7 @@ object Glass {
 
     const val STYLE_FROSTED = 0
     const val STYLE_SMOKED = 1
+    const val STYLE_CLEAR = 2
 
     private const val PREFS = "glass_prefs"
     private const val KEY_STYLE = "style"
@@ -38,11 +39,17 @@ object Glass {
 
     val providers: List<Class<out AppWidgetProvider>> = listOf(
         GlassDigitalClockWidget::class.java,
+        GlassMiniClockWidget::class.java,
         GlassAnalogClockWidget::class.java,
+        GlassDateWidget::class.java,
         GlassWeatherWidget::class.java,
+        GlassWeatherCardWidget::class.java,
         GlassCalendarWeekWidget::class.java,
         GlassCalendarMonthWidget::class.java,
+        GlassFocusWidget::class.java,
         GlassControlsWidget::class.java,
+        GlassDockWidget::class.java,
+        GlassSearchWidget::class.java,
         GlassBatteryWidget::class.java
     )
 
@@ -55,17 +62,23 @@ object Glass {
         prefs(context).edit().putInt(KEY_STYLE, style).apply()
     }
 
-    private fun smoked(context: Context) = style(context) == STYLE_SMOKED
-
     /** Glass background for a card-shaped widget. */
     fun applyCard(context: Context, views: RemoteViews, viewId: Int) {
-        val res = if (smoked(context)) R.drawable.glass_bg_smoked else R.drawable.glass_bg
+        val res = when (style(context)) {
+            STYLE_SMOKED -> R.drawable.glass_bg_smoked
+            STYLE_CLEAR -> R.drawable.glass_bg_clear
+            else -> R.drawable.glass_bg
+        }
         views.setInt(viewId, "setBackgroundResource", res)
     }
 
     /** Glass background for a round or pill-shaped tile. */
     fun applyTile(context: Context, views: RemoteViews, viewId: Int) {
-        val res = if (smoked(context)) R.drawable.glass_tile_smoked else R.drawable.glass_tile
+        val res = when (style(context)) {
+            STYLE_SMOKED -> R.drawable.glass_tile_smoked
+            STYLE_CLEAR -> R.drawable.glass_tile_clear
+            else -> R.drawable.glass_tile
+        }
         views.setInt(viewId, "setBackgroundResource", res)
     }
 

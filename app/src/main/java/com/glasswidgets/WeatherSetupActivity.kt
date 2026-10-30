@@ -111,6 +111,7 @@ class WeatherSetupActivity : AppCompatActivity() {
         RefreshWorker.schedule(this)
         RefreshWorker.refreshNow(this)
         Glass.refresh(this, GlassWeatherWidget::class.java)
+        Glass.refresh(this, GlassWeatherCardWidget::class.java)
         finishWithOk()
     }
 

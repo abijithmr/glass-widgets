@@ -17,6 +17,20 @@
     <string name="widget_glass_battery">Glass Battery</string>
     <string name="widget_battery_description">Battery level and charging state.</string>
 
+    <string name="widget_glass_weather_card">Glass Weather Card</string>
+    <string name="widget_weather_card_description">City, temperature, humidity, wind and feels-like, with a °C / °F switch.</string>
+    <string name="widget_glass_focus">Glass Focus</string>
+    <string name="widget_focus_description">Do Not Disturb for an hour, a day or a weekend.</string>
+    <string name="widget_glass_dock">Glass Dock</string>
+    <string name="widget_dock_description">Shortcuts to Phone, Messages, Browser, Camera and Calendar.</string>
+    <string name="widget_glass_search">Glass Search</string>
+    <string name="widget_search_description">A glass search bar.</string>
+    <string name="widget_glass_mini_clock">Glass Mini Clock</string>
+    <string name="widget_mini_clock_description">A slim pill with the time and the date.</string>
+    <string name="widget_glass_date">Glass Date</string>
+    <string name="widget_date_description">A square tile with the weekday, day number and month.</string>
+
+    <string name="style_clear">Clear</string>
     <string name="library_title">Widget library</string>
     <string name="library_subtitle">Glass widgets for your home screen. Pick a style, preview, then add.</string>
     <string name="style_label">Glass style</string>
