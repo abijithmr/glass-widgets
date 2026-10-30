@@ -1,72 +1,52 @@
 package com.glasswidgets
 
-import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
-import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Bundle
-import android.view.Gravity
-import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButtonToggleGroup
 
-class MainActivity : Activity() {
+/** The widget library: preview every widget, pick a glass style, add to the home screen. */
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var adapter: WidgetAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-        val pad = (24 * resources.displayMetrics.density).toInt()
+        val entries = WidgetCatalog.entries()
+        findViewById<TextView>(R.id.library_label).text =
+            getString(R.string.library_title) + " · " + entries.size
 
-        val root = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            gravity = Gravity.CENTER
-            setBackgroundColor(Color.parseColor("#0E1014"))
-            setPadding(pad, pad, pad, pad)
+        adapter = WidgetAdapter(entries) { pin(it) }
+        findViewById<RecyclerView>(R.id.widget_list).apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            isNestedScrollingEnabled = false
+            adapter = this@MainActivity.adapter
         }
 
-        val title = TextView(this).apply {
-            text = getString(R.string.app_name)
-            setTextColor(Color.WHITE)
-            textSize = 28f
-            typeface = Typeface.create("sans-serif-light", Typeface.NORMAL)
-            gravity = Gravity.CENTER
+        val group = findViewById<MaterialButtonToggleGroup>(R.id.style_group)
+        group.check(
+            if (Glass.style(this) == Glass.STYLE_SMOKED) R.id.btn_smoked else R.id.btn_frosted
+        )
+        group.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (!isChecked) return@addOnButtonCheckedListener
+            val style = if (checkedId == R.id.btn_smoked) Glass.STYLE_SMOKED else Glass.STYLE_FROSTED
+            Glass.setStyle(this, style)
+            adapter.notifyDataSetChanged() // redraw previews
+            Glass.refreshAll(this) // and every widget already on the home screen
         }
-
-        val body = TextView(this).apply {
-            text = getString(R.string.main_hint)
-            setTextColor(Color.parseColor("#B3FFFFFF"))
-            textSize = 15f
-            gravity = Gravity.CENTER
-            setPadding(0, pad / 2, 0, pad)
-        }
-
-        val analogButton = Button(this).apply {
-            text = getString(R.string.add_analog_widget)
-            setOnClickListener { requestPinWidget(GlassAnalogClockWidget::class.java) }
-        }
-
-        val digitalButton = Button(this).apply {
-            text = getString(R.string.add_digital_widget)
-            setOnClickListener { requestPinWidget(GlassDigitalClockWidget::class.java) }
-        }
-
-        root.addView(title)
-        root.addView(body)
-        root.addView(analogButton)
-        root.addView(digitalButton)
-        setContentView(root)
     }
 
-    private fun requestPinWidget(provider: Class<*>) {
+    private fun pin(entry: WidgetEntry) {
         val manager = getSystemService(AppWidgetManager::class.java)
         if (manager != null && manager.isRequestPinAppWidgetSupported) {
-            manager.requestPinAppWidget(
-                ComponentName(this, provider),
-                null,
-                null
-            )
+            manager.requestPinAppWidget(ComponentName(this, entry.provider), null, null)
         } else {
             Toast.makeText(this, R.string.pin_not_supported, Toast.LENGTH_LONG).show()
         }

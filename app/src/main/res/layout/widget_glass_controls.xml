@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="6dp">
+
+    <!-- Tiles are 64dp: two round tiles, one wide pill, two round tiles -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/tile_wifi"
+                style="@style/GlassTile"
+                android:background="@drawable/glass_tile">
+                <ImageView
+                    style="@style/GlassTileIcon"
+                    android:src="@drawable/ic_wifi" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tile_bluetooth"
+                style="@style/GlassTile"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/glass_tile">
+                <ImageView
+                    style="@style/GlassTileIcon"
+                    android:src="@drawable/ic_bluetooth" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tile_sound"
+            android:layout_width="136dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/glass_tile"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                style="@style/GlassTileIcon"
+                android:src="@drawable/ic_moon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="sans-serif-medium"
+                android:includeFontPadding="false"
+                android:text="Sound"
+                android:textColor="#FFFFFFFF"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/tile_display"
+                style="@style/GlassTile"
+                android:background="@drawable/glass_tile">
+                <ImageView
+                    style="@style/GlassTileIcon"
+                    android:src="@drawable/ic_sun" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tile_camera"
+                style="@style/GlassTile"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/glass_tile">
+                <ImageView
+                    style="@style/GlassTileIcon"
+                    android:src="@drawable/ic_camera" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,11 +1,8 @@
 package com.glasswidgets
 
-import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
-import android.content.Intent
-import android.provider.AlarmClock
 import android.widget.RemoteViews
 
 class GlassAnalogClockWidget : AppWidgetProvider() {
@@ -16,21 +13,17 @@ class GlassAnalogClockWidget : AppWidgetProvider() {
         appWidgetIds: IntArray
     ) {
         for (id in appWidgetIds) {
+            appWidgetManager.updateAppWidget(id, create(context))
+        }
+    }
+
+    companion object {
+        fun create(context: Context): RemoteViews {
             val views = RemoteViews(context.packageName, R.layout.widget_glass_analog_clock)
-
+            Glass.applyCard(context, views, R.id.widget_root)
             // Tap the clock to open the device's clock / alarms app.
-            val intent = Intent(AlarmClock.ACTION_SHOW_ALARMS).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            }
-            val pending = PendingIntent.getActivity(
-                context,
-                0,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-            )
-            views.setOnClickPendingIntent(R.id.widget_root, pending)
-
-            appWidgetManager.updateAppWidget(id, views)
+            views.setOnClickPendingIntent(R.id.widget_root, Glass.clockPendingIntent(context))
+            return views
         }
     }
 }

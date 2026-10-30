@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -18,6 +20,17 @@
             </intent-filter>
         </activity>
 
+        <!-- Opens when the weather widget is added, and from the library -->
+        <activity
+            android:name=".WeatherSetupActivity"
+            android:exported="true"
+            android:label="@string/setup_title">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <!-- Analog clock -->
         <receiver
             android:name=".GlassAnalogClockWidget"
             android:exported="true"
@@ -30,6 +43,7 @@
                 android:resource="@xml/glass_analog_clock_info" />
         </receiver>
 
+        <!-- Digital clock -->
         <receiver
             android:name=".GlassDigitalClockWidget"
             android:exported="true"
@@ -43,6 +57,80 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/glass_digital_clock_info" />
+        </receiver>
+
+        <!-- Weather -->
+        <receiver
+            android:name=".GlassWeatherWidget"
+            android:exported="true"
+            android:label="@string/widget_glass_weather">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/glass_weather_info" />
+        </receiver>
+
+        <!-- Week calendar -->
+        <receiver
+            android:name=".GlassCalendarWeekWidget"
+            android:exported="true"
+            android:label="@string/widget_glass_calendar_week">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/glass_calendar_week_info" />
+        </receiver>
+
+        <!-- Month calendar -->
+        <receiver
+            android:name=".GlassCalendarMonthWidget"
+            android:exported="true"
+            android:label="@string/widget_glass_calendar_month">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/glass_calendar_month_info" />
+        </receiver>
+
+        <!-- Control tiles -->
+        <receiver
+            android:name=".GlassControlsWidget"
+            android:exported="true"
+            android:label="@string/widget_glass_controls">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/glass_controls_info" />
+        </receiver>
+
+        <!-- Battery -->
+        <receiver
+            android:name=".GlassBatteryWidget"
+            android:exported="true"
+            android:label="@string/widget_glass_battery">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/glass_battery_info" />
         </receiver>
 
     </application>

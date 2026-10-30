@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="app_bg">#0E1014</color>
+    <color name="surface">#171C22</color>
+    <color name="outline">#2A333C</color>
+    <color name="accent">#4FD0E0</color>
+    <color name="on_accent">#06191D</color>
+    <color name="accent_container">#17414A</color>
+    <color name="text_primary">#EAF2F5</color>
+    <color name="text_secondary">#8FA2AE</color>
+</resources>

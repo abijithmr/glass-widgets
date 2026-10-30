@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Smoked glass: dark translucent tile with a faint bright edge -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="315"
+                android:endColor="#8C0B0F14"
+                android:startColor="#A61B222B"
+                android:type="linear" />
+            <corners android:radius="32dp" />
+        </shape>
+    </item>
+
+    <item android:bottom="60dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="270"
+                android:endColor="#00FFFFFF"
+                android:startColor="#1AFFFFFF"
+                android:type="linear" />
+            <corners
+                android:topLeftRadius="32dp"
+                android:topRightRadius="32dp" />
+        </shape>
+    </item>
+
+    <item>
+        <shape android:shape="rectangle">
+            <stroke
+                android:width="1.2dp"
+                android:color="#40FFFFFF" />
+            <corners android:radius="32dp" />
+        </shape>
+    </item>
+
+</layer-list>

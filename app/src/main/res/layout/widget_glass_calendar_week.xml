@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/glass_bg"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Month on the left, day of month on the right -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/cal_month"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-light"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:textColor="#FFFFFFFF"
+                android:textSize="36sp" />
+
+            <TextView
+                android:id="@+id/cal_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:includeFontPadding="false"
+                android:textColor="#FFFFFFFF"
+                android:textSize="36sp" />
+
+        </LinearLayout>
+
+        <!-- Week: weekday letter above each date -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:orientation="horizontal"
+            android:weightSum="7">
+
+            <LinearLayout style="@style/GlassWeekColumn">
+                <TextView
+                    android:id="@+id/wk_l_0"
+                    style="@style/GlassWeekLetter" />
+                <TextView
+                    android:id="@+id/wk_d_0"
+                    style="@style/GlassWeekDate" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/GlassWeekColumn">
+                <TextView
+                    android:id="@+id/wk_l_1"
+                    style="@style/GlassWeekLetter" />
+                <TextView
+                    android:id="@+id/wk_d_1"
+                    style="@style/GlassWeekDate" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/GlassWeekColumn">
+                <TextView
+                    android:id="@+id/wk_l_2"
+                    style="@style/GlassWeekLetter" />
+                <TextView
+                    android:id="@+id/wk_d_2"
+                    style="@style/GlassWeekDate" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/GlassWeekColumn">
+                <TextView
+                    android:id="@+id/wk_l_3"
+                    style="@style/GlassWeekLetter" />
+                <TextView
+                    android:id="@+id/wk_d_3"
+                    style="@style/GlassWeekDate" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/GlassWeekColumn">
+                <TextView
+                    android:id="@+id/wk_l_4"
+                    style="@style/GlassWeekLetter" />
+                <TextView
+                    android:id="@+id/wk_d_4"
+                    style="@style/GlassWeekDate" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/GlassWeekColumn">
+                <TextView
+                    android:id="@+id/wk_l_5"
+                    style="@style/GlassWeekLetter" />
+                <TextView
+                    android:id="@+id/wk_d_5"
+                    style="@style/GlassWeekDate" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/GlassWeekColumn">
+                <TextView
+                    android:id="@+id/wk_l_6"
+                    style="@style/GlassWeekLetter" />
+                <TextView
+                    android:id="@+id/wk_d_6"
+                    style="@style/GlassWeekDate" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Pushes the buttons to the bottom edge -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/btn_open_calendar"
+                style="@style/GlassChip"
+                android:text="Open calendar" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/btn_new_event"
+                style="@style/GlassChip"
+                android:text="+ New event" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

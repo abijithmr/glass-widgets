@@ -1,12 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Glass Widgets</string>
+
     <string name="widget_glass_analog_clock">Glass Analog Clock</string>
     <string name="widget_description">A transparent glass-style analog clock.</string>
     <string name="widget_glass_digital_clock">Glass Digital Clock</string>
-    <string name="widget_digital_description">A transparent glass-style digital clock with the date and a week strip.</string>
-    <string name="main_hint">Add a glass widget to your home screen. You can also long-press your home screen, open Widgets, and pick Glass Widgets.</string>
-    <string name="add_analog_widget">Add analog clock</string>
-    <string name="add_digital_widget">Add digital clock</string>
+    <string name="widget_digital_description">A glass digital clock with the date and a week strip.</string>
+    <string name="widget_glass_weather">Glass Weather</string>
+    <string name="widget_weather_description">Temperature, feels-like, high and low for your city.</string>
+    <string name="widget_glass_calendar_week">Glass Week Calendar</string>
+    <string name="widget_calendar_week_description">The current week with today highlighted.</string>
+    <string name="widget_glass_calendar_month">Glass Month Calendar</string>
+    <string name="widget_calendar_month_description">A full month grid with today highlighted.</string>
+    <string name="widget_glass_controls">Glass Controls</string>
+    <string name="widget_controls_description">Glass tiles for Wi-Fi, Bluetooth, sound, display and camera.</string>
+    <string name="widget_glass_battery">Glass Battery</string>
+    <string name="widget_battery_description">Battery level and charging state.</string>
+
+    <string name="library_title">Widget library</string>
+    <string name="library_subtitle">Glass widgets for your home screen. Pick a style, preview, then add.</string>
+    <string name="style_label">Glass style</string>
+    <string name="style_frosted">Frosted</string>
+    <string name="style_smoked">Smoked</string>
+    <string name="add_to_home">Add to home screen</string>
+    <string name="choose_city">Choose city</string>
     <string name="pin_not_supported">Your launcher can\'t add widgets from here. Long-press the home screen and choose Widgets instead.</string>
+    <string name="footer_hint">You can also long-press your home screen, open Widgets, and pick Glass Widgets.</string>
+
+    <string name="setup_title">Choose your city</string>
+    <string name="setup_hint">Search for a city to show its weather.</string>
+    <string name="setup_search">Search</string>
+    <string name="setup_keep">Keep %1$s</string>
 </resources>
