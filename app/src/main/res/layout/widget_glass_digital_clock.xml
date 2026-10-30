@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/glass_bg"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <!-- Date, e.g. "Friday, 30 Oct" -->
+        <TextClock
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:format12Hour="EEEE, d MMM"
+            android:format24Hour="EEEE, d MMM"
+            android:includeFontPadding="false"
+            android:textColor="#E6FFFFFF"
+            android:textSize="14sp" />
+
+        <!-- Time, e.g. "7:02" -->
+        <TextClock
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:format12Hour="h:mm"
+            android:format24Hour="HH:mm"
+            android:includeFontPadding="false"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="#FFFFFFFF"
+            android:textSize="58sp" />
+
+        <!-- Week strip -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:weightSum="7">
+
+            <TextView
+                android:id="@+id/day_0"
+                style="@style/GlassDay"
+                android:text="MON" />
+
+            <TextView
+                android:id="@+id/day_1"
+                style="@style/GlassDay"
+                android:text="TUE" />
+
+            <TextView
+                android:id="@+id/day_2"
+                style="@style/GlassDay"
+                android:text="WED" />
+
+            <TextView
+                android:id="@+id/day_3"
+                style="@style/GlassDay"
+                android:text="THU" />
+
+            <TextView
+                android:id="@+id/day_4"
+                style="@style/GlassDay"
+                android:text="FRI" />
+
+            <TextView
+                android:id="@+id/day_5"
+                style="@style/GlassDay"
+                android:text="SAT" />
+
+            <TextView
+                android:id="@+id/day_6"
+                style="@style/GlassDay"
+                android:text="SUN" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

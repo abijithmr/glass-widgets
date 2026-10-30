@@ -42,22 +42,28 @@ class MainActivity : Activity() {
             setPadding(0, pad / 2, 0, pad)
         }
 
-        val addButton = Button(this).apply {
-            text = getString(R.string.add_widget)
-            setOnClickListener { requestPinWidget() }
+        val analogButton = Button(this).apply {
+            text = getString(R.string.add_analog_widget)
+            setOnClickListener { requestPinWidget(GlassAnalogClockWidget::class.java) }
+        }
+
+        val digitalButton = Button(this).apply {
+            text = getString(R.string.add_digital_widget)
+            setOnClickListener { requestPinWidget(GlassDigitalClockWidget::class.java) }
         }
 
         root.addView(title)
         root.addView(body)
-        root.addView(addButton)
+        root.addView(analogButton)
+        root.addView(digitalButton)
         setContentView(root)
     }
 
-    private fun requestPinWidget() {
+    private fun requestPinWidget(provider: Class<*>) {
         val manager = getSystemService(AppWidgetManager::class.java)
         if (manager != null && manager.isRequestPinAppWidgetSupported) {
             manager.requestPinAppWidget(
-                ComponentName(this, GlassAnalogClockWidget::class.java),
+                ComponentName(this, provider),
                 null,
                 null
             )
