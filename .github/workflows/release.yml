@@ -1,0 +1,43 @@
+name: Build APK and release
+
+# Every push to main builds a debug APK and attaches it to a new GitHub release.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Build debug APK
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_NUMBER: ${{ github.run_number }}
+        run: |
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          TAG="build-${RUN_NUMBER}"
+          APK="glass-widgets-${TAG}.apk"
+          cp app/build/outputs/apk/debug/app-debug.apk "$APK"
+          git log -1 --pretty=%B > notes.md
+          gh release create "$TAG" "$APK" \
+            --target "$GITHUB_SHA" \
+            --title "Build ${RUN_NUMBER} (${SHORT_SHA})" \
+            --notes-file notes.md
