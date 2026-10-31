@@ -18,6 +18,7 @@
 
             <LinearLayout
                 android:id="@+id/tile_wifi"
+        android:contentDescription="@string/a11y_tile_wifi"
                 style="@style/GlassTile"
                 android:background="@drawable/glass_tile">
                 <ImageView
@@ -27,6 +28,7 @@
 
             <LinearLayout
                 android:id="@+id/tile_bluetooth"
+        android:contentDescription="@string/a11y_tile_bluetooth"
                 style="@style/GlassTile"
                 android:layout_marginStart="8dp"
                 android:background="@drawable/glass_tile">
@@ -39,6 +41,7 @@
 
         <LinearLayout
             android:id="@+id/tile_sound"
+        android:contentDescription="@string/a11y_tile_sound"
             android:layout_width="136dp"
             android:layout_height="64dp"
             android:layout_marginTop="8dp"
@@ -70,6 +73,7 @@
 
             <LinearLayout
                 android:id="@+id/tile_display"
+        android:contentDescription="@string/a11y_tile_display"
                 style="@style/GlassTile"
                 android:background="@drawable/glass_tile">
                 <ImageView
@@ -79,6 +83,7 @@
 
             <LinearLayout
                 android:id="@+id/tile_camera"
+        android:contentDescription="@string/a11y_tile_camera"
                 style="@style/GlassTile"
                 android:layout_marginStart="8dp"
                 android:background="@drawable/glass_tile">

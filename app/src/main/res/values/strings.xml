@@ -73,4 +73,17 @@
     <string name="bt_pair_new">Pair new device</string>
     <string name="bt_allow">Allow nearby devices access</string>
     <string name="bt_unavailable">This phone has no Bluetooth</string>
+    <string name="a11y_tile_wifi">Wi-Fi</string>
+    <string name="a11y_tile_bluetooth">Bluetooth</string>
+    <string name="a11y_tile_sound">Sound settings</string>
+    <string name="a11y_tile_display">Display settings</string>
+    <string name="a11y_tile_camera">Camera</string>
+    <string name="a11y_dock_phone">Phone</string>
+    <string name="a11y_dock_message">Messages</string>
+    <string name="a11y_dock_browser">Browser</string>
+    <string name="a11y_dock_camera">Camera</string>
+    <string name="a11y_dock_calendar">Calendar</string>
+    <string name="a11y_music_prev">Previous track</string>
+    <string name="a11y_music_play">Play or pause</string>
+    <string name="a11y_music_next">Next track</string>
 </resources>

@@ -81,6 +81,7 @@
 
             <LinearLayout
                 android:id="@+id/music_prev"
+        android:contentDescription="@string/a11y_music_prev"
                 style="@style/GlassDockSlot">
                 <ImageView
                     android:layout_width="28dp"
@@ -91,6 +92,7 @@
 
             <LinearLayout
                 android:id="@+id/music_play"
+        android:contentDescription="@string/a11y_music_play"
                 style="@style/GlassDockSlot">
                 <ImageView
                     android:layout_width="32dp"
@@ -101,6 +103,7 @@
 
             <LinearLayout
                 android:id="@+id/music_next"
+        android:contentDescription="@string/a11y_music_next"
                 style="@style/GlassDockSlot">
                 <ImageView
                     android:layout_width="28dp"

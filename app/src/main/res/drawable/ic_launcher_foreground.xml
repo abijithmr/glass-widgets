@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Two panes of glass: a square tile behind, a round one in front -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Back tile -->
+    <path
+        android:pathData="M34,32h26a10,10 0 0 1 10,10v26a10,10 0 0 1 -10,10h-26a10,10 0 0 1 -10,-10v-26a10,10 0 0 1 10,-10z"
+        android:strokeColor="#B3FFFFFF"
+        android:strokeWidth="1.4">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="24" android:startY="32"
+                android:endX="70" android:endY="78"
+                android:startColor="#66FFFFFF"
+                android:endColor="#1FFFFFFF"
+                android:type="linear" />
+        </aapt:attr>
+    </path>
+
+    <!-- Front disc -->
+    <path
+        android:pathData="M66,42a20,20 0 1,0 0.01,0z"
+        android:strokeColor="#E6FFFFFF"
+        android:strokeWidth="1.6">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="48" android:startY="42"
+                android:endX="86" android:endY="82"
+                android:startColor="#8CFFFFFF"
+                android:endColor="#33FFFFFF"
+                android:type="linear" />
+        </aapt:attr>
+    </path>
+
+    <!-- Highlight arc on the disc -->
+    <path
+        android:pathData="M54.5,56a13,13 0 0 1 9,-9"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineCap="round"
+        android:strokeWidth="2.2" />
+</vector>
