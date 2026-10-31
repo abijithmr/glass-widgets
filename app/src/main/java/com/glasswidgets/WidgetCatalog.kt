@@ -37,7 +37,7 @@ object WidgetCatalog {
             sizeLabel = "4 × 2",
             provider = GlassDigitalClockWidget::class.java,
             previewWidthDp = null,
-            previewHeightDp = 130,
+            previewHeightDp = 140,
             preview = { GlassDigitalClockWidget.create(it) }
         ),
         WidgetEntry(
@@ -67,7 +67,7 @@ object WidgetCatalog {
             sizeLabel = "2 × 2",
             provider = GlassDateWidget::class.java,
             previewWidthDp = 130,
-            previewHeightDp = 130,
+            previewHeightDp = 140,
             preview = { GlassDateWidget.create(it) }
         ),
         WidgetEntry(
@@ -77,7 +77,7 @@ object WidgetCatalog {
             sizeLabel = "2 × 2",
             provider = GlassCountdownWidget::class.java,
             previewWidthDp = 130,
-            previewHeightDp = 130,
+            previewHeightDp = 140,
             preview = { GlassCountdownWidget.create(it, 0, preview = true) }
         ),
         WidgetEntry(
@@ -87,7 +87,7 @@ object WidgetCatalog {
             sizeLabel = "4 × 2",
             provider = GlassWeatherWidget::class.java,
             previewWidthDp = null,
-            previewHeightDp = 140,
+            previewHeightDp = 150,
             preview = { GlassWeatherWidget.create(it, preview = true) },
             secondaryLabel = "Choose city",
             onSecondary = chooseCity

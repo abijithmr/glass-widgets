@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/glass_bg"
-    android:padding="16dp">
+    android:padding="12dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -53,7 +53,7 @@
                     android:includeFontPadding="false"
                     android:text="--°C"
                     android:textColor="#FFFFFFFF"
-                    android:textSize="52sp" />
+                    android:textSize="34sp" />
 
             </LinearLayout>
 
@@ -70,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
                     android:text="🌡️"
-                    android:textSize="30sp" />
+                    android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/weather_feels"
@@ -90,12 +90,18 @@
 
                     <TextView
                         android:id="@+id/weather_high"
-                        style="@style/GlassChip" />
+                        style="@style/GlassChip"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp"
+                        android:textSize="11sp" />
 
                     <TextView
                         android:id="@+id/weather_low"
                         style="@style/GlassChip"
-                        android:layout_marginStart="6dp" />
+                        android:layout_marginStart="6dp"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp"
+                        android:textSize="11sp" />
 
                 </LinearLayout>
 
@@ -107,7 +113,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:orientation="horizontal"
             android:weightSum="7">
 
