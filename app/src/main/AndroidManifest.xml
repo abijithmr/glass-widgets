@@ -3,6 +3,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- Brightness tile: set screen brightness (the person allows this once) -->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+
     <!-- Bluetooth pop-up: list paired devices and switch Bluetooth on or off -->
     <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
@@ -59,9 +62,9 @@
             android:taskAffinity=""
             android:theme="@style/Theme.GlassPopup" />
 
-        <!-- Opens the system Wi-Fi panel over the home screen, then closes -->
+        <!-- Cycles brightness low / mid / peak, then closes -->
         <activity
-            android:name=".PanelActivity"
+            android:name=".BrightnessActionActivity"
             android:excludeFromRecents="true"
             android:exported="false"
             android:taskAffinity=""

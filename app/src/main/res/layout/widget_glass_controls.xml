@@ -77,8 +77,9 @@
                 style="@style/GlassTile"
                 android:background="@drawable/glass_tile">
                 <ImageView
+                    android:id="@+id/tile_display_icon"
                     style="@style/GlassTileIcon"
-                    android:src="@drawable/ic_sun" />
+                    android:src="@drawable/ic_brightness_high" />
             </LinearLayout>
 
             <LinearLayout

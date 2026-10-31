@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Medium brightness: half a sun, left half of the disc filled and the upper-left rays -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="24" android:viewportHeight="24">
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M12,8a4,4 0 1,0 0.001,0z"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.8" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M12,8a4,4 0 0 0 0,8z" />
+    <path
+        android:pathData="M12,2v3M2,12h3M4.9,4.9l2.1,2.1M4.9,19.1l2.1,-2.1"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineCap="round"
+        android:strokeWidth="2" />
+</vector>

@@ -76,7 +76,7 @@
     <string name="a11y_tile_wifi">Wi-Fi</string>
     <string name="a11y_tile_bluetooth">Bluetooth</string>
     <string name="a11y_tile_sound">Sound settings</string>
-    <string name="a11y_tile_display">Display settings</string>
+    <string name="a11y_tile_display">Brightness: tap to change</string>
     <string name="a11y_tile_camera">Camera</string>
     <string name="a11y_dock_phone">Phone</string>
     <string name="a11y_dock_message">Messages</string>

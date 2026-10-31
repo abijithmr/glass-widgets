@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Lowest brightness: just a small dim disc, no rays -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="24" android:viewportHeight="24">
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M12,8.5a3.5,3.5 0 1,0 0.001,0z"
+        android:strokeColor="#B3FFFFFF"
+        android:strokeWidth="1.8" />
+</vector>

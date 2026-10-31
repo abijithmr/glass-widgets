@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.provider.MediaStore
 import android.provider.Settings
 import android.widget.RemoteViews
@@ -35,7 +36,7 @@ class GlassControlsWidget : AppWidgetProvider() {
             tiles.forEach { Glass.applyTile(context, views, it) }
 
             views.setOnClickPendingIntent(
-                R.id.tile_wifi, Glass.activity(context, Intent(context, PanelActivity::class.java), 11)
+                R.id.tile_wifi, Glass.activity(context, wifiIntent(), 11)
             )
             views.setOnClickPendingIntent(
                 R.id.tile_bluetooth,
@@ -45,13 +46,25 @@ class GlassControlsWidget : AppWidgetProvider() {
                 R.id.tile_sound, Glass.activity(context, Intent(Settings.ACTION_SOUND_SETTINGS), 13)
             )
             views.setOnClickPendingIntent(
-                R.id.tile_display, Glass.activity(context, Intent(Settings.ACTION_DISPLAY_SETTINGS), 14)
+                R.id.tile_display,
+                Glass.activity(context, Intent(context, BrightnessActionActivity::class.java), 14)
             )
             views.setOnClickPendingIntent(
                 R.id.tile_camera,
                 Glass.activity(context, Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA), 15)
             )
+            views.setImageViewResource(
+                R.id.tile_display_icon, BrightnessController.icon(BrightnessController.level(context))
+            )
             return views
         }
+
+        /** Android's own Wi-Fi sheet over the home screen (Android 10+), else the Wi-Fi page. */
+        private fun wifiIntent(): Intent =
+            if (Build.VERSION.SDK_INT >= 29) {
+                Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY)
+            } else {
+                Intent(Settings.ACTION_WIFI_SETTINGS)
+            }
     }
 }

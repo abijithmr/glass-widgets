@@ -90,7 +90,10 @@ class BluetoothPopupActivity : Activity() {
 
     override fun onStop() {
         super.onStop()
-        unregisterReceiver(receiver)
+        try {
+            unregisterReceiver(receiver)
+        } catch (_: IllegalArgumentException) {
+        }
         closeProxies()
     }
 
@@ -167,6 +170,15 @@ class BluetoothPopupActivity : Activity() {
     }
 
     private fun render() {
+        if (isFinishing || isDestroyed) return
+        try {
+            draw()
+        } catch (e: Exception) {
+            android.util.Log.e("GlassWidgets", "Bluetooth pop-up draw failed", e)
+        }
+    }
+
+    private fun draw() {
         val bt = adapter
         devices.removeAllViews()
         if (bt == null) {
