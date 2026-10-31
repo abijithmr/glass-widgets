@@ -38,6 +38,13 @@ class BluetoothPopupActivity : Activity() {
 
     private val listener = object : BluetoothProfile.ServiceListener {
         override fun onServiceConnected(profile: Int, proxy: BluetoothProfile) {
+            if (isFinishing || isDestroyed || adapter?.state != BluetoothAdapter.STATE_ON) {
+                try {
+                    adapter?.closeProfileProxy(profile, proxy)
+                } catch (_: Exception) {
+                }
+                return
+            }
             proxies[profile] = proxy
             render()
         }
@@ -50,10 +57,14 @@ class BluetoothPopupActivity : Activity() {
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            if (intent.action == BluetoothAdapter.ACTION_STATE_CHANGED) {
-                if (adapter?.state == BluetoothAdapter.STATE_ON) openProxies() else closeProxies()
+            try {
+                if (intent.action == BluetoothAdapter.ACTION_STATE_CHANGED) {
+                    if (adapter?.state == BluetoothAdapter.STATE_ON) openProxies() else closeProxies()
+                }
+                render()
+            } catch (e: Exception) {
+                android.util.Log.e("GlassWidgets", "Bluetooth update failed", e)
             }
-            render()
         }
     }
 
@@ -112,7 +123,7 @@ class BluetoothPopupActivity : Activity() {
         val bt = adapter ?: return
         val done = try {
             if (on) bt.enable() else bt.disable()
-        } catch (e: SecurityException) {
+        } catch (e: Exception) {
             false
         }
         if (!done) {
@@ -134,28 +145,31 @@ class BluetoothPopupActivity : Activity() {
             if (proxies.containsKey(profile)) continue
             try {
                 bt.getProfileProxy(this, listener, profile)
-            } catch (_: SecurityException) {
+            } catch (_: Exception) {
             }
         }
     }
 
     private fun closeProxies() {
         val bt = adapter
-        for ((profile, proxy) in proxies) {
+        // Android removes entries from `proxies` while they close, so walk a copy
+        val open = proxies.entries.map { it.key to it.value }
+        proxies.clear()
+        for ((profile, proxy) in open) {
             try {
                 bt?.closeProfileProxy(profile, proxy)
             } catch (_: Exception) {
             }
         }
-        proxies.clear()
     }
 
     private fun connectedAddresses(): Set<String> {
         val out = HashSet<String>()
-        for (proxy in proxies.values) {
+        for (proxy in proxies.values.toList()) {
             try {
                 proxy.connectedDevices.forEach { out.add(it.address) }
-            } catch (_: SecurityException) {
+            } catch (_: Exception) {
+                // Bluetooth is switching off or the service has gone away
             }
         }
         return out
