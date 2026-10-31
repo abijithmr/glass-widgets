@@ -3,12 +3,10 @@ package com.glasswidgets
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.os.Bundle
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.button.MaterialButtonToggleGroup
 
 /** The widget library: preview every widget, pick a glass style, add to the home screen. */
 class MainActivity : AppCompatActivity() {
@@ -20,34 +18,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val entries = WidgetCatalog.entries()
-        findViewById<TextView>(R.id.library_label).text =
-            getString(R.string.library_title) + " · " + entries.size
+        adapter = WidgetAdapter(
+            entries = entries,
+            currentStyle = { Glass.style(this) },
+            onStyleChange = { style ->
+                Glass.setStyle(this, style)
+                // Redraw the previews (item 0 is the header, which keeps its selection)...
+                adapter.notifyItemRangeChanged(1, entries.size)
+                // ...and every widget already on the home screen.
+                Glass.refreshAll(this)
+            },
+            onAdd = { pin(it) }
+        )
 
-        adapter = WidgetAdapter(entries) { pin(it) }
         findViewById<RecyclerView>(R.id.widget_list).apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
-            isNestedScrollingEnabled = false
             adapter = this@MainActivity.adapter
-        }
-
-        val group = findViewById<MaterialButtonToggleGroup>(R.id.style_group)
-        group.check(
-            when (Glass.style(this)) {
-                Glass.STYLE_SMOKED -> R.id.btn_smoked
-                Glass.STYLE_CLEAR -> R.id.btn_clear
-                else -> R.id.btn_frosted
-            }
-        )
-        group.addOnButtonCheckedListener { _, checkedId, isChecked ->
-            if (!isChecked) return@addOnButtonCheckedListener
-            val style = when (checkedId) {
-                R.id.btn_smoked -> Glass.STYLE_SMOKED
-                R.id.btn_clear -> Glass.STYLE_CLEAR
-                else -> Glass.STYLE_FROSTED
-            }
-            Glass.setStyle(this, style)
-            adapter.notifyDataSetChanged() // redraw previews
-            Glass.refreshAll(this) // and every widget already on the home screen
         }
     }
 
