@@ -53,6 +53,7 @@ object Glass {
         GlassControlsWidget::class.java,
         GlassDockWidget::class.java,
         GlassSearchWidget::class.java,
+        GlassMusicWidget::class.java,
         GlassBatteryWidget::class.java
     )
 

@@ -156,6 +156,16 @@ object WidgetCatalog {
             preview = { GlassDockWidget.create(it) }
         ),
         WidgetEntry(
+            title = "Music Player",
+            category = Category.CONTROLS,
+            description = "Opens Apple Music (or your music app) with previous, play/pause and next buttons for whatever is playing.",
+            sizeLabel = "4 × 2",
+            provider = GlassMusicWidget::class.java,
+            previewWidthDp = null,
+            previewHeightDp = 130,
+            preview = { GlassMusicWidget.create(it) }
+        ),
+        WidgetEntry(
             title = "Search",
             category = Category.CONTROLS,
             description = "A glass search bar that opens your search app.",

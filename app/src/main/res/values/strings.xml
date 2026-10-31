@@ -58,4 +58,6 @@
     <string name="countdown_name_hint">Name, e.g. Trip to Goa</string>
     <string name="countdown_save">Save</string>
     <string name="countdown_add_first">Add the Countdown widget to your home screen first.</string>
+    <string name="widget_glass_music">Glass Music</string>
+    <string name="widget_music_description">Opens Apple Music or your music app, with previous, play/pause and next.</string>
 </resources>
