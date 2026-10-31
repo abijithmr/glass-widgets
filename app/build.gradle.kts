@@ -10,9 +10,9 @@ android {
     defaultConfig {
         applicationId = "com.glasswidgets"
         minSdk = 26
-        targetSdk = 34
-        versionCode = 6
-        versionName = "1.4"
+        targetSdk = 32
+        versionCode = 7
+        versionName = "1.5"
     }
 
     // One fixed debug key so every build can update the previous one

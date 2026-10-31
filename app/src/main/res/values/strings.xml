@@ -60,4 +60,17 @@
     <string name="countdown_add_first">Add the Countdown widget to your home screen first.</string>
     <string name="widget_glass_music">Glass Music</string>
     <string name="widget_music_description">Opens Apple Music or your music app, with previous, play/pause and next.</string>
+    <string name="bt_title">Bluetooth</string>
+    <string name="bt_use">Use Bluetooth</string>
+    <string name="bt_done">Done</string>
+    <string name="bt_off">Bluetooth is off</string>
+    <string name="bt_turning_on">Turning on…</string>
+    <string name="bt_turning_off">Turning off…</string>
+    <string name="bt_subtitle_on">Your paired devices</string>
+    <string name="bt_no_devices">No paired devices yet</string>
+    <string name="bt_connected">Connected</string>
+    <string name="bt_saved">Saved</string>
+    <string name="bt_pair_new">Pair new device</string>
+    <string name="bt_allow">Allow nearby devices access</string>
+    <string name="bt_unavailable">This phone has no Bluetooth</string>
 </resources>

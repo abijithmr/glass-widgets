@@ -10,8 +10,8 @@ import android.widget.RemoteViews
 
 /**
  * Glass control tiles in the style of the iPad control centre.
- * Android doesn't let a widget flip system switches, so each tile opens
- * the matching settings screen (or the camera) in one tap.
+ * Wi-Fi opens the system Wi-Fi panel and Bluetooth opens our own pop-up, both over the
+ * home screen. Sound, display and camera open their screens in one tap.
  */
 class GlassControlsWidget : AppWidgetProvider() {
 
@@ -35,10 +35,11 @@ class GlassControlsWidget : AppWidgetProvider() {
             tiles.forEach { Glass.applyTile(context, views, it) }
 
             views.setOnClickPendingIntent(
-                R.id.tile_wifi, Glass.activity(context, Intent(Settings.ACTION_WIFI_SETTINGS), 11)
+                R.id.tile_wifi, Glass.activity(context, Intent(context, PanelActivity::class.java), 11)
             )
             views.setOnClickPendingIntent(
-                R.id.tile_bluetooth, Glass.activity(context, Intent(Settings.ACTION_BLUETOOTH_SETTINGS), 12)
+                R.id.tile_bluetooth,
+                Glass.activity(context, Intent(context, BluetoothPopupActivity::class.java), 12)
             )
             views.setOnClickPendingIntent(
                 R.id.tile_sound, Glass.activity(context, Intent(Settings.ACTION_SOUND_SETTINGS), 13)
