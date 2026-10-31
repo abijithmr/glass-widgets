@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Countdown tile: name, days left, and the date it counts down to -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/glass_bg"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/countdown_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-medium"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="Birthday"
+            android:textColor="#E6FFFFFF"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/countdown_days"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:autoSizeMaxTextSize="56sp"
+            android:autoSizeMinTextSize="20sp"
+            android:autoSizeTextType="uniform"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="18"
+            android:textColor="#FFFFFFFF" />
+
+        <TextView
+            android:id="@+id/countdown_unit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="days left"
+            android:textColor="#CCFFFFFF"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/countdown_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="18 Nov 2026"
+            android:textColor="#99FFFFFF"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</FrameLayout>

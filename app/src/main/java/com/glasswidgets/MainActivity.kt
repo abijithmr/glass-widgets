@@ -8,33 +8,35 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-/** The widget library: preview every widget, pick a glass style, add to the home screen. */
+/** The home screen of the app: a live stage, look controls and the widget library. */
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var adapter: WidgetAdapter
+    private var adapter: WidgetAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val entries = WidgetCatalog.entries()
-        adapter = WidgetAdapter(
-            entries = entries,
-            currentStyle = { Glass.style(this) },
-            onStyleChange = { style ->
-                Glass.setStyle(this, style)
-                // Redraw the previews (item 0 is the header, which keeps its selection)...
-                adapter.notifyItemRangeChanged(1, entries.size)
-                // ...and every widget already on the home screen.
-                Glass.refreshAll(this)
-            },
+        val widgetAdapter = WidgetAdapter(
+            all = WidgetCatalog.entries(),
+            // Widgets already on the home screen pick up the new style or colour.
+            onLookChanged = { Glass.refreshAll(this) },
             onAdd = { pin(it) }
         )
+        adapter = widgetAdapter
 
         findViewById<RecyclerView>(R.id.widget_list).apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = this@MainActivity.adapter
+            // Items are redrawn in place; the default cross-fade would flash the stage.
+            itemAnimator = null
+            adapter = widgetAdapter
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // The count of widgets on the home screen may have changed while away.
+        adapter?.refreshHeader()
     }
 
     private fun pin(entry: WidgetEntry) {

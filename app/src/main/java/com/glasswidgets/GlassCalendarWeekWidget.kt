@@ -44,8 +44,7 @@ class GlassCalendarWeekWidget : DailyWidget() {
                 views.setTextViewText(LETTER_IDS[i], letter)
                 views.setTextViewText(DATE_IDS[i], day.get(Calendar.DAY_OF_MONTH).toString())
                 if (i == todayIndex) {
-                    views.setInt(DATE_IDS[i], "setBackgroundResource", R.drawable.glass_day_pill)
-                    views.setTextColor(DATE_IDS[i], Glass.TODAY_TEXT)
+                    Glass.applyToday(context, views, DATE_IDS[i])
                 } else {
                     views.setInt(DATE_IDS[i], "setBackgroundResource", 0)
                     views.setTextColor(DATE_IDS[i], 0xE6FFFFFF.toInt())

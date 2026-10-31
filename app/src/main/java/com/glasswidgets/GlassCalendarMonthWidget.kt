@@ -60,8 +60,7 @@ class GlassCalendarMonthWidget : DailyWidget() {
                 val dayNumber = cursor.get(Calendar.DAY_OF_MONTH)
                 views.setTextViewText(cell, dayNumber.toString())
                 if (inMonth && dayNumber == todayDay) {
-                    views.setInt(cell, "setBackgroundResource", R.drawable.glass_day_pill)
-                    views.setTextColor(cell, Glass.TODAY_TEXT)
+                    Glass.applyToday(context, views, cell)
                 } else {
                     views.setInt(cell, "setBackgroundResource", 0)
                     views.setTextColor(cell, if (inMonth) 0xE6FFFFFF.toInt() else Glass.DIM_TEXT)

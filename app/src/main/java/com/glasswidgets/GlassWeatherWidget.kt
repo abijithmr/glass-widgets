@@ -31,7 +31,7 @@ class GlassWeatherWidget : DailyWidget() {
         fun create(context: Context, preview: Boolean = false): RemoteViews {
             val views = RemoteViews(context.packageName, R.layout.widget_glass_weather)
             Glass.applyCard(context, views, R.id.widget_root)
-            Glass.applyWeekStrip(views)
+            Glass.applyWeekStrip(context, views)
 
             val place = WeatherRepository.savedPlace(context)
             val sample = WeatherRepository.Snapshot(28, 26, 29, 23, 1, 62, 11)

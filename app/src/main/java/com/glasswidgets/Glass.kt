@@ -23,6 +23,8 @@ object Glass {
 
     private const val PREFS = "glass_prefs"
     private const val KEY_STYLE = "style"
+    private const val KEY_SCENE = "scene"
+    private const val KEY_ACCENT = "accent"
 
     /** Text colour on the bright "today" pill. */
     val TODAY_TEXT: Int = 0xFF14202A.toInt()
@@ -42,6 +44,7 @@ object Glass {
         GlassMiniClockWidget::class.java,
         GlassAnalogClockWidget::class.java,
         GlassDateWidget::class.java,
+        GlassCountdownWidget::class.java,
         GlassWeatherWidget::class.java,
         GlassWeatherCardWidget::class.java,
         GlassCalendarWeekWidget::class.java,
@@ -60,6 +63,30 @@ object Glass {
 
     fun setStyle(context: Context, style: Int) {
         prefs(context).edit().putInt(KEY_STYLE, style).apply()
+    }
+
+    fun sceneIndex(context: Context): Int =
+        prefs(context).getInt(KEY_SCENE, 0).coerceIn(0, Look.scenes.lastIndex)
+
+    fun scene(context: Context): Look.Scene = Look.scenes[sceneIndex(context)]
+
+    fun setScene(context: Context, index: Int) {
+        prefs(context).edit().putInt(KEY_SCENE, index).apply()
+    }
+
+    fun accentIndex(context: Context): Int =
+        prefs(context).getInt(KEY_ACCENT, 0).coerceIn(0, Look.accents.lastIndex)
+
+    fun accent(context: Context): Look.Accent = Look.accents[accentIndex(context)]
+
+    fun setAccent(context: Context, index: Int) {
+        prefs(context).edit().putInt(KEY_ACCENT, index).apply()
+    }
+
+    /** The highlight behind today's date, in the accent colour the user picked. */
+    fun applyToday(context: Context, views: RemoteViews, viewId: Int) {
+        views.setInt(viewId, "setBackgroundResource", accent(context).pillRes)
+        views.setTextColor(viewId, TODAY_TEXT)
     }
 
     /** Glass background for a card-shaped widget. */
@@ -130,12 +157,11 @@ object Glass {
     }
 
     /** Highlights today in a MON..SUN strip that uses ids day_0..day_6. */
-    fun applyWeekStrip(views: RemoteViews) {
+    fun applyWeekStrip(context: Context, views: RemoteViews) {
         val today = todayMondayIndex()
         for ((index, viewId) in DAY_IDS.withIndex()) {
             if (index == today) {
-                views.setInt(viewId, "setBackgroundResource", R.drawable.glass_day_pill)
-                views.setTextColor(viewId, TODAY_TEXT)
+                applyToday(context, views, viewId)
             } else {
                 views.setInt(viewId, "setBackgroundResource", 0)
                 views.setTextColor(viewId, OTHER_TEXT)

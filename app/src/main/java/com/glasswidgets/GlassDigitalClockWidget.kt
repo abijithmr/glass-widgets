@@ -15,7 +15,7 @@ class GlassDigitalClockWidget : DailyWidget() {
         fun create(context: Context): RemoteViews {
             val views = RemoteViews(context.packageName, R.layout.widget_glass_digital_clock)
             Glass.applyCard(context, views, R.id.widget_root)
-            Glass.applyWeekStrip(views)
+            Glass.applyWeekStrip(context, views)
             views.setOnClickPendingIntent(R.id.widget_root, Glass.clockPendingIntent(context))
             return views
         }

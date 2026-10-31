@@ -45,4 +45,17 @@
     <string name="setup_hint">Search for a city to show its weather.</string>
     <string name="setup_search">Search</string>
     <string name="setup_keep">Keep %1$s</string>
+
+    <string name="scene_label">Preview backdrop</string>
+    <string name="accent_label">Today highlight</string>
+    <string name="filter_all">All</string>
+    <string name="stage_empty">None on your home screen yet</string>
+
+    <string name="widget_glass_countdown">Glass Countdown</string>
+    <string name="widget_countdown_description">Days left until a date you choose. Tap it to change the date.</string>
+    <string name="countdown_title">New countdown</string>
+    <string name="countdown_hint">Name it and pick the day to count down to.</string>
+    <string name="countdown_name_hint">Name, e.g. Trip to Goa</string>
+    <string name="countdown_save">Save</string>
+    <string name="countdown_add_first">Add the Countdown widget to your home screen first.</string>
 </resources>
