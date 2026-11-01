@@ -20,20 +20,34 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/music_art"
+            <FrameLayout
+                android:id="@+id/music_art_box"
                 android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@drawable/glass_tile"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:layout_height="48dp">
+
+                <LinearLayout
+                    android:id="@+id/music_art"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/glass_tile"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_music_note" />
+                </LinearLayout>
 
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_music_note" />
-            </LinearLayout>
+                    android:id="@+id/music_art_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -98,7 +112,8 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_play" />
+                    android:src="@drawable/ic_play"
+                    android:id="@+id/music_play_icon" />
             </LinearLayout>
 
             <LinearLayout

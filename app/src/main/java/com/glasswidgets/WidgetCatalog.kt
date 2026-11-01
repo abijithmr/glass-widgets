@@ -163,7 +163,7 @@ object WidgetCatalog {
             provider = GlassMusicWidget::class.java,
             previewWidthDp = null,
             previewHeightDp = 130,
-            preview = { GlassMusicWidget.create(it) }
+            preview = { GlassMusicWidget.create(it, preview = true) }
         ),
         WidgetEntry(
             title = "Search",
@@ -195,6 +195,44 @@ object WidgetCatalog {
             previewWidthDp = null,
             previewHeightDp = 230,
             preview = { GlassMonitorWidget.create(it) }
+        ),
+        WidgetEntry(
+            title = "Music Card",
+            category = Category.CONTROLS,
+            description = "Cover, song and artist with elapsed time, a progress bar and controls. " +
+                "Needs notification access once to show what's playing.",
+            sizeLabel = "4 × 2",
+            provider = GlassMusicCardWidget::class.java,
+            previewWidthDp = null,
+            previewHeightDp = 140,
+            preview = { GlassMusicCardWidget.create(it, preview = true) },
+            secondaryLabel = "Allow song info",
+            onSecondary = {
+                it.startActivity(
+                    Intent(android.provider.Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                )
+            }
+        ),
+        WidgetEntry(
+            title = "Control Centre",
+            category = Category.CONTROLS,
+            description = "A Focus pill, torch and airplane circles, and a music card in one panel.",
+            sizeLabel = "4 × 3",
+            provider = GlassControlCenterWidget::class.java,
+            previewWidthDp = null,
+            previewHeightDp = 200,
+            preview = { GlassControlCenterWidget.create(it, preview = true) }
+        ),
+        WidgetEntry(
+            title = "Recharge",
+            category = Category.CONTROLS,
+            description = "A big glass battery bar with the exact charge, in red, orange or green.",
+            sizeLabel = "4 × 2",
+            provider = GlassRechargeWidget::class.java,
+            previewWidthDp = null,
+            previewHeightDp = 128,
+            preview = { GlassRechargeWidget.create(it) }
         )
     )
 }

@@ -61,6 +61,7 @@ object FocusController {
             else -> start(context, choice)
         }
         Glass.refresh(context, GlassFocusWidget::class.java)
+        Glass.refresh(context, GlassControlCenterWidget::class.java)
     }
 
     fun start(context: Context, choice: Int) {

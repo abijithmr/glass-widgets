@@ -55,7 +55,10 @@ object Glass {
         GlassSearchWidget::class.java,
         GlassMusicWidget::class.java,
         GlassBatteryWidget::class.java,
-        GlassMonitorWidget::class.java
+        GlassMonitorWidget::class.java,
+        GlassMusicCardWidget::class.java,
+        GlassControlCenterWidget::class.java,
+        GlassRechargeWidget::class.java
     )
 
     fun prefs(context: Context): SharedPreferences =
