@@ -22,11 +22,17 @@ object MonitorLook {
     const val GAUGES = 0
     const val TERMINAL = 1
     const val THERMAL = 2
+    const val CORES = 3
+    const val NEOFETCH = 4
+    const val BENTO = 5
+    const val DOTS = 6
 
-    val NAMES = listOf("Gauges", "Terminal", "Thermal dashboard")
+    val NAMES = listOf(
+        "Gauges", "Terminal", "Thermal dashboard", "Per-core bars", "Neofetch", "Bento", "Dot matrix"
+    )
     private const val KEY = "monitor_look"
 
-    fun get(context: Context): Int = Glass.prefs(context).getInt(KEY, GAUGES).coerceIn(0, 2)
+    fun get(context: Context): Int = Glass.prefs(context).getInt(KEY, GAUGES).coerceIn(0, NAMES.size - 1)
 
     fun set(context: Context, look: Int) {
         Glass.prefs(context).edit().putInt(KEY, look).apply()
@@ -179,6 +185,10 @@ class GlassMonitorWidget : AppWidgetProvider() {
             val views = when (MonitorLook.get(context)) {
                 MonitorLook.TERMINAL -> terminal(context, cpu, cpuTemp, battTemp, batt, ram, stor, time)
                 MonitorLook.THERMAL -> thermal(context, cpu, cpuTemp, battTemp, batt, ram, stor, time)
+                MonitorLook.CORES -> cores(context, cpu, cpuTemp, batt, ram, stor, time)
+                MonitorLook.NEOFETCH -> neofetch(context, cpu, cpuTemp, battTemp, batt, ram, stor, time)
+                MonitorLook.BENTO -> bento(context, cpu, cpuTemp, battTemp, batt, ram, stor, time)
+                MonitorLook.DOTS -> dots(context, cpu, cpuTemp, batt, ram, stor, time)
                 else -> gauges(context, cpu, cpuTemp, battTemp, batt, ram, stor, time)
             }
             views.setOnClickPendingIntent(R.id.widget_root, broadcast(context, ACTION_REFRESH, 72))
@@ -283,6 +293,112 @@ class GlassMonitorWidget : AppWidgetProvider() {
             v.setImageViewBitmap(R.id.md_chg_bar, MonitorDraw.bar(BATT, BATT, batt.fraction))
             val volts = batt.sub.substringAfter(" · ", "")
             v.setTextViewText(R.id.md_chg_val, if (volts.isEmpty()) batt.value else "${batt.value} · $volts")
+            return v
+        }
+
+        // ------------------------------------------------------------ looks E to H
+
+        private fun usedOnly(stor: SystemStats.Cell): String =
+            if (stor.value.contains(" /")) stor.value.substringBefore(" /") + " GB" else stor.value
+
+        private fun cores(
+            context: Context, cpu: SystemStats.Cell, cpuTemp: SystemStats.Cell,
+            batt: SystemStats.Cell, ram: SystemStats.Cell, stor: SystemStats.Cell, time: String
+        ): RemoteViews {
+            val v = RemoteViews(context.packageName, R.layout.widget_glass_monitor_cores)
+            Glass.applyCard(context, v, R.id.widget_root)
+            v.setTextViewText(R.id.me_head, "${cpu.value} · ${Runtime.getRuntime().availableProcessors()} cores")
+            v.setImageViewBitmap(R.id.me_bars, MonitorDraw.coreBars(SystemStats.coreFractions()))
+            v.setTextViewText(R.id.me_ct_val, cpuTemp.value)
+            v.setTextViewText(R.id.me_mem_val, percent(ram))
+            v.setTextViewText(R.id.me_stor_val, usedOnly(stor))
+            v.setTextViewText(R.id.me_bat_val, batt.value)
+            return v
+        }
+
+        private fun neofetch(
+            context: Context, cpu: SystemStats.Cell, cpuTemp: SystemStats.Cell,
+            battTemp: SystemStats.Cell, batt: SystemStats.Cell, ram: SystemStats.Cell,
+            stor: SystemStats.Cell, time: String
+        ): RemoteViews {
+            val v = RemoteViews(context.packageName, R.layout.widget_glass_monitor_neofetch)
+            val cores = Runtime.getRuntime().availableProcessors()
+            v.setImageViewBitmap(R.id.nf_logo, MonitorDraw.logo())
+            v.setTextViewText(R.id.nf_up, SystemStats.uptime())
+            v.setTextViewText(R.id.nf_time, time)
+            v.setTextViewText(R.id.nf_v1, "Android ${Build.VERSION.RELEASE}")
+            v.setTextViewText(R.id.nf_v2, Build.MODEL)
+            v.setTextViewText(R.id.nf_v3, SystemStats.socName())
+            v.setTextViewText(
+                R.id.nf_v4,
+                if (cpu.value.endsWith(" GHz")) "$cores × ${cpu.value}" else "$cores cores · ${cpu.value}"
+            )
+            v.setTextViewText(R.id.nf_v5, "${cpuTemp.value} · ${cpuTemp.sub.removePrefix("Thermal: ").lowercase(Locale.US)}")
+            v.setTextViewText(R.id.nf_v6, ram.value)
+            v.setTextViewText(R.id.nf_v7, stor.value)
+            v.setTextViewText(R.id.nf_v8, "${batt.value} · ${battTemp.value}")
+            return v
+        }
+
+        private fun bento(
+            context: Context, cpu: SystemStats.Cell, cpuTemp: SystemStats.Cell,
+            battTemp: SystemStats.Cell, batt: SystemStats.Cell, ram: SystemStats.Cell,
+            stor: SystemStats.Cell, time: String
+        ): RemoteViews {
+            val v = RemoteViews(context.packageName, R.layout.widget_glass_monitor_bento)
+            Glass.applyCard(context, v, R.id.widget_root)
+            v.setImageViewBitmap(R.id.mb_ring, MonitorDraw.ring(BATT_TEMP, cpuTemp.fraction))
+            val value = cpuTemp.value
+            val dot = value.indexOf('.')
+            if (dot > 0 && value.first().isDigit()) {
+                v.setTextViewTextSize(R.id.mb_big, TypedValue.COMPLEX_UNIT_SP, 26f)
+                v.setTextViewText(R.id.mb_big, value.substring(0, dot))
+                v.setTextViewText(R.id.mb_small, value.substring(dot))
+            } else {
+                v.setTextViewTextSize(R.id.mb_big, TypedValue.COMPLEX_UNIT_SP, 16f)
+                v.setTextViewText(R.id.mb_big, value)
+                v.setTextViewText(R.id.mb_small, "")
+            }
+            v.setTextViewText(R.id.mb_state, cpuTemp.sub.removePrefix("Thermal: "))
+            v.setTextViewText(R.id.mb_cpu_sub, "${cpu.value} · ${Runtime.getRuntime().availableProcessors()} cores")
+            v.setTextViewText(R.id.mb_mem_val, percent(ram))
+            v.setImageViewBitmap(R.id.mb_mem_bar, MonitorDraw.bar(RAM, RAM, ram.fraction))
+            v.setTextViewText(R.id.mb_mem_sub, ram.value)
+            v.setTextViewText(R.id.mb_disk_val, stor.value.substringBefore(" /"))
+            v.setTextViewText(
+                R.id.mb_disk_sub,
+                if (stor.value.contains("/ ")) "of " + stor.value.substringAfter("/ ") else ""
+            )
+            v.setTextViewText(R.id.mb_batt_val, batt.value)
+            v.setTextViewText(R.id.mb_batt_sub, battTemp.value)
+            return v
+        }
+
+        private fun dots(
+            context: Context, cpu: SystemStats.Cell, cpuTemp: SystemStats.Cell,
+            batt: SystemStats.Cell, ram: SystemStats.Cell, stor: SystemStats.Cell, time: String
+        ): RemoteViews {
+            val v = RemoteViews(context.packageName, R.layout.widget_glass_monitor_dots)
+            val white = 0xFFFFFFFF.toInt()
+            val red = 0xFFFF3B30.toInt()
+            v.setTextViewText(R.id.mh_updated, time)
+            v.setImageViewBitmap(R.id.mh_bar_cpu, MonitorDraw.dots(cpu.fraction, white))
+            v.setTextViewText(
+                R.id.mh_v_cpu,
+                if (cpu.value.endsWith(" GHz")) cpu.value.removeSuffix(" GHz") + "G" else cpu.value
+            )
+            v.setImageViewBitmap(R.id.mh_bar_temp, MonitorDraw.dots(cpuTemp.fraction, red))
+            v.setTextViewText(R.id.mh_v_temp, cpuTemp.value.replace("°C", "°"))
+            v.setImageViewBitmap(R.id.mh_bar_mem, MonitorDraw.dots(ram.fraction, white))
+            v.setTextViewText(R.id.mh_v_mem, percent(ram))
+            v.setImageViewBitmap(R.id.mh_bar_disk, MonitorDraw.dots(stor.fraction, white))
+            v.setTextViewText(R.id.mh_v_disk, percent(stor))
+            v.setImageViewBitmap(R.id.mh_bar_bat, MonitorDraw.dots(batt.fraction, white))
+            v.setTextViewText(R.id.mh_v_bat, batt.value)
+            v.setTextViewText(
+                R.id.mh_foot,
+                "${Runtime.getRuntime().availableProcessors()} CORES · ${SystemStats.socName()} · ${ram.value} · ${stor.value}".uppercase(Locale.US)
+            )
             return v
         }
     }

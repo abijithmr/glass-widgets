@@ -189,7 +189,7 @@ object WidgetCatalog {
             title = "System Monitor",
             category = Category.CONTROLS,
             description = "Live CPU, temperatures, battery, memory and storage, updating every few seconds " +
-                "while the screen is on. Choose Gauges, Terminal or Thermal dashboard.",
+                "while the screen is on. Pick from seven looks in the app.",
             sizeLabel = "4 × 3",
             provider = GlassMonitorWidget::class.java,
             previewWidthDp = null,

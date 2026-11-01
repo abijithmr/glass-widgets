@@ -69,4 +69,74 @@ object MonitorDraw {
         }
         return bmp
     }
+
+    /** One vertical bar per CPU core, filled to that core's current clock, with a label under it. */
+    fun coreBars(fractions: List<Float?>): Bitmap {
+        val w = 360
+        val h = 132
+        val bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bmp)
+        val n = fractions.size.coerceAtLeast(1)
+        val gap = 10f
+        val barW = (w - gap * (n - 1)) / n
+        val barH = h - 30f
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        val label = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            color = 0xBFFFFFFF.toInt()
+            textSize = 15f
+            textAlign = Paint.Align.CENTER
+        }
+        for (i in 0 until n) {
+            val left = i * (barW + gap)
+            paint.shader = null
+            paint.color = 0x1FFFFFFF
+            canvas.drawRoundRect(RectF(left, 0f, left + barW, barH), 10f, 10f, paint)
+            val f = fractions.getOrNull(i)
+            if (f != null && f > 0f) {
+                val top = barH - barH * f.coerceIn(0f, 100f) / 100f
+                paint.shader = LinearGradient(0f, barH, 0f, top, 0xFF5CC8FF.toInt(), 0xFF9BE0FF.toInt(), Shader.TileMode.CLAMP)
+                canvas.drawRoundRect(RectF(left, top.coerceAtMost(barH - 12f), left + barW, barH), 10f, 10f, paint)
+            }
+            canvas.drawText("CPU$i", left + barW / 2f, h - 4f, label)
+        }
+        return bmp
+    }
+
+    /** The Glass Widgets mark: a glass tile with a glass disc in front. */
+    fun logo(): Bitmap {
+        val bmp = Bitmap.createBitmap(120, 120, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bmp)
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        paint.style = Paint.Style.FILL
+        paint.color = 0x47FFFFFF
+        canvas.drawRoundRect(RectF(8f, 14f, 76f, 82f), 18f, 18f, paint)
+        paint.style = Paint.Style.STROKE
+        paint.strokeWidth = 2f
+        paint.color = 0x80FFFFFF.toInt()
+        canvas.drawRoundRect(RectF(8f, 14f, 76f, 82f), 18f, 18f, paint)
+        paint.style = Paint.Style.FILL
+        paint.color = 0x6BFFFFFF
+        canvas.drawCircle(78f, 78f, 32f, paint)
+        paint.style = Paint.Style.STROKE
+        paint.color = 0xB3FFFFFF.toInt()
+        canvas.drawCircle(78f, 78f, 32f, paint)
+        return bmp
+    }
+
+    /** A row of round dots, the first part of them lit. */
+    fun dots(fraction: Float?, lit: Int): Bitmap {
+        val w = 360
+        val h = 22
+        val count = 24
+        val bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bmp)
+        val on = if (fraction == null) 0 else Math.round(count * fraction.coerceIn(0f, 100f) / 100f)
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        val step = w / count.toFloat()
+        for (i in 0 until count) {
+            paint.color = if (i < on) lit else 0x29FFFFFF
+            canvas.drawCircle(step * i + step / 2f, h / 2f, 6f, paint)
+        }
+        return bmp
+    }
 }

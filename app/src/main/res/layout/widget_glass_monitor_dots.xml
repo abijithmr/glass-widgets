@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- System monitor, look H: dot matrix -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/monitor_dots_bg"
+    android:paddingStart="18dp"
+    android:paddingTop="14dp"
+    android:paddingEnd="18dp"
+    android:paddingBottom="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:layout_weight="1"
+                    android:fontFamily="monospace"
+                    android:letterSpacing="0.2"
+                    android:text="SYSTEM"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/mh_updated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:fontFamily="monospace"
+                    android:text=""
+                    android:textColor="#99FFFFFF"
+                    android:textSize="10sp" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="6dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="46dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:fontFamily="monospace"
+                    android:letterSpacing="0.14"
+                    android:text="CPU"
+                    android:textColor="#B3FFFFFF"
+                    android:textSize="10sp" />
+            <ImageView
+                android:id="@+id/mh_bar_cpu"
+                android:layout_width="0dp"
+                android:layout_height="11dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:importantForAccessibility="no"
+                android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/mh_v_cpu"
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:fontFamily="monospace"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:text="--"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="12sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="46dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:fontFamily="monospace"
+                    android:letterSpacing="0.14"
+                    android:text="TEMP"
+                    android:textColor="#B3FFFFFF"
+                    android:textSize="10sp" />
+            <ImageView
+                android:id="@+id/mh_bar_temp"
+                android:layout_width="0dp"
+                android:layout_height="11dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:importantForAccessibility="no"
+                android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/mh_v_temp"
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:fontFamily="monospace"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:text="--"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="12sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="46dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:fontFamily="monospace"
+                    android:letterSpacing="0.14"
+                    android:text="MEM"
+                    android:textColor="#B3FFFFFF"
+                    android:textSize="10sp" />
+            <ImageView
+                android:id="@+id/mh_bar_mem"
+                android:layout_width="0dp"
+                android:layout_height="11dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:importantForAccessibility="no"
+                android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/mh_v_mem"
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:fontFamily="monospace"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:text="--"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="12sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="46dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:fontFamily="monospace"
+                    android:letterSpacing="0.14"
+                    android:text="DISK"
+                    android:textColor="#B3FFFFFF"
+                    android:textSize="10sp" />
+            <ImageView
+                android:id="@+id/mh_bar_disk"
+                android:layout_width="0dp"
+                android:layout_height="11dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:importantForAccessibility="no"
+                android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/mh_v_disk"
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:fontFamily="monospace"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:text="--"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="12sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="46dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:fontFamily="monospace"
+                    android:letterSpacing="0.14"
+                    android:text="BATT"
+                    android:textColor="#B3FFFFFF"
+                    android:textSize="10sp" />
+            <ImageView
+                android:id="@+id/mh_bar_bat"
+                android:layout_width="0dp"
+                android:layout_height="11dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:importantForAccessibility="no"
+                android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/mh_v_bat"
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:fontFamily="monospace"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:text="--"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="12sp" />
+        </LinearLayout>
+
+                <TextView
+                    android:id="@+id/mh_foot"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:layout_marginTop="4dp"
+                    android:ellipsize="end"
+                    android:fontFamily="monospace"
+                    android:maxLines="1"
+                    android:text=""
+                    android:textColor="#80FFFFFF"
+                    android:textSize="9.5sp" />
+    </LinearLayout>
+</FrameLayout>

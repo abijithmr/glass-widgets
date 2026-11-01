@@ -74,6 +74,29 @@ object SystemStats {
         return best / 1_000_000.0 to bestMax?.let { it / 1_000_000.0 }
     }
 
+    /** Each core's current clock as a share of its own maximum; null where Android blocks it. */
+    fun coreFractions(): List<Float?> = (0 until Runtime.getRuntime().availableProcessors()).map { i ->
+        val base = "/sys/devices/system/cpu/cpu$i/cpufreq/"
+        val cur = readFirstLine(base + "scaling_cur_freq")?.trim()?.toLongOrNull()
+        val max = readFirstLine(base + "cpuinfo_max_freq")?.trim()?.toLongOrNull()
+        if (cur != null && max != null && max > 0) (100f * cur / max) else null
+    }
+
+    fun socName(): String =
+        if (Build.VERSION.SDK_INT >= 31 && Build.SOC_MODEL.isNotBlank() && Build.SOC_MODEL != Build.UNKNOWN) {
+            Build.SOC_MODEL
+        } else {
+            Build.HARDWARE
+        }
+
+    /** "up 3d 4h" / "up 5h 12m", from the time since the phone started. */
+    fun uptime(): String {
+        val minutes = android.os.SystemClock.elapsedRealtime() / 60_000
+        val days = minutes / 1440
+        val hours = (minutes % 1440) / 60
+        return if (days > 0) "up ${days}d ${hours}h" else "up ${hours}h ${minutes % 60}m"
+    }
+
     fun cpu(context: Context): Cell {
         val cores = Runtime.getRuntime().availableProcessors()
         val soc = if (Build.VERSION.SDK_INT >= 31 && Build.SOC_MODEL.isNotBlank() &&
