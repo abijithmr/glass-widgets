@@ -188,13 +188,17 @@ object WidgetCatalog {
         WidgetEntry(
             title = "System Monitor",
             category = Category.CONTROLS,
-            description = "Live CPU, CPU and battery temperature, battery, memory and storage. " +
-                "Tap to refresh; it also updates every 2 minutes while the phone is awake.",
+            description = "Live CPU, temperatures, battery, memory and storage, updating every few seconds " +
+                "while the screen is on. Choose Gauges, Terminal or Thermal dashboard.",
             sizeLabel = "4 × 3",
             provider = GlassMonitorWidget::class.java,
             previewWidthDp = null,
             previewHeightDp = 230,
-            preview = { GlassMonitorWidget.create(it) }
+            preview = { GlassMonitorWidget.create(it) },
+            secondaryLabel = "Change look",
+            onSecondary = { ctx ->
+                MonitorLook.pick(ctx) { (ctx as? MainActivity)?.refreshLibrary() }
+            }
         ),
         WidgetEntry(
             title = "Music Card",

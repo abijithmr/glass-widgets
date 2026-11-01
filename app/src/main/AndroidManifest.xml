@@ -3,6 +3,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- System Monitor refreshes every 5 s while the screen is on -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
     <!-- Brightness tile: set screen brightness (the person allows this once) -->
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 

@@ -1,6 +1,7 @@
 package com.glasswidgets
 
 import android.app.ActivityManager
+import android.app.usage.StorageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -9,6 +10,7 @@ import android.os.Build
 import android.os.Environment
 import android.os.PowerManager
 import android.os.StatFs
+import android.os.storage.StorageManager
 import java.io.File
 import java.util.Locale
 import kotlin.math.abs
@@ -207,13 +209,31 @@ object SystemStats {
         return Cell("${gb(used)} / ${gb(info.totalMem)} GB", "$percent% in use", percent.toFloat())
     }
 
-    fun storage(): Cell = try {
-        val stat = StatFs(Environment.getDataDirectory().path)
-        val total = stat.totalBytes
-        val used = total - stat.availableBytes
-        val percent = (100.0 * used / total).toInt()
-        Cell("${gb(used)} / ${gb(total)} GB", "$percent% used", percent.toFloat())
-    } catch (e: Exception) {
-        Cell("N/A", "No reading")
+    /**
+     * Same numbers as Android's Settings > Storage: the phone's real capacity (256 GB, not the
+     * smaller user partition), and "used" = capacity - free, in decimal gigabytes.
+     */
+    fun storage(context: Context): Cell {
+        try {
+            val stats = context.getSystemService(StorageStatsManager::class.java)
+            val total = stats.getTotalBytes(StorageManager.UUID_DEFAULT)
+            val free = stats.getFreeBytes(StorageManager.UUID_DEFAULT)
+            val used = (total - free).coerceAtLeast(0L)
+            val percent = (100.0 * used / total).toInt()
+            return Cell("${gbDecimal(used)} / ${gbDecimal(total)} GB", "$percent% used", percent.toFloat())
+        } catch (e: Exception) {
+            // Fall through to the data partition
+        }
+        return try {
+            val stat = StatFs(Environment.getDataDirectory().path)
+            val total = stat.totalBytes
+            val used = total - stat.availableBytes
+            val percent = (100.0 * used / total).toInt()
+            Cell("${gbDecimal(used)} / ${gbDecimal(total)} GB", "$percent% used", percent.toFloat())
+        } catch (e: Exception) {
+            Cell("N/A", "No reading")
+        }
     }
+
+    private fun gbDecimal(bytes: Long): String = String.format(Locale.US, "%.0f", bytes / 1_000_000_000.0)
 }

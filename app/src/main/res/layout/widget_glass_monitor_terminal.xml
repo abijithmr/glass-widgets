@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- System monitor, look B: terminal -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/monitor_terminal_bg"
+    android:paddingStart="16dp"
+    android:paddingTop="13dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="11dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:layout_weight="1"
+                    android:fontFamily="monospace"
+                    android:text="glass@phone:~$ monitor"
+                    android:textColor="#8CD9A0"
+                    android:textSize="10sp" />
+
+                <TextView
+                android:id="@+id/mt_updated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:fontFamily="monospace"
+                    android:text=""
+                    android:textColor="#8CFFFFFF"
+                    android:textSize="10sp" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="4dp"
+            android:background="#24FFFFFF" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="44dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:fontFamily="monospace"
+                    android:text="CPU"
+                    android:textColor="#5CC8FF"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/mt_bar_cpu"
+                android:layout_width="0dp"
+                android:layout_height="9dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:importantForAccessibility="no"
+                android:scaleType="fitXY" />
+
+                <TextView
+                android:id="@+id/mt_v_cpu"
+                    android:layout_width="72dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:fontFamily="monospace"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:text="--"
+                    android:textColor="#E8EEF5"
+                    android:textSize="11sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="44dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:fontFamily="monospace"
+                    android:text="TEMP"
+                    android:textColor="#FF8A5B"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/mt_bar_temp"
+                android:layout_width="0dp"
+                android:layout_height="9dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:importantForAccessibility="no"
+                android:scaleType="fitXY" />
+
+                <TextView
+                android:id="@+id/mt_v_temp"
+                    android:layout_width="72dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:fontFamily="monospace"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:text="--"
+                    android:textColor="#E8EEF5"
+                    android:textSize="11sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="44dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:fontFamily="monospace"
+                    android:text="MEM"
+                    android:textColor="#B48CFF"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/mt_bar_mem"
+                android:layout_width="0dp"
+                android:layout_height="9dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:importantForAccessibility="no"
+                android:scaleType="fitXY" />
+
+                <TextView
+                android:id="@+id/mt_v_mem"
+                    android:layout_width="72dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:fontFamily="monospace"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:text="--"
+                    android:textColor="#E8EEF5"
+                    android:textSize="11sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="44dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:fontFamily="monospace"
+                    android:text="DISK"
+                    android:textColor="#4DD0C8"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/mt_bar_disk"
+                android:layout_width="0dp"
+                android:layout_height="9dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:importantForAccessibility="no"
+                android:scaleType="fitXY" />
+
+                <TextView
+                android:id="@+id/mt_v_disk"
+                    android:layout_width="72dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:fontFamily="monospace"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:text="--"
+                    android:textColor="#E8EEF5"
+                    android:textSize="11sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="44dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:fontFamily="monospace"
+                    android:text="BAT"
+                    android:textColor="#6FD38B"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/mt_bar_bat"
+                android:layout_width="0dp"
+                android:layout_height="9dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:importantForAccessibility="no"
+                android:scaleType="fitXY" />
+
+                <TextView
+                android:id="@+id/mt_v_bat"
+                    android:layout_width="72dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:fontFamily="monospace"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:text="--"
+                    android:textColor="#E8EEF5"
+                    android:textSize="11sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="44dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:fontFamily="monospace"
+                    android:text="B.TMP"
+                    android:textColor="#FFC857"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/mt_bar_btmp"
+                android:layout_width="0dp"
+                android:layout_height="9dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:importantForAccessibility="no"
+                android:scaleType="fitXY" />
+
+                <TextView
+                android:id="@+id/mt_v_btmp"
+                    android:layout_width="72dp"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:fontFamily="monospace"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:text="--"
+                    android:textColor="#E8EEF5"
+                    android:textSize="11sp" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:background="#24FFFFFF" />
+
+                <TextView
+                android:id="@+id/mt_f1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:layout_marginTop="2dp"
+                    android:ellipsize="end"
+                    android:fontFamily="monospace"
+                    android:maxLines="1"
+                    android:text=""
+                    android:textColor="#99FFFFFF"
+                    android:textSize="9.5sp" />
+                <TextView
+                android:id="@+id/mt_f2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:layout_marginTop="2dp"
+                    android:ellipsize="end"
+                    android:fontFamily="monospace"
+                    android:maxLines="1"
+                    android:text=""
+                    android:textColor="#99FFFFFF"
+                    android:textSize="9.5sp" />
+                <TextView
+                android:id="@+id/mt_f3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:layout_marginTop="2dp"
+                    android:ellipsize="end"
+                    android:fontFamily="monospace"
+                    android:maxLines="1"
+                    android:text=""
+                    android:textColor="#99FFFFFF"
+                    android:textSize="9.5sp" />
+    </LinearLayout>
+</FrameLayout>

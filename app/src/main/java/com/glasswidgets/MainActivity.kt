@@ -33,6 +33,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /** Redraw the library cards, e.g. after the System Monitor look changed. */
+    fun refreshLibrary() {
+        adapter?.refreshLook()
+    }
+
     override fun onResume() {
         super.onResume()
         // The count of widgets on the home screen may have changed while away.
