@@ -92,8 +92,6 @@
     <string name="widget_music_card_description">Cover, song, time and controls for whatever is playing.</string>
     <string name="widget_glass_control_center">Glass Control Centre</string>
     <string name="widget_control_center_description">Focus, torch, airplane mode and a music card in one panel.</string>
-    <string name="widget_glass_recharge">Glass Recharge</string>
-    <string name="widget_recharge_description">A big glass battery bar with the exact charge level.</string>
     <string name="a11y_torch">Torch</string>
     <string name="a11y_airplane">Airplane mode settings</string>
 </resources>

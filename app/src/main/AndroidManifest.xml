@@ -301,7 +301,7 @@
                 android:resource="@xml/glass_monitor_info" />
         </receiver>
 
-        <!-- Music card, control centre, recharge -->
+        <!-- Music card and control centre -->
         <receiver
             android:name=".GlassMusicCardWidget"
             android:exported="true"
@@ -324,18 +324,6 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/glass_control_center_info" />
-        </receiver>
-
-        <receiver
-            android:name=".GlassRechargeWidget"
-            android:exported="true"
-            android:label="@string/widget_glass_recharge">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/glass_recharge_info" />
         </receiver>
 
         <!-- Media keys and torch, called from the widgets -->

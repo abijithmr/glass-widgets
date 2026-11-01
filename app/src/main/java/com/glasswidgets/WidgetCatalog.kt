@@ -223,16 +223,6 @@ object WidgetCatalog {
             previewWidthDp = null,
             previewHeightDp = 200,
             preview = { GlassControlCenterWidget.create(it, preview = true) }
-        ),
-        WidgetEntry(
-            title = "Recharge",
-            category = Category.CONTROLS,
-            description = "A big glass battery bar with the exact charge, in red, orange or green.",
-            sizeLabel = "4 × 2",
-            provider = GlassRechargeWidget::class.java,
-            previewWidthDp = null,
-            previewHeightDp = 128,
-            preview = { GlassRechargeWidget.create(it) }
         )
     )
 }
