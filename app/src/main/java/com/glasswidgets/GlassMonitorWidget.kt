@@ -309,10 +309,10 @@ class GlassMonitorWidget : AppWidgetProvider() {
             Glass.applyCard(context, v, R.id.widget_root)
             v.setTextViewText(R.id.me_head, "${cpu.value} · ${Runtime.getRuntime().availableProcessors()} cores")
             v.setImageViewBitmap(R.id.me_bars, MonitorDraw.coreBars(SystemStats.coreFractions()))
-            v.setTextViewText(R.id.me_ct_val, cpuTemp.value)
-            v.setTextViewText(R.id.me_mem_val, percent(ram))
-            v.setTextViewText(R.id.me_stor_val, usedOnly(stor))
-            v.setTextViewText(R.id.me_bat_val, batt.value)
+            v.setTextViewText(R.id.me_ct, cpuTemp.value)
+            v.setTextViewText(R.id.me_mem, percent(ram))
+            v.setTextViewText(R.id.me_stor, usedOnly(stor))
+            v.setTextViewText(R.id.me_bat, batt.value)
             return v
         }
 
