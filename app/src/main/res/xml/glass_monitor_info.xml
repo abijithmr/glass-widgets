@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:description="@string/widget_monitor_description"
+    android:initialLayout="@layout/widget_glass_monitor"
+    android:minWidth="250dp"
+    android:minHeight="180dp"
+    android:minResizeWidth="200dp"
+    android:minResizeHeight="150dp"
+    android:previewLayout="@layout/widget_glass_monitor"
+    android:resizeMode="horizontal|vertical"
+    android:targetCellHeight="3"
+    android:targetCellWidth="4"
+    android:updatePeriodMillis="0"
+    android:widgetCategory="home_screen" />

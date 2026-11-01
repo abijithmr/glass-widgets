@@ -86,4 +86,6 @@
     <string name="a11y_music_prev">Previous track</string>
     <string name="a11y_music_play">Play or pause</string>
     <string name="a11y_music_next">Next track</string>
+    <string name="widget_glass_monitor">Glass System Monitor</string>
+    <string name="widget_monitor_description">Live CPU, temperatures, battery, memory and storage read from your phone.</string>
 </resources>

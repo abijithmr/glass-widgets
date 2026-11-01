@@ -184,6 +184,17 @@ object WidgetCatalog {
             previewWidthDp = 130,
             previewHeightDp = 130,
             preview = { GlassBatteryWidget.create(it) }
+        ),
+        WidgetEntry(
+            title = "System Monitor",
+            category = Category.CONTROLS,
+            description = "Live CPU, CPU and battery temperature, battery, memory and storage. " +
+                "Tap to refresh; it also updates every 2 minutes while the phone is awake.",
+            sizeLabel = "4 × 3",
+            provider = GlassMonitorWidget::class.java,
+            previewWidthDp = null,
+            previewHeightDp = 190,
+            preview = { GlassMonitorWidget.create(it) }
         )
     )
 }
