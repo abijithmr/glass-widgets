@@ -19,7 +19,8 @@ import kotlin.math.abs
  */
 object SystemStats {
 
-    class Cell(val value: String, val sub: String)
+    /** [fraction] is the reading on a 0-100 scale for the graph, or null when there is none. */
+    class Cell(val value: String, val sub: String, val fraction: Float? = null)
 
     private const val PREFS = "monitor_prefs"
     private const val KEY_TOTAL = "stat_total"
@@ -90,7 +91,12 @@ object SystemStats {
             if (load == null && clockText == null) append(" · usage blocked by Android")
             else if (soc.isNotBlank()) append(" · ").append(soc)
         }
-        return Cell(value, sub)
+        val fraction = when {
+            load != null -> load.toFloat()
+            clock?.second != null && clock.second!! > 0 -> (100f * clock.first / clock.second!!).toFloat()
+            else -> null
+        }
+        return Cell(value, sub, fraction)
     }
 
     // --------------------------------------------------------------- thermals
@@ -131,7 +137,10 @@ object SystemStats {
         val state = thermalState(context)
         val temp = cpuTemperature()
         return if (temp != null) {
-            Cell(String.format(Locale.US, "%.1f°C", temp), "Thermal: ${state ?: "n/a"}")
+            Cell(
+                String.format(Locale.US, "%.1f°C", temp), "Thermal: ${state ?: "n/a"}",
+                ((temp - 20f) / 60f * 100f).coerceIn(0f, 100f)
+            )
         } else if (state != null) {
             Cell(state, "Thermal state · no sensor access")
         } else {
@@ -157,7 +166,10 @@ object SystemStats {
             BatteryManager.BATTERY_HEALTH_UNSPECIFIED_FAILURE -> "Failure"
             else -> "Health unknown"
         }
-        return Cell(String.format(Locale.US, "%.1f°C", tenths / 10f), health)
+        return Cell(
+            String.format(Locale.US, "%.1f°C", tenths / 10f), health,
+            ((tenths / 10f - 15f) / 35f * 100f).coerceIn(0f, 100f)
+        )
     }
 
     fun battery(context: Context): Cell {
@@ -177,7 +189,10 @@ object SystemStats {
         }
         if (mv > 0) parts.add(String.format(Locale.US, "%.2f V", mv / 1000f))
         if (parts.isEmpty()) parts.add(if (charging) "Charging" else "On battery")
-        return Cell(if (level in 0..100) "$level%" else "N/A", parts.joinToString(" · "))
+        return Cell(
+            if (level in 0..100) "$level%" else "N/A", parts.joinToString(" · "),
+            if (level in 0..100) level.toFloat() else null
+        )
     }
 
     // ----------------------------------------------------------- memory, disk
@@ -189,14 +204,15 @@ object SystemStats {
         manager.getMemoryInfo(info)
         val used = info.totalMem - info.availMem
         val percent = (100.0 * used / info.totalMem).toInt()
-        return Cell("${gb(used)} / ${gb(info.totalMem)} GB", "$percent% in use")
+        return Cell("${gb(used)} / ${gb(info.totalMem)} GB", "$percent% in use", percent.toFloat())
     }
 
     fun storage(): Cell = try {
         val stat = StatFs(Environment.getDataDirectory().path)
         val total = stat.totalBytes
         val used = total - stat.availableBytes
-        Cell("${gb(used)} / ${gb(total)} GB", "${(100.0 * used / total).toInt()}% used")
+        val percent = (100.0 * used / total).toInt()
+        Cell("${gb(used)} / ${gb(total)} GB", "$percent% used", percent.toFloat())
     } catch (e: Exception) {
         Cell("N/A", "No reading")
     }

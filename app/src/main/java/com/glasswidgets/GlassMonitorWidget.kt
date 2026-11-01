@@ -25,7 +25,7 @@ class GlassMonitorWidget : AppWidgetProvider() {
         appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray
     ) {
-        val views = create(context)
+        val views = create(context, record = true)
         for (id in appWidgetIds) appWidgetManager.updateAppWidget(id, views)
         schedule(context)
     }
@@ -35,7 +35,7 @@ class GlassMonitorWidget : AppWidgetProvider() {
         if (intent.action == ACTION_REFRESH || intent.action == ACTION_TICK) {
             val manager = AppWidgetManager.getInstance(context)
             val ids = manager.getAppWidgetIds(ComponentName(context, GlassMonitorWidget::class.java))
-            if (ids.isNotEmpty()) manager.updateAppWidget(ids, create(context))
+            if (ids.isNotEmpty()) manager.updateAppWidget(ids, create(context, record = true))
         }
     }
 
@@ -68,20 +68,33 @@ class GlassMonitorWidget : AppWidgetProvider() {
             )
         }
 
-        fun create(context: Context): RemoteViews {
+        private class Metric(
+            val key: String, val color: Int, val bar: Boolean,
+            val valueId: Int, val subId: Int, val graphId: Int, val cell: SystemStats.Cell
+        )
+
+        /** [record] is true only for real widget updates, so in-app previews never add history. */
+        fun create(context: Context, record: Boolean = false): RemoteViews {
             val views = RemoteViews(context.packageName, R.layout.widget_glass_monitor)
             Glass.applyCard(context, views, R.id.widget_root)
 
-            fun set(valueId: Int, subId: Int, cell: SystemStats.Cell) {
-                views.setTextViewText(valueId, cell.value)
-                views.setTextViewText(subId, cell.sub)
+            val metrics = listOf(
+                Metric("cpu", 0xFF5CC8FF.toInt(), false, R.id.mon_cpu, R.id.mon_cpu_sub, R.id.mon_cpu_g, SystemStats.cpu(context)),
+                Metric("cputemp", 0xFFFF8A5B.toInt(), false, R.id.mon_cputemp, R.id.mon_cputemp_sub, R.id.mon_cputemp_g, SystemStats.cpuTemp(context)),
+                Metric("btemp", 0xFFFFC857.toInt(), false, R.id.mon_btemp, R.id.mon_btemp_sub, R.id.mon_btemp_g, SystemStats.batteryTemp(context)),
+                Metric("batt", 0xFF6FD38B.toInt(), true, R.id.mon_batt, R.id.mon_batt_sub, R.id.mon_batt_g, SystemStats.battery(context)),
+                Metric("ram", 0xFFB48CFF.toInt(), true, R.id.mon_ram, R.id.mon_ram_sub, R.id.mon_ram_g, SystemStats.memory(context)),
+                Metric("stor", 0xFF4DD0C8.toInt(), true, R.id.mon_stor, R.id.mon_stor_sub, R.id.mon_stor_g, SystemStats.storage())
+            )
+            for (m in metrics) {
+                if (record) MonitorGraph.record(context, m.key, m.cell.fraction)
+                views.setTextViewText(m.valueId, m.cell.value)
+                views.setTextViewText(m.subId, m.cell.sub)
+                views.setImageViewBitmap(
+                    m.graphId,
+                    MonitorGraph.draw(m.color, MonitorGraph.history(context, m.key), m.cell.fraction, m.bar)
+                )
             }
-            set(R.id.mon_cpu, R.id.mon_cpu_sub, SystemStats.cpu(context))
-            set(R.id.mon_cputemp, R.id.mon_cputemp_sub, SystemStats.cpuTemp(context))
-            set(R.id.mon_btemp, R.id.mon_btemp_sub, SystemStats.batteryTemp(context))
-            set(R.id.mon_batt, R.id.mon_batt_sub, SystemStats.battery(context))
-            set(R.id.mon_ram, R.id.mon_ram_sub, SystemStats.memory(context))
-            set(R.id.mon_stor, R.id.mon_stor_sub, SystemStats.storage())
             views.setTextViewText(
                 R.id.mon_updated,
                 SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(Date())

@@ -99,7 +99,7 @@ object WidgetCatalog {
             sizeLabel = "4 × 3",
             provider = GlassWeatherCardWidget::class.java,
             previewWidthDp = null,
-            previewHeightDp = 190,
+            previewHeightDp = 230,
             preview = { GlassWeatherCardWidget.create(it, preview = true) },
             secondaryLabel = "Choose city",
             onSecondary = chooseCity
@@ -193,7 +193,7 @@ object WidgetCatalog {
             sizeLabel = "4 × 3",
             provider = GlassMonitorWidget::class.java,
             previewWidthDp = null,
-            previewHeightDp = 190,
+            previewHeightDp = 230,
             preview = { GlassMonitorWidget.create(it) }
         )
     )

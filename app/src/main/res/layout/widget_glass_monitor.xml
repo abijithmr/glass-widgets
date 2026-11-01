@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- System monitor: six live readings in a 2 x 3 grid -->
+<!-- System monitor: six resource-monitor tiles, each with a graph behind its readings -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/widget_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/glass_bg"
-    android:padding="14dp">
+    android:padding="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +15,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="3dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -43,86 +47,115 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
+                android:layout_margin="3dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:includeFontPadding="false"
-                    android:letterSpacing="0.08"
-                    android:text="CPU"
-                    android:textColor="#B3FFFFFF"
-                    android:textSize="10sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/mon_cpu"
+                <ImageView
+                    android:id="@+id/mon_cpu_g"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:fontFamily="sans-serif-medium"
-                    android:includeFontPadding="false"
-                    android:maxLines="1"
-                    android:text="--"
-                    android:textColor="#FFFFFFFF"
-                    android:textSize="19sp" />
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:scaleType="fitXY" />
 
-                <TextView
-                    android:id="@+id/mon_cpu_sub"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:includeFontPadding="false"
-                    android:maxLines="1"
-                    android:textColor="#CCFFFFFF"
-                    android:textSize="10sp" />
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="8dp">
 
-            <LinearLayout
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:letterSpacing="0.08"
+                        android:text="CPU"
+                        android:textColor="#8FDAFF"
+                        android:textSize="9sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/mon_cpu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-medium"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:text="--"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/mon_cpu_sub"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:textColor="#D9FFFFFF"
+                        android:textSize="9.5sp" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-        android:layout_marginStart="10dp"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
+                android:layout_margin="3dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:includeFontPadding="false"
-                    android:letterSpacing="0.08"
-                    android:text="CPU TEMP"
-                    android:textColor="#B3FFFFFF"
-                    android:textSize="10sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/mon_cputemp"
+                <ImageView
+                    android:id="@+id/mon_cputemp_g"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:fontFamily="sans-serif-medium"
-                    android:includeFontPadding="false"
-                    android:maxLines="1"
-                    android:text="--"
-                    android:textColor="#FFFFFFFF"
-                    android:textSize="19sp" />
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:scaleType="fitXY" />
 
-                <TextView
-                    android:id="@+id/mon_cputemp_sub"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:includeFontPadding="false"
-                    android:maxLines="1"
-                    android:textColor="#CCFFFFFF"
-                    android:textSize="10sp" />
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:letterSpacing="0.08"
+                        android:text="CPU TEMP"
+                        android:textColor="#FFB08F"
+                        android:textSize="9sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/mon_cputemp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-medium"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:text="--"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/mon_cputemp_sub"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:textColor="#D9FFFFFF"
+                        android:textSize="9.5sp" />
+                </LinearLayout>
+            </FrameLayout>
 
         </LinearLayout>
 
@@ -132,86 +165,115 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
+                android:layout_margin="3dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:includeFontPadding="false"
-                    android:letterSpacing="0.08"
-                    android:text="BATTERY TEMP"
-                    android:textColor="#B3FFFFFF"
-                    android:textSize="10sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/mon_btemp"
+                <ImageView
+                    android:id="@+id/mon_btemp_g"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:fontFamily="sans-serif-medium"
-                    android:includeFontPadding="false"
-                    android:maxLines="1"
-                    android:text="--"
-                    android:textColor="#FFFFFFFF"
-                    android:textSize="19sp" />
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:scaleType="fitXY" />
 
-                <TextView
-                    android:id="@+id/mon_btemp_sub"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:includeFontPadding="false"
-                    android:maxLines="1"
-                    android:textColor="#CCFFFFFF"
-                    android:textSize="10sp" />
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="8dp">
 
-            <LinearLayout
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:letterSpacing="0.08"
+                        android:text="BATTERY TEMP"
+                        android:textColor="#FFDB8F"
+                        android:textSize="9sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/mon_btemp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-medium"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:text="--"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/mon_btemp_sub"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:textColor="#D9FFFFFF"
+                        android:textSize="9.5sp" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-        android:layout_marginStart="10dp"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
+                android:layout_margin="3dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:includeFontPadding="false"
-                    android:letterSpacing="0.08"
-                    android:text="BATTERY"
-                    android:textColor="#B3FFFFFF"
-                    android:textSize="10sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/mon_batt"
+                <ImageView
+                    android:id="@+id/mon_batt_g"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:fontFamily="sans-serif-medium"
-                    android:includeFontPadding="false"
-                    android:maxLines="1"
-                    android:text="--"
-                    android:textColor="#FFFFFFFF"
-                    android:textSize="19sp" />
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:scaleType="fitXY" />
 
-                <TextView
-                    android:id="@+id/mon_batt_sub"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:includeFontPadding="false"
-                    android:maxLines="1"
-                    android:textColor="#CCFFFFFF"
-                    android:textSize="10sp" />
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:letterSpacing="0.08"
+                        android:text="BATTERY"
+                        android:textColor="#A3E8B5"
+                        android:textSize="9sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/mon_batt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-medium"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:text="--"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/mon_batt_sub"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:textColor="#D9FFFFFF"
+                        android:textSize="9.5sp" />
+                </LinearLayout>
+            </FrameLayout>
 
         </LinearLayout>
 
@@ -221,86 +283,115 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
+                android:layout_margin="3dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:includeFontPadding="false"
-                    android:letterSpacing="0.08"
-                    android:text="MEMORY"
-                    android:textColor="#B3FFFFFF"
-                    android:textSize="10sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/mon_ram"
+                <ImageView
+                    android:id="@+id/mon_ram_g"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:fontFamily="sans-serif-medium"
-                    android:includeFontPadding="false"
-                    android:maxLines="1"
-                    android:text="--"
-                    android:textColor="#FFFFFFFF"
-                    android:textSize="19sp" />
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:scaleType="fitXY" />
 
-                <TextView
-                    android:id="@+id/mon_ram_sub"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:includeFontPadding="false"
-                    android:maxLines="1"
-                    android:textColor="#CCFFFFFF"
-                    android:textSize="10sp" />
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="8dp">
 
-            <LinearLayout
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:letterSpacing="0.08"
+                        android:text="MEMORY"
+                        android:textColor="#CDB3FF"
+                        android:textSize="9sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/mon_ram"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-medium"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:text="--"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/mon_ram_sub"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:textColor="#D9FFFFFF"
+                        android:textSize="9.5sp" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-        android:layout_marginStart="10dp"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
+                android:layout_margin="3dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:includeFontPadding="false"
-                    android:letterSpacing="0.08"
-                    android:text="STORAGE"
-                    android:textColor="#B3FFFFFF"
-                    android:textSize="10sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/mon_stor"
+                <ImageView
+                    android:id="@+id/mon_stor_g"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:fontFamily="sans-serif-medium"
-                    android:includeFontPadding="false"
-                    android:maxLines="1"
-                    android:text="--"
-                    android:textColor="#FFFFFFFF"
-                    android:textSize="19sp" />
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:scaleType="fitXY" />
 
-                <TextView
-                    android:id="@+id/mon_stor_sub"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:includeFontPadding="false"
-                    android:maxLines="1"
-                    android:textColor="#CCFFFFFF"
-                    android:textSize="10sp" />
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:letterSpacing="0.08"
+                        android:text="STORAGE"
+                        android:textColor="#8FE8E2"
+                        android:textSize="9sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/mon_stor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-medium"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:text="--"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/mon_stor_sub"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:textColor="#D9FFFFFF"
+                        android:textSize="9.5sp" />
+                </LinearLayout>
+            </FrameLayout>
 
         </LinearLayout>
 
