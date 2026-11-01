@@ -118,29 +118,69 @@ object SystemStats {
         }
     }
 
-    /** Hottest CPU/SoC thermal zone the kernel lets an app read, in °C. */
-    private fun cpuTemperature(): Float? {
-        val zones = File("/sys/class/thermal").listFiles { f -> f.name.startsWith("thermal_zone") }
-            ?: return null
-        var best: Float? = null
-        for (zone in zones) {
-            val type = readFirstLine(File(zone, "type").path)?.lowercase() ?: continue
-            if (!(type.contains("cpu") || type.contains("soc") || type.contains("tsens") ||
-                    type.contains("big") || type.contains("little") || type.contains("mid"))
-            ) continue
-            val raw = readFirstLine(File(zone, "temp").path)?.trim()?.toFloatOrNull() ?: continue
-            val celsius = if (abs(raw) >= 1000f) raw / 1000f else raw
-            if (celsius in 10f..125f && (best == null || celsius > best)) best = celsius
+    class Zone(val dir: String, val type: String, val raw: String?, val celsius: Float?)
+
+    /** Every kernel thermal zone, readable or not. */
+    fun zones(): List<Zone> {
+        val dirs = File("/sys/class/thermal").listFiles { f -> f.name.startsWith("thermal_zone") }
+            ?: return emptyList()
+        return dirs.sortedBy { it.name.removePrefix("thermal_zone").toIntOrNull() ?: 0 }.map { dir ->
+            val type = readFirstLine(File(dir, "type").path)?.trim() ?: "?"
+            val raw = readFirstLine(File(dir, "temp").path)?.trim()
+            val value = raw?.toFloatOrNull()
+            val celsius = value?.let { if (abs(it) >= 1000f) it / 1000f else it }
+                ?.takeIf { it in 5f..125f }
+            Zone(dir.name, type, raw, celsius)
         }
-        return best
+    }
+
+    private fun isCpuLike(type: String): Boolean {
+        val t = type.lowercase()
+        return t.contains("cpu") || t.contains("soc") || t.contains("tsens") ||
+            t.contains("big") || t.contains("little") || t.contains("mid") || t.contains("core")
+    }
+
+    const val SRC_AUTO = "auto"
+    const val SRC_AVG = "avg"
+    const val SRC_BATTERY = "battery"
+    const val ZONE_PREFIX = "zone:"
+    private const val KEY_TEMP_SOURCE = "monitor_temp_source"
+    private const val KEY_STORAGE_SOURCE = "monitor_storage_source"
+
+    fun tempSource(context: Context): String = Glass.prefs(context).getString(KEY_TEMP_SOURCE, SRC_AUTO) ?: SRC_AUTO
+    fun setTempSource(context: Context, value: String) =
+        Glass.prefs(context).edit().putString(KEY_TEMP_SOURCE, value).apply()
+
+    /** Returns the temperature and a short name of the sensor it came from. */
+    private fun cpuTemperature(context: Context): Pair<Float, String>? {
+        val readable = zones().filter { it.celsius != null }
+        val source = tempSource(context)
+        if (source == SRC_BATTERY) {
+            val tenths = batteryIntent(context)?.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, Int.MIN_VALUE)
+            if (tenths != null && tenths != Int.MIN_VALUE) return tenths / 10f to "battery sensor"
+        }
+        if (source.startsWith(ZONE_PREFIX)) {
+            val name = source.removePrefix(ZONE_PREFIX)
+            readable.firstOrNull { it.type == name }?.let { return it.celsius!! to it.type }
+        }
+        val cpuZones = readable.filter { isCpuLike(it.type) }
+        if (cpuZones.isEmpty()) return null
+        return if (source == SRC_AVG) {
+            cpuZones.map { it.celsius!! }.average().toFloat() to "average of ${cpuZones.size} CPU sensors"
+        } else {
+            val hottest = cpuZones.maxByOrNull { it.celsius!! }!!
+            hottest.celsius!! to "hottest CPU sensor"
+        }
     }
 
     fun cpuTemp(context: Context): Cell {
         val state = thermalState(context)
-        val temp = cpuTemperature()
-        return if (temp != null) {
+        val found = cpuTemperature(context)
+        return if (found != null) {
+            val (temp, name) = found
             Cell(
-                String.format(Locale.US, "%.1f°C", temp), "Thermal: ${state ?: "n/a"}",
+                String.format(Locale.US, "%.1f°C", temp),
+                if (tempSource(context) == SRC_AUTO) "Thermal: ${state ?: "n/a"}" else name,
                 ((temp - 20f) / 60f * 100f).coerceIn(0f, 100f)
             )
         } else if (state != null) {
@@ -209,31 +249,119 @@ object SystemStats {
         return Cell("${gb(used)} / ${gb(info.totalMem)} GB", "$percent% in use", percent.toFloat())
     }
 
-    /**
-     * Same numbers as Android's Settings > Storage: the phone's real capacity (256 GB, not the
-     * smaller user partition), and "used" = capacity - free, in decimal gigabytes.
-     */
+    const val STORAGE_SETTINGS = "settings"
+    const val STORAGE_PARTITION_FREE = "partition_free"
+    const val STORAGE_DATA = "data"
+
+    fun storageSource(context: Context): String =
+        Glass.prefs(context).getString(KEY_STORAGE_SOURCE, STORAGE_SETTINGS) ?: STORAGE_SETTINGS
+
+    fun setStorageSource(context: Context, value: String) =
+        Glass.prefs(context).edit().putString(KEY_STORAGE_SOURCE, value).apply()
+
+    /** The phone's real capacity (e.g. 256 GB), if Android reports it. */
+    private fun capacity(context: Context): Long? = try {
+        context.getSystemService(StorageStatsManager::class.java).getTotalBytes(StorageManager.UUID_DEFAULT)
+    } catch (e: Exception) {
+        null
+    }
+
     fun storage(context: Context): Cell {
+        val source = storageSource(context)
+        var total: Long? = null
+        var used: Long? = null
         try {
-            val stats = context.getSystemService(StorageStatsManager::class.java)
-            val total = stats.getTotalBytes(StorageManager.UUID_DEFAULT)
-            val free = stats.getFreeBytes(StorageManager.UUID_DEFAULT)
-            val used = (total - free).coerceAtLeast(0L)
-            val percent = (100.0 * used / total).toInt()
-            return Cell("${gbDecimal(used)} / ${gbDecimal(total)} GB", "$percent% used", percent.toFloat())
-        } catch (e: Exception) {
-            // Fall through to the data partition
-        }
-        return try {
             val stat = StatFs(Environment.getDataDirectory().path)
-            val total = stat.totalBytes
-            val used = total - stat.availableBytes
-            val percent = (100.0 * used / total).toInt()
-            Cell("${gbDecimal(used)} / ${gbDecimal(total)} GB", "$percent% used", percent.toFloat())
+            val cap = capacity(context)
+            when (source) {
+                STORAGE_DATA -> {
+                    total = stat.totalBytes
+                    used = stat.totalBytes - stat.availableBytes
+                }
+                STORAGE_PARTITION_FREE -> if (cap != null) {
+                    total = cap
+                    used = cap - stat.availableBytes
+                }
+                else -> if (cap != null) {
+                    // Same as Android Settings: capacity minus free space (free counts clearable cache)
+                    val free = context.getSystemService(StorageStatsManager::class.java)
+                        .getFreeBytes(StorageManager.UUID_DEFAULT)
+                    total = cap
+                    used = cap - free
+                }
+            }
+            if (total == null || used == null) {
+                total = stat.totalBytes
+                used = stat.totalBytes - stat.availableBytes
+            }
         } catch (e: Exception) {
-            Cell("N/A", "No reading")
+            return Cell("N/A", "No reading")
         }
+        val usedBytes = used.coerceAtLeast(0L)
+        val percent = (100.0 * usedBytes / total).toInt()
+        return Cell("${gbDecimal(usedBytes)} / ${gbDecimal(total)} GB", "$percent% used", percent.toFloat())
     }
 
     private fun gbDecimal(bytes: Long): String = String.format(Locale.US, "%.0f", bytes / 1_000_000_000.0)
+
+    // ------------------------------------------------------------------ report
+
+    /** Every raw number the widget could use, for checking against other apps. */
+    fun report(context: Context): String {
+        val sb = StringBuilder()
+        fun line(text: String) { sb.append(text).append('\n') }
+        line("THERMAL ZONES (kernel)")
+        val zs = zones()
+        if (zs.isEmpty()) line("  none readable: Android blocks /sys/class/thermal")
+        for (z in zs) {
+            line("  %-14s %-24s %s".format(z.dir, z.type, if (z.raw == null) "blocked" else z.celsius?.let { String.format(Locale.US, "%.1f°C (raw %s)", it, z.raw) } ?: "raw ${z.raw}"))
+        }
+        line("")
+        line("BATTERY")
+        val b = batteryIntent(context)
+        val manager = context.getSystemService(BatteryManager::class.java)
+        line("  temperature  " + (b?.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0)?.let { it / 10f } ?: "?") + "°C")
+        line("  voltage      " + (b?.getIntExtra(BatteryManager.EXTRA_VOLTAGE, 0) ?: "?") + " mV")
+        line("  current raw  " + (manager?.getLongProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW) ?: "?"))
+        line("  level        " + (manager?.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY) ?: "?") + "%")
+        line("")
+        line("STORAGE (bytes)")
+        try {
+            val ssm = context.getSystemService(StorageStatsManager::class.java)
+            val total = ssm.getTotalBytes(StorageManager.UUID_DEFAULT)
+            val free = ssm.getFreeBytes(StorageManager.UUID_DEFAULT)
+            line("  capacity (StorageStats)   $total  = ${gbDecimal(total)} GB")
+            line("  free incl. cache          $free  = ${gbDecimal(free)} GB")
+            line("  used = capacity - free    ${total - free}  = ${gbDecimal(total - free)} GB")
+        } catch (e: Exception) {
+            line("  StorageStats failed: ${e.javaClass.simpleName}")
+        }
+        try {
+            val st = StatFs(Environment.getDataDirectory().path)
+            line("  /data total               ${st.totalBytes}  = ${gbDecimal(st.totalBytes)} GB")
+            line("  /data available           ${st.availableBytes}  = ${gbDecimal(st.availableBytes)} GB")
+            line("  /data used                ${st.totalBytes - st.availableBytes}  = ${gbDecimal(st.totalBytes - st.availableBytes)} GB")
+        } catch (e: Exception) {
+            line("  StatFs failed: ${e.javaClass.simpleName}")
+        }
+        line("")
+        line("MEMORY")
+        context.getSystemService(ActivityManager::class.java)?.let {
+            val info = ActivityManager.MemoryInfo()
+            it.getMemoryInfo(info)
+            line("  total      ${info.totalMem}")
+            line("  available  ${info.availMem}")
+        }
+        line("")
+        line("CPU")
+        line("  cores  ${Runtime.getRuntime().availableProcessors()}   SoC ${if (Build.VERSION.SDK_INT >= 31) Build.SOC_MODEL else Build.HARDWARE}")
+        for (i in 0 until Runtime.getRuntime().availableProcessors()) {
+            val base = "/sys/devices/system/cpu/cpu$i/cpufreq/"
+            val cur = readFirstLine(base + "scaling_cur_freq")?.trim()
+            val max = readFirstLine(base + "cpuinfo_max_freq")?.trim()
+            line("  cpu$i  cur ${cur ?: "blocked"} kHz   max ${max ?: "blocked"} kHz")
+        }
+        line("  /proc/stat  " + if (readFirstLine("/proc/stat") != null) "readable" else "blocked by Android")
+        return sb.toString()
+    }
 }

@@ -195,7 +195,7 @@ object WidgetCatalog {
             previewWidthDp = null,
             previewHeightDp = 230,
             preview = { GlassMonitorWidget.create(it) },
-            secondaryLabel = "Change look",
+            secondaryLabel = "Look & sensors",
             onSecondary = { ctx ->
                 MonitorLook.pick(ctx) { (ctx as? MainActivity)?.refreshLibrary() }
             }

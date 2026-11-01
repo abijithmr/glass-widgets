@@ -56,6 +56,12 @@
             </intent-filter>
         </activity>
 
+        <!-- Sensor readings and source choices for the System Monitor -->
+        <activity
+            android:name=".SensorsActivity"
+            android:exported="false"
+            android:label="Sensors" />
+
         <!-- Bluetooth pop-up opened from the Controls widget -->
         <activity
             android:name=".BluetoothPopupActivity"

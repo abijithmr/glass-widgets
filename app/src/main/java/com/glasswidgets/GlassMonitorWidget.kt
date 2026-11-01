@@ -33,13 +33,20 @@ object MonitorLook {
         Glass.refresh(context.applicationContext, GlassMonitorWidget::class.java)
     }
 
-    /** Dialog that lets the person choose a look. [context] must be an activity. */
+    /** Dialog that lets the person choose a look or open the sensor screen. [context] must be an activity. */
     fun pick(context: Context, onChosen: () -> Unit) {
+        val current = get(context)
+        val items = NAMES.mapIndexed { i, name -> (if (i == current) "●  " else "○  ") + name } +
+            "Sensors & sources…"
         MaterialAlertDialogBuilder(context)
-            .setTitle("System Monitor look")
-            .setSingleChoiceItems(NAMES.toTypedArray(), get(context)) { dialog, which ->
-                set(context, which)
-                onChosen()
+            .setTitle("System Monitor")
+            .setItems(items.toTypedArray()) { dialog, which ->
+                if (which < NAMES.size) {
+                    set(context, which)
+                    onChosen()
+                } else {
+                    context.startActivity(android.content.Intent(context, SensorsActivity::class.java))
+                }
                 dialog.dismiss()
             }
             .setNegativeButton("Cancel", null)
