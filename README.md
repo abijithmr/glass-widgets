@@ -22,6 +22,9 @@ Open the app to pick a glass style (Frosted, Smoked, Clear), a preview backdrop 
 * Calendar and Countdown refresh once, at midnight.
 * System Monitor refreshes every 5 s while the screen is on and does nothing with the screen off. Weather and Battery share one 15-minute background job, and it is cancelled when the last
   such widget is removed.
+* Files wakes only when Android reports a change in its file index (a finished download, a
+  deleted file) and reloads just the widgets whose folder changed. There is no polling, and the
+  watcher is cancelled when the last Files widget is removed.
 * The Bluetooth pop-up listens for changes only while it is on screen.
 * `updatePeriodMillis` is 0 everywhere.
 

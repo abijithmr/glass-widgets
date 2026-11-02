@@ -25,6 +25,17 @@ class GlassFilesWidget : AppWidgetProvider() {
         for (id in appWidgetIds) {
             appWidgetManager.updateAppWidget(id, create(context, id))
         }
+        // Also covers a reboot, which clears scheduled jobs.
+        FilesRefresh.ensureScheduled(context)
+    }
+
+    override fun onEnabled(context: Context) {
+        FilesRefresh.ensureScheduled(context)
+    }
+
+    // The last Files widget is gone: stop watching for file changes.
+    override fun onDisabled(context: Context) {
+        FilesRefresh.cancel(context)
     }
 
     override fun onAppWidgetOptionsChanged(

@@ -33,6 +33,8 @@ class FilesGridService : RemoteViewsService() {
         override fun onDataSetChanged() {
             val started = SystemClock.elapsedRealtime()
             val path = FilesStore.currentPath(context, widgetId)
+            // Noted before reading, so a change that lands mid-read is picked up next time.
+            FilesStore.markListed(context, widgetId, path)
             items = if (FilesStore.hasAccess(context)) {
                 try {
                     FilesStore.list(

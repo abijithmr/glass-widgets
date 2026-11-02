@@ -33,6 +33,7 @@ object FilesStore {
     private const val KEY_SORT_PREFIX = "sort_"
     private const val KEY_SELECT_PREFIX = "select_"
     private const val KEY_LIMIT_PREFIX = "limit_"
+    private const val KEY_STAMP_PREFIX = "stamp_"
     private const val KEY_LAST_PATH = "perf_path"
     private const val KEY_LAST_COUNT = "perf_count"
     private const val KEY_LAST_LIST_MS = "perf_list_ms"
@@ -121,6 +122,16 @@ object FilesStore {
             .apply()
     }
 
+    /** The folder's modified time when this widget last listed it (0 = never). */
+    fun listedStamp(context: Context, widgetId: Int): Long =
+        prefs(context).getLong(KEY_STAMP_PREFIX + widgetId, 0L)
+
+    fun markListed(context: Context, widgetId: Int, path: String) {
+        prefs(context).edit()
+            .putLong(KEY_STAMP_PREFIX + widgetId, File(path).lastModified())
+            .apply()
+    }
+
     /** How many entries this widget shows right now. */
     fun limit(context: Context, widgetId: Int): Int =
         prefs(context).getInt(KEY_LIMIT_PREFIX + widgetId, PAGE_SIZE)
@@ -176,6 +187,7 @@ object FilesStore {
             .remove(KEY_SORT_PREFIX + widgetId)
             .remove(KEY_SELECT_PREFIX + widgetId)
             .remove(KEY_LIMIT_PREFIX + widgetId)
+            .remove(KEY_STAMP_PREFIX + widgetId)
             .apply()
     }
 

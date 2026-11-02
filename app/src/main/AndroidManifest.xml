@@ -139,6 +139,12 @@
             android:taskAffinity=""
             android:theme="@android:style/Theme.NoDisplay" />
 
+        <!-- Wakes only when Android's file index changes, to refresh the Files widget -->
+        <service
+            android:name=".FilesRefreshJob"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
         <service
             android:name=".FilesGridService"
             android:exported="false"
