@@ -18,12 +18,13 @@ object FilesStore {
     const val EXTRA_IS_DIR = "files_is_dir"
     const val MAX_PINS = 6
 
-    /** The list shows the newest entries first and stops here (Phase 1 limit). */
+    /** The grid shows the newest entries first and stops here (Phase 1 limit). */
     private const val MAX_ENTRIES = 120
 
     private const val PREFS = "glass_files"
     private const val KEY_PINS = "pins"
     private const val KEY_PATH_PREFIX = "path_"
+    private const val KEY_SORT_PREFIX = "sort_"
     private const val KEY_LAST_PATH = "perf_path"
     private const val KEY_LAST_COUNT = "perf_count"
     private const val KEY_LAST_LIST_MS = "perf_list_ms"
@@ -33,13 +34,20 @@ object FilesStore {
     @Volatile
     private var tapStartedAt = 0L
 
+    /** How the current folder is ordered. Folders always come first. */
+    enum class Sort(val label: String) {
+        NEWEST("Newest first"),
+        OLDEST("Oldest first"),
+        NAME("Name A\u2013Z"),
+        LARGEST("Largest first")
+    }
+
     data class Entry(
         val name: String,
         val path: String,
         val isDir: Boolean,
         val sub: String,
-        val ext: String,
-        val modified: Long
+        val ext: String
     )
 
     private fun prefs(context: Context): SharedPreferences =
@@ -100,8 +108,24 @@ object FilesStore {
         prefs(context).edit().putString(KEY_PATH_PREFIX + widgetId, path).apply()
     }
 
+    fun sort(context: Context, widgetId: Int): Sort {
+        val saved = prefs(context).getInt(KEY_SORT_PREFIX + widgetId, 0)
+        return Sort.values().getOrElse(saved) { Sort.NEWEST }
+    }
+
+    /** Move this widget to the next sort order and return it. */
+    fun nextSort(context: Context, widgetId: Int): Sort {
+        val all = Sort.values()
+        val next = all[(sort(context, widgetId).ordinal + 1) % all.size]
+        prefs(context).edit().putInt(KEY_SORT_PREFIX + widgetId, next.ordinal).apply()
+        return next
+    }
+
     fun forget(context: Context, widgetId: Int) {
-        prefs(context).edit().remove(KEY_PATH_PREFIX + widgetId).apply()
+        prefs(context).edit()
+            .remove(KEY_PATH_PREFIX + widgetId)
+            .remove(KEY_SORT_PREFIX + widgetId)
+            .apply()
     }
 
     /** One step up, but never above the phone's main storage. */
@@ -117,16 +141,32 @@ object FilesStore {
 
     // ---- listing ----
 
-    fun list(context: Context, path: String): List<Entry> {
-        val children = File(path).listFiles() ?: return emptyList()
-        // Read each modified time once instead of on every comparison.
-        val stamped = children
-            .filter { !it.name.startsWith(".") }
-            .map { Triple(it, it.isDirectory, it.lastModified()) }
-        // Newest first, folders and files together, so the date headings read naturally.
-        val sorted = stamped.sortedByDescending { it.third }.take(MAX_ENTRIES)
+    private class Item(val file: File, val isDir: Boolean, val modified: Long, val size: Long)
 
-        return sorted.map { (file, isDir, modified) ->
+    fun list(context: Context, path: String, sort: Sort): List<Entry> {
+        val children = File(path).listFiles() ?: return emptyList()
+        // Read each modified time and size once instead of on every comparison.
+        val items = children
+            .filter { !it.name.startsWith(".") }
+            .map {
+                val dir = it.isDirectory
+                Item(it, dir, it.lastModified(), if (dir) 0L else it.length())
+            }
+        val byName = compareBy<Item> { it.file.name.lowercase() }
+        val order: Comparator<Item> = when (sort) {
+            Sort.NEWEST -> compareByDescending<Item> { it.modified }
+            Sort.OLDEST -> compareBy<Item> { it.modified }
+            Sort.NAME -> byName
+            // Folders have no cheap size, so they stay in name order above the files.
+            Sort.LARGEST -> compareByDescending<Item> { it.size }.then(byName)
+        }
+        val sorted = items
+            .sortedWith(compareByDescending<Item> { it.isDir }.then(order))
+            .take(MAX_ENTRIES)
+
+        return sorted.map { item ->
+            val file = item.file
+            val isDir = item.isDir
             if (isDir) {
                 val count = file.list()?.size ?: 0
                 Entry(
@@ -134,17 +174,15 @@ object FilesStore {
                     path = file.absolutePath,
                     isDir = true,
                     sub = if (count == 1) "1 item" else "$count items",
-                    ext = "",
-                    modified = modified
+                    ext = ""
                 )
             } else {
                 Entry(
                     name = file.name,
                     path = file.absolutePath,
                     isDir = false,
-                    sub = Formatter.formatShortFileSize(context, file.length()),
-                    ext = file.extension.take(4).uppercase(),
-                    modified = modified
+                    sub = Formatter.formatShortFileSize(context, item.size),
+                    ext = file.extension.take(4).uppercase()
                 )
             }
         }

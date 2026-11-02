@@ -294,18 +294,45 @@
                     android:padding="4dp"
                     android:src="@drawable/ic_chevron_left" />
 
-                <TextView
-                    android:id="@+id/files_title"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
-                    android:ellipsize="end"
-                    android:fontFamily="sans-serif-medium"
-                    android:includeFontPadding="false"
-                    android:maxLines="1"
-                    android:textColor="#FFFFFFFF"
-                    android:textSize="17sp" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/files_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-medium"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/files_sort_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:ellipsize="end"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:textColor="#80FFFFFF"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/files_sort"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="6dp"
+                    android:background="@drawable/files_back_bg"
+                    android:contentDescription="Change sort order"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_sort" />
             </LinearLayout>
 
             <FrameLayout
@@ -314,16 +341,18 @@
                 android:layout_marginTop="8dp"
                 android:layout_weight="1">
 
-                <ListView
-                    android:id="@+id/files_list"
+                <GridView
+                    android:id="@+id/files_grid"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clipToPadding="false"
-                    android:divider="@null"
-                    android:dividerHeight="0dp"
+                    android:columnWidth="72dp"
                     android:listSelector="@android:color/transparent"
+                    android:numColumns="auto_fit"
                     android:overScrollMode="never"
-                    android:scrollbars="none" />
+                    android:scrollbars="none"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="4dp" />
 
                 <TextView
                     android:id="@+id/files_empty"

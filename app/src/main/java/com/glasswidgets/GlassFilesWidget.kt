@@ -38,8 +38,6 @@ class GlassFilesWidget : AppWidgetProvider() {
             appWidgetId,
             create(context, appWidgetId, withAdapter = false)
         )
-        // The number of columns depends on the width, so lay the rows out again.
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.files_list)
     }
 
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
@@ -52,6 +50,13 @@ class GlassFilesWidget : AppWidgetProvider() {
                 val id = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0)
                 val path = intent.getStringExtra(FilesStore.EXTRA_PATH)
                 if (id != 0 && path != null) navigate(context, id, path)
+            }
+            ACTION_SORT -> {
+                val id = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0)
+                if (id != 0) {
+                    FilesStore.nextSort(context, id)
+                    reload(context, id)
+                }
             }
             ACTION_BACK -> {
                 val id = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0)
@@ -68,12 +73,10 @@ class GlassFilesWidget : AppWidgetProvider() {
     companion object {
         const val ACTION_NAV = "com.glasswidgets.files.NAV"
         const val ACTION_BACK = "com.glasswidgets.files.BACK"
+        const val ACTION_SORT = "com.glasswidgets.files.SORT"
 
         /** Below this width (dp) the rail shows icons only. */
         private const val COMPACT_BELOW_DP = 250
-
-        /** Narrowest a cell may get before a column is dropped. */
-        private const val CELL_MIN_DP = 68
 
         private val ROW_IDS = intArrayOf(
             R.id.rail_row_0, R.id.rail_row_1, R.id.rail_row_2,
@@ -86,14 +89,19 @@ class GlassFilesWidget : AppWidgetProvider() {
 
         /** Open a folder in one widget: update the header and rail, then reload the grid. */
         fun navigate(context: Context, widgetId: Int, path: String) {
-            FilesStore.markTapStart()
             FilesStore.setPath(context, widgetId, path)
+            reload(context, widgetId)
+        }
+
+        /** Redraw the header and rail and list the folder again, once. */
+        private fun reload(context: Context, widgetId: Int) {
+            FilesStore.markTapStart()
             val manager = AppWidgetManager.getInstance(context)
             manager.partiallyUpdateAppWidget(
                 widgetId,
                 create(context, widgetId, withAdapter = false)
             )
-            manager.notifyAppWidgetViewDataChanged(widgetId, R.id.files_list)
+            manager.notifyAppWidgetViewDataChanged(widgetId, R.id.files_grid)
         }
 
         /** Redraw every Files widget, e.g. after the pinned folders changed. */
@@ -103,14 +111,14 @@ class GlassFilesWidget : AppWidgetProvider() {
             for (id in ids) {
                 if (id == except) continue
                 manager.updateAppWidget(id, create(context, id))
-                manager.notifyAppWidgetViewDataChanged(id, R.id.files_list)
+                manager.notifyAppWidgetViewDataChanged(id, R.id.files_grid)
             }
         }
 
         fun update(context: Context, widgetId: Int) {
             val manager = AppWidgetManager.getInstance(context)
             manager.updateAppWidget(widgetId, create(context, widgetId))
-            manager.notifyAppWidgetViewDataChanged(widgetId, R.id.files_list)
+            manager.notifyAppWidgetViewDataChanged(widgetId, R.id.files_grid)
         }
 
         /**
@@ -141,6 +149,23 @@ class GlassFilesWidget : AppWidgetProvider() {
                             .setAction(ACTION_BACK)
                             .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId),
                         widgetId * 16 + 10
+                    )
+                )
+            }
+
+            views.setTextViewText(
+                R.id.files_sort_label,
+                if (preview) FilesStore.Sort.NEWEST.label else FilesStore.sort(context, widgetId).label
+            )
+            if (!preview) {
+                views.setOnClickPendingIntent(
+                    R.id.files_sort,
+                    broadcast(
+                        context,
+                        Intent(context, GlassFilesWidget::class.java)
+                            .setAction(ACTION_SORT)
+                            .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId),
+                        widgetId * 16 + 11
                     )
                 )
             }
@@ -218,10 +243,10 @@ class GlassFilesWidget : AppWidgetProvider() {
                     .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
                 // A unique data URI keeps each widget's grid separate.
                 service.data = Uri.parse(service.toUri(Intent.URI_INTENT_SCHEME))
-                views.setRemoteAdapter(R.id.files_list, service)
-                views.setEmptyView(R.id.files_list, R.id.files_empty)
+                views.setRemoteAdapter(R.id.files_grid, service)
+                views.setEmptyView(R.id.files_grid, R.id.files_empty)
                 views.setPendingIntentTemplate(
-                    R.id.files_list,
+                    R.id.files_grid,
                     PendingIntent.getActivity(
                         context,
                         widgetId,
@@ -235,21 +260,10 @@ class GlassFilesWidget : AppWidgetProvider() {
             return views
         }
 
-        private fun widthDp(context: Context, widgetId: Int): Int =
-            AppWidgetManager.getInstance(context).getAppWidgetOptions(widgetId)
-                .getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, 0)
-
-        private fun isCompact(context: Context, widgetId: Int): Boolean =
-            widthDp(context, widgetId) in 1 until COMPACT_BELOW_DP
-
-        /** How many cells fit side by side in the right pane at this widget width. */
-        fun columnsFor(context: Context, widgetId: Int): Int {
-            val width = widthDp(context, widgetId)
-            if (width <= 0) return 3
-            val rail = if (width < COMPACT_BELOW_DP) 34 else 106
-            // 24 = window padding, 15 = divider and its margins
-            val pane = width - 24 - rail - 15
-            return (pane / CELL_MIN_DP).coerceIn(2, 4)
+        private fun isCompact(context: Context, widgetId: Int): Boolean {
+            val options = AppWidgetManager.getInstance(context).getAppWidgetOptions(widgetId)
+            val width = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, 0)
+            return width in 1 until COMPACT_BELOW_DP
         }
 
         private fun broadcast(context: Context, intent: Intent, requestCode: Int): PendingIntent =
