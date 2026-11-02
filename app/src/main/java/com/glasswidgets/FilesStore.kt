@@ -30,6 +30,7 @@ object FilesStore {
     private const val KEY_PINS = "pins"
     private const val KEY_PATH_PREFIX = "path_"
     private const val KEY_SORT_PREFIX = "sort_"
+    private const val KEY_SELECT_PREFIX = "select_"
     private const val KEY_LAST_PATH = "perf_path"
     private const val KEY_LAST_COUNT = "perf_count"
     private const val KEY_LAST_LIST_MS = "perf_list_ms"
@@ -126,10 +127,34 @@ object FilesStore {
         return next
     }
 
+    /** When on, the next tap on an item opens its actions instead of opening it. */
+    fun selectMode(context: Context, widgetId: Int): Boolean =
+        prefs(context).getBoolean(KEY_SELECT_PREFIX + widgetId, false)
+
+    fun setSelectMode(context: Context, widgetId: Int, on: Boolean) {
+        prefs(context).edit().putBoolean(KEY_SELECT_PREFIX + widgetId, on).apply()
+    }
+
+    /**
+     * A folder was renamed (newPath) or deleted (newPath = null): keep the pinned
+     * list pointing at real folders.
+     */
+    fun pathChanged(context: Context, oldPath: String, newPath: String?) {
+        val updated = pins(context).mapNotNull { pin ->
+            when {
+                pin == oldPath || pin.startsWith("$oldPath/") ->
+                    newPath?.let { it + pin.removePrefix(oldPath) }
+                else -> pin
+            }
+        }
+        savePins(context, updated)
+    }
+
     fun forget(context: Context, widgetId: Int) {
         prefs(context).edit()
             .remove(KEY_PATH_PREFIX + widgetId)
             .remove(KEY_SORT_PREFIX + widgetId)
+            .remove(KEY_SELECT_PREFIX + widgetId)
             .apply()
     }
 

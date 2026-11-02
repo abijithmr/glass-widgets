@@ -362,6 +362,16 @@
                     android:contentDescription="Change sort order"
                     android:padding="6dp"
                     android:src="@drawable/ic_sort" />
+
+                <ImageView
+                    android:id="@+id/files_select"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="6dp"
+                    android:background="@drawable/files_back_bg"
+                    android:contentDescription="Select an item for actions"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_select" />
             </LinearLayout>
 
             <FrameLayout

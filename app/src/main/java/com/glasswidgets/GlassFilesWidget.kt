@@ -51,6 +51,13 @@ class GlassFilesWidget : AppWidgetProvider() {
                 val path = intent.getStringExtra(FilesStore.EXTRA_PATH)
                 if (id != 0 && path != null) navigate(context, id, path)
             }
+            ACTION_SELECT -> {
+                val id = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0)
+                if (id != 0) {
+                    FilesStore.setSelectMode(context, id, !FilesStore.selectMode(context, id))
+                    redrawHeader(context, id)
+                }
+            }
             ACTION_SORT -> {
                 val id = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0)
                 if (id != 0) {
@@ -74,6 +81,7 @@ class GlassFilesWidget : AppWidgetProvider() {
         const val ACTION_NAV = "com.glasswidgets.files.NAV"
         const val ACTION_BACK = "com.glasswidgets.files.BACK"
         const val ACTION_SORT = "com.glasswidgets.files.SORT"
+        const val ACTION_SELECT = "com.glasswidgets.files.SELECT"
 
         /** Below this width (dp) the rail shows icons only. */
         private const val COMPACT_BELOW_DP = 250
@@ -91,6 +99,14 @@ class GlassFilesWidget : AppWidgetProvider() {
         fun navigate(context: Context, widgetId: Int, path: String) {
             FilesStore.setPath(context, widgetId, path)
             reload(context, widgetId)
+        }
+
+        /** Redraw the header and rail without listing the folder again. */
+        fun redrawHeader(context: Context, widgetId: Int) {
+            AppWidgetManager.getInstance(context).partiallyUpdateAppWidget(
+                widgetId,
+                create(context, widgetId, withAdapter = false)
+            )
         }
 
         /** Redraw the header and rail and list the folder again, once. */
@@ -153,11 +169,31 @@ class GlassFilesWidget : AppWidgetProvider() {
                 )
             }
 
+            val selecting = !preview && FilesStore.selectMode(context, widgetId)
             views.setTextViewText(
                 R.id.files_sort_label,
-                if (preview) FilesStore.Sort.NEWEST.label else FilesStore.sort(context, widgetId).label
+                when {
+                    selecting -> "Tap a file or folder"
+                    preview -> FilesStore.Sort.NEWEST.label
+                    else -> FilesStore.sort(context, widgetId).label
+                }
+            )
+            views.setInt(
+                R.id.files_select,
+                "setBackgroundResource",
+                if (selecting) R.drawable.files_rail_selected else R.drawable.files_back_bg
             )
             if (!preview) {
+                views.setOnClickPendingIntent(
+                    R.id.files_select,
+                    broadcast(
+                        context,
+                        Intent(context, GlassFilesWidget::class.java)
+                            .setAction(ACTION_SELECT)
+                            .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId),
+                        widgetId * 16 + 12
+                    )
+                )
                 views.setOnClickPendingIntent(
                     R.id.files_sort,
                     broadcast(

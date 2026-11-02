@@ -19,6 +19,9 @@
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="29" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="29" />
 
     <!-- Lets the Music widget see whether Apple Music is installed -->
     <queries>
@@ -117,6 +120,16 @@
             android:taskAffinity=""
             android:theme="@style/Theme.GlassPopup"
             android:windowSoftInputMode="stateVisible|adjustResize" />
+
+        <!-- Share / rename / copy path / delete pop-up for one item -->
+        <activity
+            android:name=".FilesItemActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:launchMode="singleInstance"
+            android:taskAffinity=""
+            android:theme="@style/Theme.GlassPopup"
+            android:windowSoftInputMode="stateUnchanged|adjustResize" />
 
         <!-- Opens a folder inside the widget or a file in another app, then closes -->
         <activity

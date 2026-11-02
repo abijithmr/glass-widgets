@@ -44,7 +44,7 @@ class FilesSetupActivity : AppCompatActivity() {
         }
 
     private val askLegacyPermission =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { renderAccess() }
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { renderAccess() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,7 +107,12 @@ class FilesSetupActivity : AppCompatActivity() {
                 startActivity(Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))
             }
         } else {
-            askLegacyPermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+            askLegacyPermission.launch(
+                arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+            )
         }
     }
 
