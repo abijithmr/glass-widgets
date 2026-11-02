@@ -314,18 +314,16 @@
                 android:layout_marginTop="8dp"
                 android:layout_weight="1">
 
-                <GridView
-                    android:id="@+id/files_grid"
+                <ListView
+                    android:id="@+id/files_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clipToPadding="false"
-                    android:columnWidth="72dp"
+                    android:divider="@null"
+                    android:dividerHeight="0dp"
                     android:listSelector="@android:color/transparent"
-                    android:numColumns="auto_fit"
                     android:overScrollMode="never"
-                    android:scrollbars="none"
-                    android:stretchMode="columnWidth"
-                    android:verticalSpacing="4dp" />
+                    android:scrollbars="none" />
 
                 <TextView
                     android:id="@+id/files_empty"

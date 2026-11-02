@@ -18,7 +18,7 @@ object FilesStore {
     const val EXTRA_IS_DIR = "files_is_dir"
     const val MAX_PINS = 6
 
-    /** The grid shows the newest entries first and stops here (Phase 1 limit). */
+    /** The list shows the newest entries first and stops here (Phase 1 limit). */
     private const val MAX_ENTRIES = 120
 
     private const val PREFS = "glass_files"
@@ -38,7 +38,8 @@ object FilesStore {
         val path: String,
         val isDir: Boolean,
         val sub: String,
-        val ext: String
+        val ext: String,
+        val modified: Long
     )
 
     private fun prefs(context: Context): SharedPreferences =
@@ -122,12 +123,10 @@ object FilesStore {
         val stamped = children
             .filter { !it.name.startsWith(".") }
             .map { Triple(it, it.isDirectory, it.lastModified()) }
-        val sorted = stamped.sortedWith(
-            compareByDescending<Triple<File, Boolean, Long>> { it.second }
-                .thenByDescending { it.third }
-        ).take(MAX_ENTRIES)
+        // Newest first, folders and files together, so the date headings read naturally.
+        val sorted = stamped.sortedByDescending { it.third }.take(MAX_ENTRIES)
 
-        return sorted.map { (file, isDir, _) ->
+        return sorted.map { (file, isDir, modified) ->
             if (isDir) {
                 val count = file.list()?.size ?: 0
                 Entry(
@@ -135,7 +134,8 @@ object FilesStore {
                     path = file.absolutePath,
                     isDir = true,
                     sub = if (count == 1) "1 item" else "$count items",
-                    ext = ""
+                    ext = "",
+                    modified = modified
                 )
             } else {
                 Entry(
@@ -143,7 +143,8 @@ object FilesStore {
                     path = file.absolutePath,
                     isDir = false,
                     sub = Formatter.formatShortFileSize(context, file.length()),
-                    ext = file.extension.take(4).uppercase()
+                    ext = file.extension.take(4).uppercase(),
+                    modified = modified
                 )
             }
         }
