@@ -108,6 +108,16 @@
             android:exported="false"
             android:label="Pick a folder" />
 
+        <!-- Search pop-up opened from the Files widget -->
+        <activity
+            android:name=".FilesSearchActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:launchMode="singleInstance"
+            android:taskAffinity=""
+            android:theme="@style/Theme.GlassPopup"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+
         <!-- Opens a folder inside the widget or a file in another app, then closes -->
         <activity
             android:name=".FilesActionActivity"

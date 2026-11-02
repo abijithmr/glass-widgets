@@ -177,6 +177,7 @@ class GlassFilesWidget : AppWidgetProvider() {
             val captionVisibility = if (compact) View.GONE else View.VISIBLE
             views.setViewVisibility(R.id.rail_caption, captionVisibility)
             views.setViewVisibility(R.id.rail_manage_label, captionVisibility)
+            views.setViewVisibility(R.id.rail_search_label, captionVisibility)
             for (i in ROW_IDS.indices) {
                 if (i >= pins.size) {
                     views.setViewVisibility(ROW_IDS[i], View.GONE)
@@ -206,6 +207,14 @@ class GlassFilesWidget : AppWidgetProvider() {
                 }
             }
             if (!preview) {
+                views.setOnClickPendingIntent(
+                    R.id.rail_search,
+                    Glass.activity(
+                        context,
+                        Intent(context, FilesSearchActivity::class.java),
+                        9000 + widgetId
+                    )
+                )
                 views.setOnClickPendingIntent(
                     R.id.rail_manage,
                     Glass.activity(

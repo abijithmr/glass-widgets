@@ -1,11 +1,16 @@
 package com.glasswidgets
 
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Environment
 import android.os.SystemClock
 import android.text.format.Formatter
+import android.webkit.MimeTypeMap
+import android.widget.Toast
+import androidx.core.content.FileProvider
 import java.io.File
 
 /**
@@ -185,6 +190,24 @@ object FilesStore {
                     ext = file.extension.take(4).uppercase()
                 )
             }
+        }
+    }
+
+    /** Opens a file in whichever app the phone picks for its type. */
+    fun openFile(context: Context, path: String) {
+        val file = File(path)
+        val mime = MimeTypeMap.getSingleton()
+            .getMimeTypeFromExtension(file.extension.lowercase()) ?: "*/*"
+        try {
+            val uri = FileProvider.getUriForFile(context, "${context.packageName}.files", file)
+            val view = Intent(Intent.ACTION_VIEW)
+                .setDataAndType(uri, mime)
+                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(view)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(context, "No app can open this file", Toast.LENGTH_SHORT).show()
+        } catch (e: IllegalArgumentException) {
+            Toast.makeText(context, "Can't open this file", Toast.LENGTH_SHORT).show()
         }
     }
 
