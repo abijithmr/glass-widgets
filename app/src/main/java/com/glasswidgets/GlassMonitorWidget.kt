@@ -28,7 +28,7 @@ object MonitorLook {
     const val DOTS = 6
 
     val NAMES = listOf(
-        "Gauges", "Terminal", "Thermal dashboard", "Per-core bars", "Neofetch", "Bento", "Dot matrix"
+        "Gauges", "Terminal", "Thermal dashboard", "Per-core bars", "System info", "Bento", "Dot matrix"
     )
     private const val KEY = "monitor_look"
 

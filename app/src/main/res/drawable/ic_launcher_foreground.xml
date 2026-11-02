@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- The original Glass Widgets mark: a glass tile with a glass disc in front.
+<!-- The original Frostpane mark: a glass tile with a glass disc in front.
      The group only shrinks it a little so no launcher mask clips it. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"

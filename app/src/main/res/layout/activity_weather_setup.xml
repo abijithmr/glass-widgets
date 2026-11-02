@@ -66,6 +66,16 @@
             android:layout_marginTop="6dp"
             android:orientation="vertical" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:autoLink="web"
+            android:linksClickable="true"
+            android:text="@string/weather_credit"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_keep"
             style="?attr/materialButtonOutlinedStyle"

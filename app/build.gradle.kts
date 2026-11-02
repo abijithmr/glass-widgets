@@ -8,7 +8,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.glasswidgets"
+        applicationId = "io.github.abijithmr.frostpane"
         minSdk = 26
         targetSdk = 32
         versionCode = 20

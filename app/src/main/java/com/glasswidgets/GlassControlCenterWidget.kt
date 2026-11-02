@@ -8,7 +8,7 @@ import android.content.Intent
 import android.provider.Settings
 import android.widget.RemoteViews
 
-/** Control centre: Focus pill, torch and airplane circles, and a music card. */
+/** Quick Panel: Focus pill, torch and airplane circles, and a music card. */
 class GlassControlCenterWidget : AppWidgetProvider() {
 
     override fun onUpdate(

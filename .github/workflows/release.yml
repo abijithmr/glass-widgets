@@ -34,7 +34,7 @@ jobs:
         run: |
           SHORT_SHA=$(git rev-parse --short HEAD)
           TAG="build-${RUN_NUMBER}"
-          APK="glass-widgets-${TAG}.apk"
+          APK="frostpane-${TAG}.apk"
           cp app/build/outputs/apk/debug/app-debug.apk "$APK"
           git log -1 --pretty=%B > notes.md
           gh release create "$TAG" "$APK" \
