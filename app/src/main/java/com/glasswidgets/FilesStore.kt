@@ -24,8 +24,8 @@ object FilesStore {
     const val EXTRA_MORE = "files_more"
     const val MAX_PINS = 6
 
-    /** The grid shows the newest entries first and stops here (Phase 1 limit). */
-    private const val MAX_ENTRIES = 120
+    /** The grid shows this many entries, then a "Show more" cell adds another page. */
+    private const val PAGE_SIZE = 120
 
     private const val PREFS = "glass_files"
     private const val KEY_PINS = "pins"
