@@ -21,6 +21,7 @@ object FilesStore {
 
     const val EXTRA_PATH = "files_path"
     const val EXTRA_IS_DIR = "files_is_dir"
+    const val EXTRA_MORE = "files_more"
     const val MAX_PINS = 6
 
     /** The grid shows the newest entries first and stops here (Phase 1 limit). */
@@ -31,6 +32,7 @@ object FilesStore {
     private const val KEY_PATH_PREFIX = "path_"
     private const val KEY_SORT_PREFIX = "sort_"
     private const val KEY_SELECT_PREFIX = "select_"
+    private const val KEY_LIMIT_PREFIX = "limit_"
     private const val KEY_LAST_PATH = "perf_path"
     private const val KEY_LAST_COUNT = "perf_count"
     private const val KEY_LAST_LIST_MS = "perf_list_ms"
@@ -53,7 +55,9 @@ object FilesStore {
         val path: String,
         val isDir: Boolean,
         val sub: String,
-        val ext: String
+        val ext: String,
+        /** The last cell of a long folder: tapping it shows the next page. */
+        val isMore: Boolean = false
     )
 
     private fun prefs(context: Context): SharedPreferences =
@@ -111,7 +115,20 @@ object FilesStore {
     }
 
     fun setPath(context: Context, widgetId: Int, path: String) {
-        prefs(context).edit().putString(KEY_PATH_PREFIX + widgetId, path).apply()
+        prefs(context).edit()
+            .putString(KEY_PATH_PREFIX + widgetId, path)
+            .remove(KEY_LIMIT_PREFIX + widgetId)
+            .apply()
+    }
+
+    /** How many entries this widget shows right now. */
+    fun limit(context: Context, widgetId: Int): Int =
+        prefs(context).getInt(KEY_LIMIT_PREFIX + widgetId, PAGE_SIZE)
+
+    fun showMore(context: Context, widgetId: Int) {
+        prefs(context).edit()
+            .putInt(KEY_LIMIT_PREFIX + widgetId, limit(context, widgetId) + PAGE_SIZE)
+            .apply()
     }
 
     fun sort(context: Context, widgetId: Int): Sort {
@@ -123,7 +140,10 @@ object FilesStore {
     fun nextSort(context: Context, widgetId: Int): Sort {
         val all = Sort.values()
         val next = all[(sort(context, widgetId).ordinal + 1) % all.size]
-        prefs(context).edit().putInt(KEY_SORT_PREFIX + widgetId, next.ordinal).apply()
+        prefs(context).edit()
+            .putInt(KEY_SORT_PREFIX + widgetId, next.ordinal)
+            .remove(KEY_LIMIT_PREFIX + widgetId)
+            .apply()
         return next
     }
 
@@ -155,6 +175,7 @@ object FilesStore {
             .remove(KEY_PATH_PREFIX + widgetId)
             .remove(KEY_SORT_PREFIX + widgetId)
             .remove(KEY_SELECT_PREFIX + widgetId)
+            .remove(KEY_LIMIT_PREFIX + widgetId)
             .apply()
     }
 
@@ -173,7 +194,7 @@ object FilesStore {
 
     private class Item(val file: File, val isDir: Boolean, val modified: Long, val size: Long)
 
-    fun list(context: Context, path: String, sort: Sort): List<Entry> {
+    fun list(context: Context, path: String, sort: Sort, limit: Int = PAGE_SIZE): List<Entry> {
         val children = File(path).listFiles() ?: return emptyList()
         // Read each modified time and size once instead of on every comparison.
         val items = children
@@ -190,9 +211,9 @@ object FilesStore {
             // Folders have no cheap size, so they stay in name order above the files.
             Sort.LARGEST -> compareByDescending<Item> { it.size }.then(byName)
         }
-        val sorted = items
-            .sortedWith(compareByDescending<Item> { it.isDir }.then(order))
-            .take(MAX_ENTRIES)
+        val ordered = items.sortedWith(compareByDescending<Item> { it.isDir }.then(order))
+        val sorted = ordered.take(limit)
+        val remaining = ordered.size - sorted.size
 
         return sorted.map { item ->
             val file = item.file
@@ -215,6 +236,19 @@ object FilesStore {
                     ext = file.extension.take(4).uppercase()
                 )
             }
+        } + if (remaining > 0) {
+            listOf(
+                Entry(
+                    name = "Show more",
+                    path = "",
+                    isDir = false,
+                    sub = "$remaining more",
+                    ext = "",
+                    isMore = true
+                )
+            )
+        } else {
+            emptyList()
         }
     }
 

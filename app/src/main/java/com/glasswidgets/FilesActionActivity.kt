@@ -26,6 +26,13 @@ class FilesActionActivity : Activity() {
             AppWidgetManager.EXTRA_APPWIDGET_ID,
             AppWidgetManager.INVALID_APPWIDGET_ID
         )
+        if (intent.getBooleanExtra(FilesStore.EXTRA_MORE, false)) {
+            if (id != AppWidgetManager.INVALID_APPWIDGET_ID) {
+                FilesStore.showMore(this, id)
+                GlassFilesWidget.reload(this, id)
+            }
+            return
+        }
         if (id != AppWidgetManager.INVALID_APPWIDGET_ID && FilesStore.selectMode(this, id)) {
             // Select mode lasts for one tap: show the actions and switch it off again.
             FilesStore.setSelectMode(this, id, false)

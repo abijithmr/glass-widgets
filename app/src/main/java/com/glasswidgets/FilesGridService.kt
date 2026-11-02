@@ -35,7 +35,11 @@ class FilesGridService : RemoteViewsService() {
             val path = FilesStore.currentPath(context, widgetId)
             items = if (FilesStore.hasAccess(context)) {
                 try {
-                    FilesStore.list(context, path, FilesStore.sort(context, widgetId))
+                    FilesStore.list(
+                        context, path,
+                        FilesStore.sort(context, widgetId),
+                        FilesStore.limit(context, widgetId)
+                    )
                 } catch (e: Exception) {
                     emptyList()
                 }
@@ -58,7 +62,11 @@ class FilesGridService : RemoteViewsService() {
             val entry = items.getOrNull(position) ?: return views
             views.setImageViewResource(
                 R.id.item_icon,
-                if (entry.isDir) R.drawable.ic_folder_blue else R.drawable.ic_file_doc
+                when {
+                    entry.isMore -> R.drawable.ic_more
+                    entry.isDir -> R.drawable.ic_folder_blue
+                    else -> R.drawable.ic_file_doc
+                }
             )
             views.setTextViewText(R.id.item_ext, entry.ext)
             views.setViewVisibility(R.id.item_ext, if (entry.isDir) View.GONE else View.VISIBLE)
@@ -68,6 +76,7 @@ class FilesGridService : RemoteViewsService() {
                 putExtras(Bundle().apply {
                     putString(FilesStore.EXTRA_PATH, entry.path)
                     putBoolean(FilesStore.EXTRA_IS_DIR, entry.isDir)
+                    putBoolean(FilesStore.EXTRA_MORE, entry.isMore)
                 })
             }
             views.setOnClickFillInIntent(R.id.item_root, fillIn)
@@ -79,7 +88,8 @@ class FilesGridService : RemoteViewsService() {
         override fun getViewTypeCount(): Int = 1
 
         override fun getItemId(position: Int): Long =
-            items.getOrNull(position)?.path?.hashCode()?.toLong() ?: position.toLong()
+            items.getOrNull(position)?.let { (if (it.isMore) "more" else it.path).hashCode().toLong() }
+                ?: position.toLong()
 
         override fun hasStableIds(): Boolean = true
     }

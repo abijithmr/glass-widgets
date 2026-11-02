@@ -110,7 +110,7 @@ class GlassFilesWidget : AppWidgetProvider() {
         }
 
         /** Redraw the header and rail and list the folder again, once. */
-        private fun reload(context: Context, widgetId: Int) {
+        fun reload(context: Context, widgetId: Int) {
             FilesStore.markTapStart()
             val manager = AppWidgetManager.getInstance(context)
             manager.partiallyUpdateAppWidget(
