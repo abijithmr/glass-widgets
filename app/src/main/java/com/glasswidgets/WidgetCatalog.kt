@@ -166,6 +166,19 @@ object WidgetCatalog {
             preview = { GlassMusicWidget.create(it, preview = true) }
         ),
         WidgetEntry(
+            title = "Files",
+            category = Category.CONTROLS,
+            description = "Pin your own folders and open them right from the home screen. " +
+                "Needs one-time file access.",
+            sizeLabel = "4 × 4",
+            provider = GlassFilesWidget::class.java,
+            previewWidthDp = null,
+            previewHeightDp = 300,
+            preview = { GlassFilesWidget.create(it, 0, preview = true) },
+            secondaryLabel = "Choose folders",
+            onSecondary = { it.startActivity(Intent(it, FilesSetupActivity::class.java)) }
+        ),
+        WidgetEntry(
             title = "Search",
             category = Category.CONTROLS,
             description = "A glass search bar that opens your search app.",

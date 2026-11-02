@@ -94,4 +94,6 @@
     <string name="widget_control_center_description">Focus, torch, airplane mode and a music card in one panel.</string>
     <string name="a11y_torch">Torch</string>
     <string name="a11y_airplane">Airplane mode settings</string>
+    <string name="widget_glass_files">Glass Files</string>
+    <string name="widget_files_description">Your pinned folders and their contents, one tap away.</string>
 </resources>

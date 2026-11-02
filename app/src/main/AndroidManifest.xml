@@ -14,6 +14,12 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
 
+    <!-- Files widget: read folders such as Download and DCIM (Android 11+: "All files access") -->
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="29" />
+
     <!-- Lets the Music widget see whether Apple Music is installed -->
     <queries>
         <package android:name="com.apple.android.music" />
@@ -86,6 +92,58 @@
             android:exported="false"
             android:taskAffinity=""
             android:theme="@android:style/Theme.NoDisplay" />
+
+        <!-- Files widget: setup (also its configuration screen), folder picker, tap handler -->
+        <activity
+            android:name=".FilesSetupActivity"
+            android:exported="true"
+            android:label="Files widget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".FolderPickerActivity"
+            android:exported="false"
+            android:label="Pick a folder" />
+
+        <!-- Opens a folder inside the widget or a file in another app, then closes -->
+        <activity
+            android:name=".FilesActionActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.NoDisplay" />
+
+        <service
+            android:name=".FilesGridService"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <!-- Lets other apps open a file the widget hands them -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.files"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/files_paths" />
+        </provider>
+
+        <!-- Files -->
+        <receiver
+            android:name=".GlassFilesWidget"
+            android:exported="true"
+            android:label="@string/widget_glass_files">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/glass_files_info" />
+        </receiver>
 
         <!-- Analog clock -->
         <receiver
