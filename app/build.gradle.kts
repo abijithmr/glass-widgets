@@ -11,8 +11,8 @@ android {
         applicationId = "com.glasswidgets"
         minSdk = 26
         targetSdk = 32
-        versionCode = 20
-        versionName = "2.6"
+        versionCode = 21
+        versionName = "2.7"
     }
 
     // One fixed debug key so every build can update the previous one
