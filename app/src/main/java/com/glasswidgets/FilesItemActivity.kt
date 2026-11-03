@@ -68,6 +68,15 @@ class FilesItemActivity : Activity() {
         findViewById<View>(R.id.delete_confirm).setOnClickListener { confirmDelete() }
     }
 
+    // This pop-up is a single instance. If it is still open in the background when another
+    // item is chosen, the new item arrives here: start over so rename and delete can never
+    // act on the earlier item.
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        recreate()
+    }
+
     private fun showActions() {
         panelRename.visibility = View.GONE
         panelDelete.visibility = View.GONE
