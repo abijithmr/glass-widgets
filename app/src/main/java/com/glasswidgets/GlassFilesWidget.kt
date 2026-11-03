@@ -97,6 +97,9 @@ class GlassFilesWidget : AppWidgetProvider() {
         /** Below this width (dp) the rail shows icons only. */
         private const val COMPACT_BELOW_DP = 250
 
+        /** Window padding, window dots, the Recent row and the "Pinned" caption, in dp. */
+        private const val RAIL_FIXED_DP = 24 + 23 + 42 + 17
+
         private val ROW_IDS = intArrayOf(
             R.id.rail_row_0, R.id.rail_row_1, R.id.rail_row_2,
             R.id.rail_row_3, R.id.rail_row_4, R.id.rail_row_5
@@ -181,14 +184,19 @@ class GlassFilesWidget : AppWidgetProvider() {
             }
 
             val selecting = !preview && FilesStore.selectMode(context, widgetId)
+            val recent = current == FilesStore.RECENT
             views.setTextViewText(
                 R.id.files_sort_label,
                 when {
                     selecting -> "Tap a file or folder"
+                    recent -> "Newest files"
                     preview -> FilesStore.Sort.NEWEST.label
                     else -> FilesStore.sort(context, widgetId).label
                 }
             )
+            // Recent is a list of its own: it has no parent folder and is always newest first.
+            views.setViewVisibility(R.id.files_back, if (recent) View.GONE else View.VISIBLE)
+            views.setViewVisibility(R.id.files_sort, if (recent) View.GONE else View.VISIBLE)
             views.setInt(
                 R.id.files_select,
                 "setBackgroundResource",
@@ -222,7 +230,21 @@ class GlassFilesWidget : AppWidgetProvider() {
                 .filter { current == it || current.startsWith("$it/") }
                 .maxByOrNull { it.length }
             val captionVisibility = if (compact) View.GONE else View.VISIBLE
-            views.setViewVisibility(R.id.rail_caption, captionVisibility)
+            // On a short widget the "Pinned" caption goes first, so the Search and
+            // Pin folder rows at the bottom of the rail are not cut off.
+            val railRows = 2 + pins.size
+            val tight = !preview &&
+                heightDp(context, widgetId).let { it > 0 && it < RAIL_FIXED_DP + railRows * 34 }
+            views.setViewVisibility(
+                R.id.rail_caption,
+                if (compact || tight) View.GONE else View.VISIBLE
+            )
+            views.setViewVisibility(R.id.rail_recent_label, captionVisibility)
+            views.setInt(
+                R.id.rail_recent,
+                "setBackgroundResource",
+                if (recent) R.drawable.files_rail_selected else R.drawable.files_rail_press
+            )
             views.setViewVisibility(R.id.rail_manage_label, captionVisibility)
             views.setViewVisibility(R.id.rail_search_label, captionVisibility)
             for (i in ROW_IDS.indices) {
@@ -255,6 +277,17 @@ class GlassFilesWidget : AppWidgetProvider() {
             }
             if (!preview) {
                 views.setOnClickPendingIntent(
+                    R.id.rail_recent,
+                    broadcast(
+                        context,
+                        Intent(context, GlassFilesWidget::class.java)
+                            .setAction(ACTION_NAV)
+                            .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
+                            .putExtra(FilesStore.EXTRA_PATH, FilesStore.RECENT),
+                        widgetId * 16 + 13
+                    )
+                )
+                views.setOnClickPendingIntent(
                     R.id.rail_search,
                     Glass.activity(
                         context,
@@ -279,6 +312,7 @@ class GlassFilesWidget : AppWidgetProvider() {
                 when {
                     preview -> "Pinned folders open here"
                     !hasAccess -> "Tap to allow file access"
+                    recent -> "No recent files"
                     else -> "This folder is empty"
                 }
             )
@@ -315,6 +349,10 @@ class GlassFilesWidget : AppWidgetProvider() {
             }
             return views
         }
+
+        private fun heightDp(context: Context, widgetId: Int): Int =
+            AppWidgetManager.getInstance(context).getAppWidgetOptions(widgetId)
+                .getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 0)
 
         private fun isCompact(context: Context, widgetId: Int): Boolean {
             val options = AppWidgetManager.getInstance(context).getAppWidgetOptions(widgetId)

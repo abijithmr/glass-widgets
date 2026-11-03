@@ -1,12 +1,15 @@
 package com.glasswidgets
 
 import android.content.ActivityNotFoundException
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
+import android.os.Bundle
 import android.os.Environment
 import android.os.SystemClock
+import android.provider.MediaStore
 import android.text.format.Formatter
 import android.webkit.MimeTypeMap
 import android.widget.Toast
@@ -23,6 +26,13 @@ object FilesStore {
     const val EXTRA_IS_DIR = "files_is_dir"
     const val EXTRA_MORE = "files_more"
     const val MAX_PINS = 6
+
+    /** Stands in for a folder path: the newest files from anywhere, not one folder. */
+    const val RECENT = "recent:"
+
+    /** Android's index is asked for this many rows, then junk is dropped, then this many are shown. */
+    private const val RECENT_SCAN = 300
+    private const val RECENT_SHOWN = 60
 
     /** The grid shows this many entries, then a "Show more" cell adds another page. */
     private const val PAGE_SIZE = 120
@@ -111,6 +121,7 @@ object FilesStore {
 
     fun currentPath(context: Context, widgetId: Int): String {
         val saved = prefs(context).getString(KEY_PATH_PREFIX + widgetId, null)
+        if (saved == RECENT) return RECENT
         if (saved != null && File(saved).isDirectory) return saved
         return pins(context).firstOrNull() ?: root()
     }
@@ -199,14 +210,18 @@ object FilesStore {
         return if (parent.absolutePath.startsWith(root)) parent.absolutePath else root
     }
 
-    fun titleFor(path: String): String =
-        if (path == root()) "Internal storage" else File(path).name
+    fun titleFor(path: String): String = when (path) {
+        RECENT -> "Recent"
+        root() -> "Internal storage"
+        else -> File(path).name
+    }
 
     // ---- listing ----
 
     private class Item(val file: File, val isDir: Boolean, val modified: Long, val size: Long)
 
     fun list(context: Context, path: String, sort: Sort, limit: Int = PAGE_SIZE): List<Entry> {
+        if (path == RECENT) return listRecent(context)
         val children = File(path).listFiles() ?: return emptyList()
         // Read each modified time and size once instead of on every comparison.
         val items = children
@@ -280,6 +295,49 @@ object FilesStore {
         } catch (e: IllegalArgumentException) {
             Toast.makeText(context, "Can't open this file", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    /**
+     * The newest files on the phone's main storage, read from Android's own file index
+     * (nothing is scanned or stored here). App folders and hidden files are left out.
+     */
+    private fun listRecent(context: Context): List<Entry> {
+        val root = root()
+        val args = Bundle().apply {
+            putString(
+                ContentResolver.QUERY_ARG_SQL_SORT_ORDER,
+                "${MediaStore.Files.FileColumns.DATE_MODIFIED} DESC"
+            )
+            putInt(ContentResolver.QUERY_ARG_LIMIT, RECENT_SCAN)
+        }
+        val out = ArrayList<Entry>()
+        context.contentResolver.query(
+            MediaStore.Files.getContentUri("external"),
+            arrayOf(MediaStore.Files.FileColumns.DATA),
+            args,
+            null
+        )?.use { cursor ->
+            while (out.size < RECENT_SHOWN && cursor.moveToNext()) {
+                val path = cursor.getString(0) ?: continue
+                if (!path.startsWith("$root/") || path.contains("/.") || path.contains("/Android/")) {
+                    continue
+                }
+                val file = File(path)
+                // Folders, and files deleted since the index was updated, are skipped.
+                if (!file.isFile) continue
+                out.add(
+                    Entry(
+                        name = file.name,
+                        path = path,
+                        isDir = false,
+                        // Where it lives matters more than its size when browsing by date.
+                        sub = file.parentFile?.name.orEmpty(),
+                        ext = file.extension.take(4).uppercase()
+                    )
+                )
+            }
+        }
+        return out
     }
 
     // ---- timings ----

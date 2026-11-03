@@ -50,6 +50,36 @@
                     android:tint="#28C840" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/rail_recent"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/files_rail_press"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:alpha="0.85"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_recent" />
+
+                <TextView
+                    android:id="@+id/rail_recent_label"
+                    android:layout_width="64dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:text="Recent"
+                    android:textColor="#F2FFFFFF"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/rail_caption"
                 android:layout_width="wrap_content"

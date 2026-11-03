@@ -75,7 +75,10 @@ object FilesRefresh {
         val manager = AppWidgetManager.getInstance(context)
         for (id in widgetIds(context)) {
             val path = FilesStore.currentPath(context, id)
-            if (File(path).lastModified() != FilesStore.listedStamp(context, id)) {
+            // Recent is built from the file index itself, so any index change can matter to it.
+            if (path == FilesStore.RECENT ||
+                File(path).lastModified() != FilesStore.listedStamp(context, id)
+            ) {
                 manager.notifyAppWidgetViewDataChanged(id, R.id.files_grid)
             }
         }
