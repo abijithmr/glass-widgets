@@ -27,6 +27,14 @@ object SystemStats {
     private const val PREFS = "monitor_prefs"
     private const val KEY_TOTAL = "stat_total"
     private const val KEY_IDLE = "stat_idle"
+    private const val KEY_STAMP = "stat_time"
+    private const val KEY_LOAD = "stat_load"
+
+    /** A load figure covers the time between two readings; older than this it would be an average of sleep. */
+    private const val MAX_WINDOW_MS = 20_000L
+
+    /** Two readings closer than this (a tap right after a refresh) are too short to mean anything. */
+    private const val MIN_WINDOW_MS = 2_000L
 
     private fun readFirstLine(path: String): String? = try {
         File(path).bufferedReader().use { it.readLine() }
@@ -34,7 +42,8 @@ object SystemStats {
         null
     }
 
-    private fun gb(bytes: Long): String = String.format(Locale.US, "%.1f", bytes / 1073741824.0)
+    /** Decimal gigabytes, the same unit storage uses, so the two read side by side. */
+    private fun gb(bytes: Long): String = String.format(Locale.US, "%.1f", bytes / 1_000_000_000.0)
 
     // ------------------------------------------------------------------ CPU
 
@@ -50,12 +59,24 @@ object SystemStats {
         val total = nums.sum()
         val idle = nums[3] + nums[4]
         val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        val now = android.os.SystemClock.elapsedRealtime()
+        val age = now - prefs.getLong(KEY_STAMP, -1L)
         val lastTotal = prefs.getLong(KEY_TOTAL, -1L)
         val lastIdle = prefs.getLong(KEY_IDLE, -1L)
-        prefs.edit().putLong(KEY_TOTAL, total).putLong(KEY_IDLE, idle).apply()
+        if (lastTotal >= 0 && age in 0 until MIN_WINDOW_MS) {
+            // Too soon after the last reading: show that reading again and keep its window running.
+            return prefs.getInt(KEY_LOAD, -1).takeIf { it >= 0 }
+        }
+        prefs.edit().putLong(KEY_TOTAL, total).putLong(KEY_IDLE, idle).putLong(KEY_STAMP, now).apply()
         val dTotal = total - lastTotal
-        if (lastTotal < 0 || dTotal <= 0) return null
-        return (100.0 * (dTotal - (idle - lastIdle)) / dTotal).toInt().coerceIn(0, 100)
+        // The first reading after the screen was off starts a new window instead of averaging the sleep.
+        if (lastTotal < 0 || age > MAX_WINDOW_MS || dTotal <= 0) {
+            prefs.edit().remove(KEY_LOAD).apply()
+            return null
+        }
+        val load = (100.0 * (dTotal - (idle - lastIdle)) / dTotal).toInt().coerceIn(0, 100)
+        prefs.edit().putInt(KEY_LOAD, load).apply()
+        return load
     }
 
     /** Fastest core's current clock in GHz, and the matching maximum, if the kernel lets us read it. */
@@ -141,6 +162,24 @@ object SystemStats {
         }
     }
 
+    private var headroomAt = -1L
+    private var headroomValue: Float? = null
+
+    /**
+     * How close the phone is to throttling, 0 = cool, 1 = at the limit (Android 11+). Android
+     * only allows this to be asked about every few seconds, so the answer is kept for 10.
+     */
+    private fun thermalHeadroom(context: Context): Float? {
+        if (Build.VERSION.SDK_INT < 30) return null
+        val now = android.os.SystemClock.elapsedRealtime()
+        if (headroomAt >= 0 && now - headroomAt < 10_000L) return headroomValue
+        headroomAt = now
+        val pm = context.getSystemService(PowerManager::class.java) ?: return null
+        val value = pm.getThermalHeadroom(0)
+        headroomValue = value.takeIf { !it.isNaN() && it >= 0f }
+        return headroomValue
+    }
+
     class Zone(val dir: String, val type: String, val raw: String?, val celsius: Float?)
 
     /** Every kernel thermal zone, readable or not. */
@@ -150,17 +189,35 @@ object SystemStats {
         return dirs.sortedBy { it.name.removePrefix("thermal_zone").toIntOrNull() ?: 0 }.map { dir ->
             val type = readFirstLine(File(dir, "type").path)?.trim() ?: "?"
             val raw = readFirstLine(File(dir, "temp").path)?.trim()
-            val value = raw?.toFloatOrNull()
-            val celsius = value?.let { if (abs(it) >= 1000f) it / 1000f else it }
-                ?.takeIf { it in 5f..125f }
+            val celsius = raw?.toFloatOrNull()?.let { toCelsius(it) }
             Zone(dir.name, type, raw, celsius)
         }
     }
 
-    private fun isCpuLike(type: String): Boolean {
+    /** Kernels report millidegrees (most), tenths of a degree (some) or whole degrees. */
+    private fun toCelsius(raw: Float): Float? {
+        val degrees = when {
+            abs(raw) >= 1000f -> raw / 1000f
+            abs(raw) > 125f -> raw / 10f
+            else -> raw
+        }
+        return degrees.takeIf { it in 5f..125f }
+    }
+
+    /** Zones that are named after the CPU itself. */
+    private fun isCpuNamed(type: String): Boolean {
         val t = type.lowercase()
-        return t.contains("cpu") || t.contains("soc") || t.contains("tsens") ||
-            t.contains("big") || t.contains("little") || t.contains("mid") || t.contains("core")
+        return listOf("cpu", "big", "mid", "little", "cluster", "prime", "gold", "silver").any { t.contains(it) }
+    }
+
+    /** Generic chip sensors, used only when nothing is named after the CPU. */
+    private fun isChipSensor(type: String): Boolean {
+        val t = type.lowercase()
+        val other = listOf(
+            "gpu", "batt", "skin", "modem", "mdm", "cam", "wlan", "wifi", "pa-", "quiet", "xo",
+            "charger", "usb", "disp", "flash", "ufs", "emmc", "audio", "bms"
+        )
+        return (t.contains("soc") || t.contains("tsens") || t.contains("core")) && other.none { t.contains(it) }
     }
 
     const val SRC_AUTO = "auto"
@@ -186,7 +243,9 @@ object SystemStats {
             val name = source.removePrefix(ZONE_PREFIX)
             readable.firstOrNull { it.type == name }?.let { return it.celsius!! to it.type }
         }
-        val cpuZones = readable.filter { isCpuLike(it.type) }
+        // Sensors named after the CPU first; generic chip sensors only as a fallback.
+        val cpuZones = readable.filter { isCpuNamed(it.type) }
+            .ifEmpty { readable.filter { isChipSensor(it.type) } }
         if (cpuZones.isEmpty()) return null
         return if (source == SRC_AVG) {
             cpuZones.map { it.celsius!! }.average().toFloat() to "average of ${cpuZones.size} CPU sensors"
@@ -207,7 +266,13 @@ object SystemStats {
                 ((temp - 20f) / 60f * 100f).coerceIn(0f, 100f)
             )
         } else if (state != null) {
-            Cell(state, "Thermal state · no sensor access")
+            val headroom = thermalHeadroom(context)
+            if (headroom != null) {
+                val percent = (headroom * 100f).coerceIn(0f, 100f)
+                Cell(state, "${percent.toInt()}% of throttle limit", percent)
+            } else {
+                Cell(state, "Thermal state · no sensor access")
+            }
         } else {
             Cell("N/A", "Not exposed by Android")
         }
@@ -240,7 +305,13 @@ object SystemStats {
     fun battery(context: Context): Cell {
         val intent = batteryIntent(context)
         val manager = context.getSystemService(BatteryManager::class.java)
-        val level = manager?.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY) ?: -1
+        var level = manager?.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY) ?: -1
+        if (level !in 0..100) {
+            // Some phones leave the property empty; the broadcast always has the level and its scale.
+            val l = intent?.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) ?: -1
+            val scale = intent?.getIntExtra(BatteryManager.EXTRA_SCALE, -1) ?: -1
+            if (l >= 0 && scale > 0) level = (100f * l / scale).toInt()
+        }
         val charging = manager?.isCharging ?: false
         val mv = intent?.getIntExtra(BatteryManager.EXTRA_VOLTAGE, 0) ?: 0
         val raw = manager?.getLongProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW) ?: 0L
@@ -339,6 +410,8 @@ object SystemStats {
         for (z in zs) {
             line("  %-14s %-24s %s".format(z.dir, z.type, if (z.raw == null) "blocked" else z.celsius?.let { String.format(Locale.US, "%.1f°C (raw %s)", it, z.raw) } ?: "raw ${z.raw}"))
         }
+        line("  thermal status    " + (thermalState(context) ?: "n/a"))
+        line("  throttle headroom " + (thermalHeadroom(context)?.let { String.format(Locale.US, "%.2f (1.00 = limit)", it) } ?: "n/a"))
         line("")
         line("BATTERY")
         val b = batteryIntent(context)
