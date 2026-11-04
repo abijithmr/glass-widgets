@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- System monitor: Horizon (big temperature with its history behind it) -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/glass_bg"
+    android:paddingStart="18dp"
+    android:paddingTop="14dp"
+    android:paddingEnd="18dp"
+    android:paddingBottom="14dp">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+        android:includeFontPadding="false" android:letterSpacing="0.08" android:text="TEMPERATURE"
+        android:textColor="#FFFFFFFF" android:textSize="12sp" android:textStyle="bold" />
+    <TextView android:id="@+id/mz_updated" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:includeFontPadding="false" android:text="" android:textColor="#B3FFFFFF" android:textSize="10sp" />
+</LinearLayout>
+
+<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:layout_marginTop="6dp" android:gravity="bottom" android:orientation="horizontal">
+    <TextView android:id="@+id/mz_big" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:includeFontPadding="false" android:fontFamily="sans-serif-light" android:maxLines="1"
+        android:text="--" android:textColor="#FFFFFFFF" android:textSize="52sp" />
+    <TextView android:id="@+id/mz_small" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginStart="2dp" android:layout_marginBottom="7dp" android:includeFontPadding="false"
+        android:text="" android:textColor="#D9FFFFFF" android:textSize="20sp" />
+</LinearLayout>
+<TextView android:id="@+id/mz_sub" android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:layout_marginTop="2dp" android:ellipsize="end" android:includeFontPadding="false" android:maxLines="1"
+    android:text="" android:textColor="#99FFFFFF" android:textSize="11sp" />
+<ImageView android:id="@+id/mz_chart" android:layout_width="match_parent" android:layout_height="0dp"
+    android:layout_marginTop="6dp" android:layout_marginBottom="6dp" android:layout_weight="1"
+    android:importantForAccessibility="no" android:scaleType="fitXY" />
+<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+    <TextView android:id="@+id/mz_f1" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+        android:includeFontPadding="false" android:maxLines="1" android:text="" android:textColor="#FF5CC8FF"
+        android:textSize="11sp" android:textStyle="bold" />
+    <TextView android:id="@+id/mz_f2" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+        android:gravity="center" android:includeFontPadding="false" android:maxLines="1" android:text="" android:textColor="#FF6FD38B"
+        android:textSize="11sp" android:textStyle="bold" />
+    <TextView android:id="@+id/mz_f3" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+        android:gravity="end" android:includeFontPadding="false" android:maxLines="1" android:text="" android:textColor="#FFB48CFF"
+        android:textSize="11sp" android:textStyle="bold" />
+</LinearLayout>
+</LinearLayout>
+</FrameLayout>

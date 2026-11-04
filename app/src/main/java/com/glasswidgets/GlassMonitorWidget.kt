@@ -26,9 +26,13 @@ object MonitorLook {
     const val NEOFETCH = 4
     const val BENTO = 5
     const val DOTS = 6
+    const val HORIZON = 7
+    const val HEAT = 8
+    const val SEGMENTS = 9
 
     val NAMES = listOf(
-        "Gauges", "Terminal", "Thermal dashboard", "Per-core bars", "Neofetch", "Bento", "Dot matrix"
+        "Gauges", "Terminal", "Thermal dashboard", "Per-core bars", "Neofetch", "Bento", "Dot matrix",
+        "Horizon", "Heat log", "Segments"
     )
     private const val KEY = "monitor_look"
 
@@ -189,6 +193,9 @@ class GlassMonitorWidget : AppWidgetProvider() {
                 MonitorLook.NEOFETCH -> neofetch(context, cpu, cpuTemp, battTemp, batt, ram, stor, time)
                 MonitorLook.BENTO -> bento(context, cpu, cpuTemp, battTemp, batt, ram, stor, time)
                 MonitorLook.DOTS -> dots(context, cpu, cpuTemp, batt, ram, stor, time)
+                MonitorLook.HORIZON -> horizon(context, cpu, cpuTemp, batt, ram, time)
+                MonitorLook.HEAT -> heat(context, cpuTemp, batt, time)
+                MonitorLook.SEGMENTS -> segments(context, cpu, cpuTemp, batt, ram, stor, time)
                 else -> gauges(context, cpu, cpuTemp, battTemp, batt, ram, stor, time)
             }
             views.setOnClickPendingIntent(R.id.widget_root, broadcast(context, ACTION_REFRESH, 72))
@@ -399,6 +406,96 @@ class GlassMonitorWidget : AppWidgetProvider() {
                 R.id.mh_foot,
                 "${Runtime.getRuntime().availableProcessors()} CORES · ${SystemStats.socName()} · ${ram.value} · ${stor.value}".uppercase(Locale.US)
             )
+            return v
+        }
+
+        // ------------------------------------------------------------ looks I to K (original)
+
+        private fun celsius(cell: SystemStats.Cell): Float? = cell.value.removeSuffix("°C").toFloatOrNull()
+
+        private fun horizon(
+            context: Context, cpu: SystemStats.Cell, cpuTemp: SystemStats.Cell,
+            batt: SystemStats.Cell, ram: SystemStats.Cell, time: String
+        ): RemoteViews {
+            val v = RemoteViews(context.packageName, R.layout.widget_glass_monitor_horizon)
+            Glass.applyCard(context, v, R.id.widget_root)
+            v.setTextViewText(R.id.mz_updated, time)
+            val now = System.currentTimeMillis()
+            val temp = celsius(cpuTemp)
+            if (temp != null) MonitorHistory.record(context, temp, now)
+            val points = MonitorHistory.fine(context, now)
+
+            val dot = cpuTemp.value.indexOf('.')
+            if (temp != null && dot > 0) {
+                v.setTextViewTextSize(R.id.mz_big, TypedValue.COMPLEX_UNIT_SP, 52f)
+                v.setTextViewText(R.id.mz_big, cpuTemp.value.substring(0, dot))
+                v.setTextViewText(R.id.mz_small, cpuTemp.value.substring(dot))
+            } else {
+                v.setTextViewTextSize(R.id.mz_big, TypedValue.COMPLEX_UNIT_SP, 30f)
+                v.setTextViewText(R.id.mz_big, cpuTemp.value)
+                v.setTextViewText(R.id.mz_small, "")
+            }
+            val first = points.firstOrNull()
+            val trend = if (temp == null) {
+                "No temperature sensor readable"
+            } else if (first == null || now - first.first < 60_000L) {
+                "Collecting readings…"
+            } else {
+                val delta = temp - first.second
+                val mins = ((now - first.first) / 60_000L).coerceAtLeast(1)
+                when {
+                    Math.abs(delta) < 0.5f -> "steady over $mins min"
+                    delta > 0 -> String.format(Locale.US, "up %.1f° in %d min", delta, mins)
+                    else -> String.format(Locale.US, "down %.1f° in %d min", -delta, mins)
+                }
+            }
+            v.setTextViewText(R.id.mz_sub, "${cpuTemp.sub.removePrefix("Thermal: ")} · $trend")
+            v.setImageViewBitmap(R.id.mz_chart, MonitorDraw.trend(points, now, MonitorHistory.FINE_SPAN_MS, CPU_TEMP))
+            v.setTextViewText(R.id.mz_f1, "CPU ${cpu.value}")
+            v.setTextViewText(R.id.mz_f2, "BATT ${batt.value}")
+            v.setTextViewText(R.id.mz_f3, "RAM ${percent(ram)}")
+            return v
+        }
+
+        private fun heat(
+            context: Context, cpuTemp: SystemStats.Cell, batt: SystemStats.Cell, time: String
+        ): RemoteViews {
+            val v = RemoteViews(context.packageName, R.layout.widget_glass_monitor_heat)
+            Glass.applyCard(context, v, R.id.widget_root)
+            v.setTextViewText(R.id.mx_updated, time)
+            val now = System.currentTimeMillis()
+            val temp = celsius(cpuTemp)
+            if (temp != null) MonitorHistory.record(context, temp, now)
+            val cells = MonitorHistory.coarse(context, now)
+            v.setImageViewBitmap(R.id.mx_grid, MonitorDraw.heat(cells))
+            v.setTextViewText(R.id.mx_now, cpuTemp.value)
+            val peak = cells.filterNotNull().maxOrNull()
+            v.setTextViewText(R.id.mx_peak, peak?.let { String.format(Locale.US, "%.1f°C", it) } ?: "--")
+            v.setTextViewText(R.id.mx_batt, batt.value)
+            return v
+        }
+
+        private fun segments(
+            context: Context, cpu: SystemStats.Cell, cpuTemp: SystemStats.Cell,
+            batt: SystemStats.Cell, ram: SystemStats.Cell, stor: SystemStats.Cell, time: String
+        ): RemoteViews {
+            val v = RemoteViews(context.packageName, R.layout.widget_glass_monitor_segments)
+            Glass.applyCard(context, v, R.id.widget_root)
+            v.setTextViewText(R.id.ms_updated, time)
+            v.setImageViewBitmap(R.id.ms_b_cpu, MonitorDraw.blocks(CPU, cpu.fraction))
+            v.setTextViewText(
+                R.id.ms_v_cpu,
+                if (cpu.value.endsWith(" GHz")) cpu.value.removeSuffix(" GHz") + "G" else cpu.value
+            )
+            v.setImageViewBitmap(R.id.ms_b_temp, MonitorDraw.blocks(CPU_TEMP, cpuTemp.fraction))
+            v.setTextViewText(R.id.ms_v_temp, cpuTemp.value.replace("°C", "°"))
+            v.setImageViewBitmap(R.id.ms_b_bat, MonitorDraw.blocks(BATT, batt.fraction))
+            v.setTextViewText(R.id.ms_v_bat, batt.value)
+            v.setImageViewBitmap(R.id.ms_b_ram, MonitorDraw.blocks(RAM, ram.fraction))
+            v.setTextViewText(R.id.ms_v_ram, percent(ram))
+            v.setImageViewBitmap(R.id.ms_b_disk, MonitorDraw.blocks(STOR, stor.fraction))
+            v.setTextViewText(R.id.ms_v_disk, percent(stor))
+            v.setTextViewText(R.id.ms_foot, "RAM ${ram.value} · DISK ${stor.value}")
             return v
         }
     }

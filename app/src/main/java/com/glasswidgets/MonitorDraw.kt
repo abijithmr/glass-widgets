@@ -3,6 +3,7 @@ package com.glasswidgets
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.LinearGradient
+import android.graphics.Path
 import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.Shader
@@ -136,6 +137,111 @@ object MonitorDraw {
         for (i in 0 until count) {
             paint.color = if (i < on) lit else 0x29FFFFFF
             canvas.drawCircle(step * i + step / 2f, h / 2f, 6f, paint)
+        }
+        return bmp
+    }
+
+    /** Chunky rounded blocks, the first part of them lit. */
+    fun blocks(color: Int, fraction: Float?): Bitmap {
+        val w = 360
+        val h = 24
+        val count = 20
+        val gap = 4f
+        val block = (w - gap * (count - 1)) / count
+        val bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bmp)
+        val lit = if (fraction == null) 0 else Math.round(count * fraction.coerceIn(0f, 100f) / 100f)
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        for (i in 0 until count) {
+            paint.color = if (i < lit) color else TRACK
+            val left = i * (block + gap)
+            canvas.drawRoundRect(RectF(left, 0f, left + block, h.toFloat()), 5f, 5f, paint)
+        }
+        return bmp
+    }
+
+    /** A filled line chart of [points] (time in ms, value) over the window ending at [now]; the scale follows the data. */
+    fun trend(points: List<Pair<Long, Float>>, now: Long, spanMs: Long, color: Int): Bitmap {
+        val w = 400
+        val h = 130
+        val pad = 8f
+        val bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bmp)
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        paint.style = Paint.Style.STROKE
+        paint.strokeWidth = 1.5f
+        paint.color = 0x14FFFFFF
+        for (i in 1..3) canvas.drawLine(0f, h * i / 4f, w.toFloat(), h * i / 4f, paint)
+        if (points.isEmpty()) return bmp
+
+        var lo = points.minOf { it.second }
+        var hi = points.maxOf { it.second }
+        if (hi - lo < 4f) {
+            val mid = (hi + lo) / 2f
+            lo = mid - 2f
+            hi = mid + 2f
+        }
+        fun x(t: Long) = (w * (1f - (now - t).toFloat() / spanMs)).coerceIn(0f, w.toFloat())
+        fun y(v: Float) = h - pad - (h - 2 * pad) * (v - lo) / (hi - lo)
+
+        val line = Path()
+        val area = Path()
+        var prevT = 0L
+        var open = false
+        var segStartX = 0f
+        for ((t, v) in points) {
+            if (!open || t - prevT > 30_000L) {
+                if (open) {
+                    area.lineTo(x(prevT), h.toFloat()); area.lineTo(segStartX, h.toFloat()); area.close()
+                }
+                line.moveTo(x(t), y(v))
+                area.moveTo(x(t), y(v))
+                segStartX = x(t)
+                open = true
+            } else {
+                line.lineTo(x(t), y(v))
+                area.lineTo(x(t), y(v))
+            }
+            prevT = t
+        }
+        area.lineTo(x(prevT), h.toFloat()); area.lineTo(segStartX, h.toFloat()); area.close()
+
+        paint.style = Paint.Style.FILL
+        paint.shader = LinearGradient(0f, 0f, 0f, h.toFloat(), (color and 0x00FFFFFF) or 0x80000000.toInt(), color and 0x00FFFFFF, Shader.TileMode.CLAMP)
+        canvas.drawPath(area, paint)
+        paint.shader = null
+        paint.style = Paint.Style.STROKE
+        paint.strokeWidth = 4f
+        paint.strokeCap = Paint.Cap.ROUND
+        paint.strokeJoin = Paint.Join.ROUND
+        paint.color = color
+        canvas.drawPath(line, paint)
+        paint.style = Paint.Style.FILL
+        canvas.drawCircle(x(points.last().first).coerceIn(6f, w - 6f), y(points.last().second), 6f, paint)
+        return bmp
+    }
+
+    /** Heat blocks, 12 across by 3 down, oldest at the top left. Cool blue to warm orange on a fixed 28 to 48 °C scale. */
+    fun heat(cells: List<Float?>): Bitmap {
+        val cols = 12
+        val rows = 3
+        val w = 480
+        val h = 132
+        val gap = 6f
+        val cw = (w - gap * (cols - 1)) / cols
+        val ch = (h - gap * (rows - 1)) / rows
+        val bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bmp)
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        for (i in 0 until cols * rows) {
+            val v = cells.getOrNull(i)
+            paint.color = if (v == null) 0x1FFFFFFF else {
+                val t = ((v - 28f) / 20f).coerceIn(0f, 1f)
+                0xFF000000.toInt() or ((70 + (185 * t).toInt()) shl 16) or ((170 - (60 * t).toInt()) shl 8) or (230 - (170 * t).toInt())
+            }
+            val left = (i % cols) * (cw + gap)
+            val top = (i / cols) * (ch + gap)
+            canvas.drawRoundRect(RectF(left, top, left + cw, top + ch), 9f, 9f, paint)
         }
         return bmp
     }
