@@ -161,7 +161,10 @@ object MonitorDraw {
     }
 
     /** A filled line chart of [points] (time in ms, value) over the window ending at [now]; the scale follows the data. */
-    fun trend(points: List<Pair<Long, Float>>, now: Long, spanMs: Long, color: Int): Bitmap {
+    fun trend(
+        points: List<Pair<Long, Float>>, now: Long, spanMs: Long, color: Int,
+        fixedLo: Float? = null, fixedHi: Float? = null
+    ): Bitmap {
         val w = 400
         val h = 130
         val pad = 8f
@@ -176,7 +179,10 @@ object MonitorDraw {
 
         var lo = points.minOf { it.second }
         var hi = points.maxOf { it.second }
-        if (hi - lo < 4f) {
+        if (fixedLo != null && fixedHi != null) {
+            lo = fixedLo
+            hi = fixedHi
+        } else if (hi - lo < 4f) {
             val mid = (hi + lo) / 2f
             lo = mid - 2f
             hi = mid + 2f

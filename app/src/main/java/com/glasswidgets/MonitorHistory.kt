@@ -10,6 +10,7 @@ import android.content.Context
 object MonitorHistory {
     private const val KEY_FINE = "mh_fine"
     private const val KEY_COARSE = "mh_coarse"
+    private const val KEY_LOAD = "mh_load"
 
     const val FINE_SPAN_MS = 5 * 60_000L
     private const val FINE_GAP_MS = 4_000L
@@ -37,6 +38,20 @@ object MonitorHistory {
             .putString(KEY_COARSE, coarse.entries.joinToString(",") { "${it.key}:${"%.1f".format(java.util.Locale.US, it.value)}" })
             .apply()
     }
+
+    /** Adds one CPU load reading, [percent], for the Trace look. */
+    fun recordLoad(context: Context, percent: Float, now: Long = System.currentTimeMillis()) {
+        val prefs = Glass.prefs(context)
+        val list = parseFine(prefs.getString(KEY_LOAD, null)).toMutableList()
+        if (list.isEmpty() || now - list.last().first >= FINE_GAP_MS) list.add(now to percent)
+        val kept = list.filter { it.first >= now - FINE_SPAN_MS }.takeLast(FINE_MAX)
+        prefs.edit()
+            .putString(KEY_LOAD, kept.joinToString(",") { "${it.first}:${"%.1f".format(java.util.Locale.US, it.second)}" })
+            .apply()
+    }
+
+    fun fineLoad(context: Context, now: Long = System.currentTimeMillis()): List<Pair<Long, Float>> =
+        parseFine(Glass.prefs(context).getString(KEY_LOAD, null)).filter { it.first >= now - FINE_SPAN_MS }
 
     /** Readings of the last five minutes as (time in ms, °C), oldest first. */
     fun fine(context: Context, now: Long = System.currentTimeMillis()): List<Pair<Long, Float>> =

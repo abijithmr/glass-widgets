@@ -29,10 +29,11 @@ object MonitorLook {
     const val HORIZON = 7
     const val HEAT = 8
     const val SEGMENTS = 9
+    const val TRACE = 10
 
     val NAMES = listOf(
         "Gauges", "Terminal", "Thermal dashboard", "Per-core bars", "Neofetch", "Bento", "Dot matrix",
-        "Horizon", "Heat log", "Segments"
+        "Horizon", "Heat log", "Segments", "Trace"
     )
     private const val KEY = "monitor_look"
 
@@ -195,6 +196,7 @@ class GlassMonitorWidget : AppWidgetProvider() {
                 MonitorLook.DOTS -> dots(context, cpu, cpuTemp, batt, ram, stor, time)
                 MonitorLook.HORIZON -> horizon(context, cpu, cpuTemp, batt, ram, time)
                 MonitorLook.HEAT -> heat(context, cpuTemp, batt, time)
+                MonitorLook.TRACE -> trace(context, cpu, cpuTemp, batt, ram, stor, time)
                 MonitorLook.SEGMENTS -> segments(context, cpu, cpuTemp, batt, ram, stor, time)
                 else -> gauges(context, cpu, cpuTemp, battTemp, batt, ram, stor, time)
             }
@@ -496,6 +498,35 @@ class GlassMonitorWidget : AppWidgetProvider() {
             v.setImageViewBitmap(R.id.ms_b_disk, MonitorDraw.blocks(STOR, stor.fraction))
             v.setTextViewText(R.id.ms_v_disk, percent(stor))
             v.setTextViewText(R.id.ms_foot, "RAM ${ram.value} · DISK ${stor.value}")
+            return v
+        }
+
+        private fun trace(
+            context: Context, cpu: SystemStats.Cell, cpuTemp: SystemStats.Cell,
+            batt: SystemStats.Cell, ram: SystemStats.Cell, stor: SystemStats.Cell, time: String
+        ): RemoteViews {
+            val v = RemoteViews(context.packageName, R.layout.widget_glass_monitor_trace)
+            Glass.applyCard(context, v, R.id.widget_root)
+            v.setTextViewText(R.id.mr_updated, time)
+            val now = System.currentTimeMillis()
+            val temp = celsius(cpuTemp)
+            if (temp != null) MonitorHistory.record(context, temp, now)
+            val load = cpu.fraction
+            if (load != null && cpu.value.endsWith("%")) MonitorHistory.recordLoad(context, load, now)
+
+            v.setTextViewText(R.id.mr_cpu, if (cpu.value.endsWith("%")) cpu.value else "N/A")
+            v.setImageViewBitmap(
+                R.id.mr_cpu_chart,
+                MonitorDraw.trend(MonitorHistory.fineLoad(context, now), now, MonitorHistory.FINE_SPAN_MS, CPU, 0f, 100f)
+            )
+            v.setTextViewText(R.id.mr_temp, cpuTemp.value)
+            v.setImageViewBitmap(
+                R.id.mr_temp_chart,
+                MonitorDraw.trend(MonitorHistory.fine(context, now), now, MonitorHistory.FINE_SPAN_MS, CPU_TEMP)
+            )
+            v.setTextViewText(R.id.mr_batt, batt.value)
+            v.setTextViewText(R.id.mr_ram, percent(ram))
+            v.setTextViewText(R.id.mr_disk, usedOnly(stor))
             return v
         }
     }
