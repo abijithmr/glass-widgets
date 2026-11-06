@@ -10,7 +10,7 @@ import android.provider.Settings
 import android.widget.RemoteViews
 
 /**
- * Glass control tiles in the style of the iPad control centre.
+ * Glass control tiles for quick settings.
  * Wi-Fi opens the system Wi-Fi panel and Bluetooth opens our own pop-up, both over the
  * home screen. Sound, display and camera open their screens in one tap.
  */

@@ -158,7 +158,7 @@ object WidgetCatalog {
         WidgetEntry(
             title = "Music Player",
             category = Category.CONTROLS,
-            description = "Opens Apple Music (or your music app) with previous, play/pause and next buttons for whatever is playing.",
+            description = "Opens your music app with previous, play/pause and next buttons for whatever is playing.",
             sizeLabel = "4 × 2",
             provider = GlassMusicWidget::class.java,
             previewWidthDp = null,
@@ -232,7 +232,7 @@ object WidgetCatalog {
             }
         ),
         WidgetEntry(
-            title = "Control Centre",
+            title = "Quick Panel",
             category = Category.CONTROLS,
             description = "A Focus pill, torch and airplane circles, and a music card in one panel.",
             sizeLabel = "4 × 3",

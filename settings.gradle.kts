@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "GlassWidgets"
+rootProject.name = "Frostpane"
 include(":app")

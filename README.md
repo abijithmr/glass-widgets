@@ -1,4 +1,4 @@
-# Glass Widgets
+# Frostpane
 
 Glass-style home screen widgets for Android, built natively with `AppWidgetProvider` and
 `RemoteViews`. No background services, no accounts, no ads.
@@ -10,7 +10,7 @@ Glass-style home screen widgets for Android, built natively with `AppWidgetProvi
 | Clocks | Digital Clock, Mini Clock, Analog Clock, Date |
 | Weather | Weather, Weather Card (city picker, °C / °F) |
 | Calendar | Week, Month, Countdown |
-| Controls | Controls (Wi-Fi panel, Bluetooth pop-up, sound, 3-step brightness, camera), Focus, Dock, Search, Music Player, Music Card, Control Centre, Battery, System Monitor (seven looks: Gauges, Terminal, Thermal dashboard, Per-core bars, Neofetch, Bento, Dot matrix), Files (dark, your own pinned folders, a Recent view, search, needs file access) |
+| Controls | Controls (Wi-Fi panel, Bluetooth pop-up, sound, 3-step brightness, camera), Focus, Dock, Search, Music Player, Music Card, Quick Panel, Battery, System Monitor (eleven looks: Gauges, Terminal, Thermal dashboard, Per-core bars, System info, Bento, Dot matrix, Horizon, Heat log, Segments, Trace), Files (dark, your own pinned folders, a Recent view, search, needs file access) |
 
 Open the app to pick a glass style (Frosted, Smoked, Clear), a preview backdrop and the
 "today" accent colour, then add widgets straight from the library.
@@ -35,3 +35,14 @@ GitHub Actions and published as a release with the APK. Builds are signed with a
 debug key, so each one installs over the previous.
 
 Requires Android 8.0 (API 26) or newer.
+
+## Credits and licences
+
+Frostpane is released under the MIT licence (see [LICENSE](LICENSE)).
+
+* Icons: some are [Material Icons](https://github.com/google/material-design-icons) by Google, Apache-2.0.
+* Weather and city search: [Open-Meteo.com](https://open-meteo.com/), CC BY 4.0. The free API is for non-commercial use.
+* Libraries: AndroidX, Material Components, WorkManager and Kotlin, all Apache-2.0.
+* Full details in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+Not affiliated with Google, Apple or any other company mentioned here.

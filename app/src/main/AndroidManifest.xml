@@ -23,7 +23,7 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="29" />
 
-    <!-- Lets the Music widget see whether Apple Music is installed -->
+    <!-- Lets the Music widget see whether a supported music app is installed -->
     <queries>
         <package android:name="com.apple.android.music" />
     </queries>
@@ -397,7 +397,7 @@
                 android:resource="@xml/glass_monitor_info" />
         </receiver>
 
-        <!-- Music card and control centre -->
+        <!-- Music card and Quick Panel -->
         <receiver
             android:name=".GlassMusicCardWidget"
             android:exported="true"

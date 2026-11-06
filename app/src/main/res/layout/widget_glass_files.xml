@@ -19,38 +19,6 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="12dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="9dp"
-                    android:layout_height="9dp"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/files_dot"
-                    android:tint="#FF5F57" />
-
-                <ImageView
-                    android:layout_width="9dp"
-                    android:layout_height="9dp"
-                    android:layout_marginStart="6dp"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/files_dot"
-                    android:tint="#FEBC2E" />
-
-                <ImageView
-                    android:layout_width="9dp"
-                    android:layout_height="9dp"
-                    android:layout_marginStart="6dp"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/files_dot"
-                    android:tint="#28C840" />
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/rail_recent"
                 android:layout_width="wrap_content"
                 android:layout_height="34dp"
@@ -85,7 +53,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginTop="9dp"
+                android:layout_marginBottom="6dp"
                 android:includeFontPadding="false"
                 android:text="Pinned"
                 android:textColor="#80FFFFFF"
