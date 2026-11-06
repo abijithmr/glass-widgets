@@ -14,7 +14,7 @@ shapes, used as-is or recoloured: `ic_add`, `ic_airplane`, `ic_alarm`,
 `ic_bell`, `ic_bluetooth`, `ic_calendar`, `ic_chevron_left`, `ic_close`,
 `ic_globe`, `ic_headphones`, `ic_message`, `ic_moon`, `ic_music_note`,
 `ic_phone`, `ic_pin`, `ic_play`, `ic_search`, `ic_skip_next`, `ic_skip_prev`,
-`ic_sort`, `ic_wifi`.
+`ic_recent`, `ic_sort`, `ic_wifi`.
 
 The launcher icon, brightness, sun, camera, torch, pause, folder and document
 icons, the clock drawables and all glass backgrounds are original to this
