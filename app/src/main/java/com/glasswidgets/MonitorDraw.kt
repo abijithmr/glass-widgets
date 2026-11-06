@@ -124,23 +124,6 @@ object MonitorDraw {
         return bmp
     }
 
-    /** A row of round dots, the first part of them lit. */
-    fun dots(fraction: Float?, lit: Int): Bitmap {
-        val w = 360
-        val h = 22
-        val count = 24
-        val bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bmp)
-        val on = if (fraction == null) 0 else Math.round(count * fraction.coerceIn(0f, 100f) / 100f)
-        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-        val step = w / count.toFloat()
-        for (i in 0 until count) {
-            paint.color = if (i < on) lit else 0x29FFFFFF
-            canvas.drawCircle(step * i + step / 2f, h / 2f, 6f, paint)
-        }
-        return bmp
-    }
-
     /** Chunky rounded blocks, the first part of them lit. */
     fun blocks(color: Int, fraction: Float?): Bitmap {
         val w = 360

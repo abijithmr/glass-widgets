@@ -10,6 +10,10 @@ import android.content.Intent
 import android.os.Build
 import android.os.PowerManager
 import android.os.SystemClock
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
 import android.util.TypedValue
 import android.widget.RemoteViews
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -17,27 +21,39 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-/** The three System Monitor looks, picked in the app. */
+/** The System Monitor looks, picked in the app. The numbers are saved, so they never change meaning. */
 object MonitorLook {
     const val GAUGES = 0
     const val TERMINAL = 1
     const val THERMAL = 2
     const val CORES = 3
     const val NEOFETCH = 4
-    const val BENTO = 5
-    const val DOTS = 6
     const val HORIZON = 7
     const val HEAT = 8
     const val SEGMENTS = 9
     const val TRACE = 10
 
-    val NAMES = listOf(
-        "Gauges", "Terminal", "Thermal dashboard", "Per-core bars", "System info", "Bento", "Dot matrix",
-        "Horizon", "Heat log", "Segments", "Trace"
+    private class Entry(val id: Int, val name: String, val hint: String)
+
+    /** The list shown to the person, in this order. */
+    private val LOOKS = listOf(
+        Entry(GAUGES, "Gauges", "Rings for CPU, memory and storage"),
+        Entry(SEGMENTS, "Segments", "Chunky block meters for everything"),
+        Entry(TRACE, "Trace", "CPU and temperature lines, last 5 minutes"),
+        Entry(HORIZON, "Horizon", "One big temperature with its history"),
+        Entry(HEAT, "Heat log", "Temperature over the last 3 hours"),
+        Entry(THERMAL, "Thermal", "Temperatures first"),
+        Entry(CORES, "Per-core bars", "One bar for each CPU core"),
+        Entry(TERMINAL, "Terminal", "Plain text bars"),
+        Entry(NEOFETCH, "System info", "Phone, chip and uptime details")
     )
     private const val KEY = "monitor_look"
 
-    fun get(context: Context): Int = Glass.prefs(context).getInt(KEY, GAUGES).coerceIn(0, NAMES.size - 1)
+    /** The chosen look; a look that no longer exists falls back to Gauges. */
+    fun get(context: Context): Int {
+        val saved = Glass.prefs(context).getInt(KEY, GAUGES)
+        return if (LOOKS.any { it.id == saved }) saved else GAUGES
+    }
 
     fun set(context: Context, look: Int) {
         Glass.prefs(context).edit().putInt(KEY, look).apply()
@@ -47,18 +63,23 @@ object MonitorLook {
     /** Dialog that lets the person choose a look or open the sensor screen. [context] must be an activity. */
     fun pick(context: Context, onChosen: () -> Unit) {
         val current = get(context)
-        val items = NAMES.mapIndexed { i, name -> (if (i == current) "●  " else "○  ") + name } +
-            "Sensors & sources…"
+        val items = LOOKS.map { look ->
+            SpannableStringBuilder(look.name).apply {
+                val start = length
+                append("\n").append(look.hint)
+                setSpan(RelativeSizeSpan(0.82f), start, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                setSpan(ForegroundColorSpan(0x99FFFFFF.toInt()), start, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            } as CharSequence
+        }.toTypedArray()
         MaterialAlertDialogBuilder(context)
-            .setTitle("System Monitor")
-            .setItems(items.toTypedArray()) { dialog, which ->
-                if (which < NAMES.size) {
-                    set(context, which)
-                    onChosen()
-                } else {
-                    context.startActivity(android.content.Intent(context, SensorsActivity::class.java))
-                }
+            .setTitle("Choose a look")
+            .setSingleChoiceItems(items, LOOKS.indexOfFirst { it.id == current }) { dialog, which ->
+                set(context, LOOKS[which].id)
+                onChosen()
                 dialog.dismiss()
+            }
+            .setNeutralButton("Sensors") { _, _ ->
+                context.startActivity(android.content.Intent(context, SensorsActivity::class.java))
             }
             .setNegativeButton("Cancel", null)
             .show()
@@ -192,8 +213,6 @@ class GlassMonitorWidget : AppWidgetProvider() {
                 MonitorLook.THERMAL -> thermal(context, cpu, cpuTemp, battTemp, batt, ram, stor, time)
                 MonitorLook.CORES -> cores(context, cpu, cpuTemp, batt, ram, stor, time)
                 MonitorLook.NEOFETCH -> neofetch(context, cpu, cpuTemp, battTemp, batt, ram, stor, time)
-                MonitorLook.BENTO -> bento(context, cpu, cpuTemp, battTemp, batt, ram, stor, time)
-                MonitorLook.DOTS -> dots(context, cpu, cpuTemp, batt, ram, stor, time)
                 MonitorLook.HORIZON -> horizon(context, cpu, cpuTemp, batt, ram, time)
                 MonitorLook.HEAT -> heat(context, cpuTemp, batt, time)
                 MonitorLook.TRACE -> trace(context, cpu, cpuTemp, batt, ram, stor, time)
@@ -346,68 +365,6 @@ class GlassMonitorWidget : AppWidgetProvider() {
             v.setTextViewText(R.id.nf_v6, ram.value)
             v.setTextViewText(R.id.nf_v7, stor.value)
             v.setTextViewText(R.id.nf_v8, "${batt.value} · ${battTemp.value}")
-            return v
-        }
-
-        private fun bento(
-            context: Context, cpu: SystemStats.Cell, cpuTemp: SystemStats.Cell,
-            battTemp: SystemStats.Cell, batt: SystemStats.Cell, ram: SystemStats.Cell,
-            stor: SystemStats.Cell, time: String
-        ): RemoteViews {
-            val v = RemoteViews(context.packageName, R.layout.widget_glass_monitor_bento)
-            Glass.applyCard(context, v, R.id.widget_root)
-            v.setImageViewBitmap(R.id.mb_ring, MonitorDraw.ring(BATT_TEMP, cpuTemp.fraction))
-            val value = cpuTemp.value
-            val dot = value.indexOf('.')
-            if (dot > 0 && value.first().isDigit()) {
-                v.setTextViewTextSize(R.id.mb_big, TypedValue.COMPLEX_UNIT_SP, 26f)
-                v.setTextViewText(R.id.mb_big, value.substring(0, dot))
-                v.setTextViewText(R.id.mb_small, value.substring(dot))
-            } else {
-                v.setTextViewTextSize(R.id.mb_big, TypedValue.COMPLEX_UNIT_SP, 16f)
-                v.setTextViewText(R.id.mb_big, value)
-                v.setTextViewText(R.id.mb_small, "")
-            }
-            v.setTextViewText(R.id.mb_state, cpuTemp.sub.removePrefix("Thermal: "))
-            v.setTextViewText(R.id.mb_cpu_sub, "${cpu.value} · ${Runtime.getRuntime().availableProcessors()} cores")
-            v.setTextViewText(R.id.mb_mem_val, percent(ram))
-            v.setImageViewBitmap(R.id.mb_mem_bar, MonitorDraw.bar(RAM, RAM, ram.fraction))
-            v.setTextViewText(R.id.mb_mem_sub, ram.value)
-            v.setTextViewText(R.id.mb_disk_val, stor.value.substringBefore(" /"))
-            v.setTextViewText(
-                R.id.mb_disk_sub,
-                if (stor.value.contains("/ ")) "of " + stor.value.substringAfter("/ ") else ""
-            )
-            v.setTextViewText(R.id.mb_batt_val, batt.value)
-            v.setTextViewText(R.id.mb_batt_sub, battTemp.value)
-            return v
-        }
-
-        private fun dots(
-            context: Context, cpu: SystemStats.Cell, cpuTemp: SystemStats.Cell,
-            batt: SystemStats.Cell, ram: SystemStats.Cell, stor: SystemStats.Cell, time: String
-        ): RemoteViews {
-            val v = RemoteViews(context.packageName, R.layout.widget_glass_monitor_dots)
-            val white = 0xFFFFFFFF.toInt()
-            val red = 0xFFFF3B30.toInt()
-            v.setTextViewText(R.id.mh_updated, time)
-            v.setImageViewBitmap(R.id.mh_bar_cpu, MonitorDraw.dots(cpu.fraction, white))
-            v.setTextViewText(
-                R.id.mh_v_cpu,
-                if (cpu.value.endsWith(" GHz")) cpu.value.removeSuffix(" GHz") + "G" else cpu.value
-            )
-            v.setImageViewBitmap(R.id.mh_bar_temp, MonitorDraw.dots(cpuTemp.fraction, red))
-            v.setTextViewText(R.id.mh_v_temp, cpuTemp.value.replace("°C", "°"))
-            v.setImageViewBitmap(R.id.mh_bar_mem, MonitorDraw.dots(ram.fraction, white))
-            v.setTextViewText(R.id.mh_v_mem, percent(ram))
-            v.setImageViewBitmap(R.id.mh_bar_disk, MonitorDraw.dots(stor.fraction, white))
-            v.setTextViewText(R.id.mh_v_disk, percent(stor))
-            v.setImageViewBitmap(R.id.mh_bar_bat, MonitorDraw.dots(batt.fraction, white))
-            v.setTextViewText(R.id.mh_v_bat, batt.value)
-            v.setTextViewText(
-                R.id.mh_foot,
-                "${Runtime.getRuntime().availableProcessors()} CORES · ${SystemStats.socName()} · ${ram.value} · ${stor.value}".uppercase(Locale.US)
-            )
             return v
         }
 

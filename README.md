@@ -10,7 +10,7 @@ Glass-style home screen widgets for Android, built natively with `AppWidgetProvi
 | Clocks | Digital Clock, Mini Clock, Analog Clock, Date |
 | Weather | Weather, Weather Card (city picker, °C / °F) |
 | Calendar | Week, Month, Countdown |
-| Controls | Controls (Wi-Fi panel, Bluetooth pop-up, sound, 3-step brightness, camera), Focus, Dock, Search, Music Player, Music Card, Quick Panel, Battery, System Monitor (eleven looks: Gauges, Terminal, Thermal dashboard, Per-core bars, System info, Bento, Dot matrix, Horizon, Heat log, Segments, Trace), Files (dark, your own pinned folders, a Recent view, search, needs file access) |
+| Controls | Controls (Wi-Fi panel, Bluetooth pop-up, sound, 3-step brightness, camera), Focus, Dock, Search, Music Player, Music Card, Quick Panel, Battery, System Monitor (nine looks: Gauges, Segments, Trace, Horizon, Heat log, Thermal, Per-core bars, Terminal, System info), Files (dark, your own pinned folders, a Recent view, search, needs file access) |
 
 Open the app to pick a glass style (Frosted, Smoked, Clear), a preview backdrop and the
 "today" accent colour, then add widgets straight from the library.

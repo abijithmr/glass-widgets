@@ -141,7 +141,7 @@ object WidgetCatalog {
             description = "Round glass tiles that open Wi-Fi, Bluetooth, sound, display and camera.",
             sizeLabel = "2 × 3",
             provider = GlassControlsWidget::class.java,
-            previewWidthDp = 146,
+            previewWidthDp = 170,
             previewHeightDp = 220,
             preview = { GlassControlsWidget.create(it) }
         ),

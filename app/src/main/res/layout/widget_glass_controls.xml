@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="6dp">
+    android:padding="4dp">
 
     <!-- Tiles are 64dp: two round tiles, one wide pill, two round tiles -->
     <LinearLayout
