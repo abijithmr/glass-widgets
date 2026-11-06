@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "Frostpane"
+rootProject.name = "Refract"
 include(":app")

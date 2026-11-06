@@ -103,7 +103,7 @@ object MonitorDraw {
         return bmp
     }
 
-    /** The Frostpane mark: a glass tile with a glass disc in front. */
+    /** The Refract mark: a glass tile with a glass disc in front. */
     fun logo(): Bitmap {
         val bmp = Bitmap.createBitmap(120, 120, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bmp)

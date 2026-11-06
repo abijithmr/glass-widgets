@@ -1,4 +1,4 @@
-# Frostpane
+# Refract
 
 Glass-style home screen widgets for Android, built natively with `AppWidgetProvider` and
 `RemoteViews`. No background services, no accounts, no ads.
@@ -38,7 +38,7 @@ Requires Android 8.0 (API 26) or newer.
 
 ## Credits and licences
 
-Frostpane is released under the MIT licence (see [LICENSE](LICENSE)).
+Refract is released under the MIT licence (see [LICENSE](LICENSE)).
 
 * Icons: some are [Material Icons](https://github.com/google/material-design-icons) by Google, Apache-2.0.
 * Weather and city search: [Open-Meteo.com](https://open-meteo.com/), CC BY 4.0. The free API is for non-commercial use.

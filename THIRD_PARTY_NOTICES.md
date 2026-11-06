@@ -1,6 +1,6 @@
 # Third-party notices
 
-Frostpane is released under the MIT licence (see `LICENSE`). It uses the
+Refract is released under the MIT licence (see `LICENSE`). It uses the
 following third-party material.
 
 ## Icons: Material Icons (Google)
@@ -24,7 +24,7 @@ project.
 
 Weather and city search data by Open-Meteo.com, https://open-meteo.com/,
 licensed CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/).
-The free Open-Meteo API is for non-commercial use only. Using Frostpane
+The free Open-Meteo API is for non-commercial use only. Using Refract
 commercially (ads, subscriptions, paid features) needs an Open-Meteo paid plan.
 
 ## Libraries (Apache License 2.0)
@@ -41,5 +41,5 @@ No fonts are bundled. Text uses the phone's system fonts.
 ## Trademarks
 
 Android, Google Play and Material Design are trademarks of Google LLC. Apple
-Music is a trademark of Apple Inc. Frostpane is an independent project and is
+Music is a trademark of Apple Inc. Refract is an independent project and is
 not affiliated with or endorsed by any of them.

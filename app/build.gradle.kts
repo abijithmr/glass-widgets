@@ -8,7 +8,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "io.github.abijithmr.frostpane"
+        applicationId = "io.github.abijithmr.refract"
         minSdk = 26
         targetSdk = 32
         versionCode = 21

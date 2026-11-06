@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Frostpane</string>
+    <string name="app_name">Refract</string>
 
     <string name="widget_glass_analog_clock">Glass Analog Clock</string>
     <string name="widget_description">A transparent glass-style analog clock.</string>
@@ -39,7 +39,7 @@
     <string name="add_to_home">Add to home screen</string>
     <string name="choose_city">Choose city</string>
     <string name="pin_not_supported">Your launcher can\'t add widgets from here. Long-press the home screen and choose Widgets instead.</string>
-    <string name="footer_hint">You can also long-press your home screen, open Widgets, and pick Frostpane.</string>
+    <string name="footer_hint">You can also long-press your home screen, open Widgets, and pick Refract.</string>
 
     <string name="setup_title">Choose your city</string>
     <string name="setup_hint">Search for a city to show its weather.</string>
