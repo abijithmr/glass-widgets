@@ -179,6 +179,16 @@ object WidgetCatalog {
             onSecondary = { it.startActivity(Intent(it, FilesSetupActivity::class.java)) }
         ),
         WidgetEntry(
+            title = "Notes",
+            category = Category.CONTROLS,
+            description = "A checklist on your home screen. Tap a circle to tick, tap Add note to type.",
+            sizeLabel = "3 × 3",
+            provider = GlassNotesWidget::class.java,
+            previewWidthDp = 230,
+            previewHeightDp = 270,
+            preview = { GlassNotesWidget.create(it, 0, preview = true) }
+        ),
+        WidgetEntry(
             title = "Search",
             category = Category.CONTROLS,
             description = "A glass search bar that opens your search app.",
