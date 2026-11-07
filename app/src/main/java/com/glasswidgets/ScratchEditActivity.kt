@@ -3,6 +3,11 @@ package com.glasswidgets
 import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.GradientDrawable
+import android.view.ContextThemeWrapper
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -55,6 +60,7 @@ class ScratchEditActivity : Activity() {
             }
         })
         updateStatus()
+        applyLook()
 
         findViewById<View>(R.id.scratch_back).setOnClickListener { finish() }
         findViewById<View>(R.id.scratch_share).setOnClickListener { share() }
@@ -130,19 +136,86 @@ class ScratchEditActivity : Activity() {
         }
     }
 
+    /** Colours and font of the chosen mode, applied at once without reopening the page. */
+    private fun applyLook() {
+        val dark = ScratchStore.dark(this)
+        val c = ScratchStore.palette(dark)
+        window.setBackgroundDrawable(ColorDrawable(c.page))
+        window.statusBarColor = c.strip
+        window.navigationBarColor = c.page
+        window.decorView.systemUiVisibility = if (dark) 0 else
+            View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+
+        findViewById<View>(R.id.scratch_page).setBackgroundColor(c.page)
+        findViewById<View>(R.id.scratch_bar).setBackgroundColor(c.strip)
+        findViewById<View>(R.id.scratch_line_top).setBackgroundColor(c.line)
+        findViewById<View>(R.id.scratch_line_bottom).setBackgroundColor(c.line)
+        findViewById<TextView>(R.id.scratch_title).setTextColor(c.text)
+        findViewById<TextView>(R.id.scratch_more).setTextColor(c.text)
+        status.setBackgroundColor(c.strip)
+        status.setTextColor(c.sub)
+        field.setTextColor(c.text)
+        field.setHintTextColor(c.hint)
+        field.highlightColor = (c.accent and 0x00FFFFFF) or 0x55000000
+
+        for (id in intArrayOf(R.id.scratch_back, R.id.scratch_share)) {
+            val b = findViewById<TextView>(id)
+            b.setTextColor(c.text)
+            b.background = pill(c.ghostFill, c.ghostStroke)
+        }
+        val save = findViewById<TextView>(R.id.scratch_save)
+        save.setTextColor(c.onAccent)
+        save.background = pill(c.accent, c.accent)
+
+        field.typeface = ScratchStore.typeface(this, ScratchStore.font(this))
+    }
+
+    private fun pill(fill: Int, stroke: Int) = GradientDrawable().apply {
+        setColor(fill)
+        setStroke((resources.displayMetrics.density).toInt().coerceAtLeast(1), stroke)
+        cornerRadius = 17 * resources.displayMetrics.density
+    }
+
+    /** Menus and dialogs follow the chosen mode too. */
+    private fun themed() =
+        if (ScratchStore.dark(this)) ContextThemeWrapper(this, R.style.ThemeOverlay_Scratch_Dark) else this
+
     private fun showMenu(anchor: View) {
-        val menu = PopupMenu(this, anchor)
-        menu.menu.add(0, 1, 0, "New note")
+        val dark = ScratchStore.dark(this)
+        val menu = PopupMenu(themed(), anchor)
+        menu.menu.add(0, 1, 0, if (dark) "Light mode" else "Dark mode")
+        menu.menu.add(0, 2, 1, "Font…")
+        menu.menu.add(0, 3, 2, "New note")
         menu.setOnMenuItemClickListener {
-            if (it.itemId == 1) newNote()
+            when (it.itemId) {
+                1 -> {
+                    ScratchStore.setDark(this, !dark)
+                    applyLook()
+                }
+                2 -> chooseFont()
+                3 -> newNote()
+            }
             true
         }
         menu.show()
     }
 
+    private fun chooseFont() {
+        val names = ScratchStore.FONT_NAMES.toTypedArray()
+        MaterialAlertDialogBuilder(themed())
+            .setTitle("Font")
+            .setSingleChoiceItems(names, ScratchStore.font(this)) { dialog, which ->
+                ScratchStore.setFont(this, which)
+                applyLook()
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
     private fun newNote() {
         if (field.text.isBlank()) return
-        MaterialAlertDialogBuilder(this)
+        MaterialAlertDialogBuilder(themed())
             .setTitle("Clear this note?")
             .setMessage("The note will be emptied. Use Save as… first if you want to keep it.")
             .setPositiveButton("Clear") { _, _ -> field.setText("") }

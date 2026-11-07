@@ -34,9 +34,16 @@ commercially (ads, subscriptions, paid features) needs an Open-Meteo paid plan.
 * Kotlin standard library and kotlinx.coroutines (JetBrains), transitive
 * Gradle Wrapper (`gradle/wrapper/gradle-wrapper.jar`, Gradle Inc.)
 
-## Fonts
+## Fonts (Scratchpad widget)
 
-No fonts are bundled. Text uses the phone's system fonts.
+The Scratchpad widget can show your note in these free fonts, bundled unchanged in `app/src/main/res/font`.
+The other choices (Monospace, Sans) are the phone's own system fonts.
+
+* **JetBrains Mono**: Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono). SIL Open Font License 1.1, see `LICENSES/fonts/JetBrainsMono-OFL.txt`.
+* **Atkinson Hyperlegible**: Copyright 2020 Braille Institute of America, Inc. SIL Open Font License 1.1, see `LICENSES/fonts/AtkinsonHyperlegible-OFL.txt`.
+* **Lora**: Copyright 2011 The Lora Project Authors (https://github.com/cyrealtype/Lora-Cyrillic), with Reserved Font Name "Lora". SIL Open Font License 1.1, see `LICENSES/fonts/Lora-OFL.txt`.
+* **Caveat**: Copyright 2014 The Caveat Project Authors (https://github.com/googlefonts/caveat). SIL Open Font License 1.1, see `LICENSES/fonts/Caveat-OFL.txt`.
+* **Special Elite**: Copyright (c) 2010 by Brian J. Bonislawsky DBA Astigmatic (AOETI). Apache License 2.0, see `LICENSES/Apache-2.0.txt`.
 
 ## Trademarks
 

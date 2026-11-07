@@ -29,6 +29,8 @@ class MainActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@MainActivity)
             // Items are redrawn in place; the default cross-fade would flash the stage.
             itemAnimator = null
+            // Keep a few more cards ready so scrolling back does not rebind them.
+            setItemViewCacheSize(6)
             adapter = widgetAdapter
         }
     }
@@ -42,6 +44,8 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         // The count of widgets on the home screen may have changed while away.
         adapter?.refreshHeader()
+        // The Scratchpad mode or font and the System Monitor look are changed outside this screen.
+        adapter?.refreshOutsideLooks()
     }
 
     private fun pin(entry: WidgetEntry) {

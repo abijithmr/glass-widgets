@@ -1,6 +1,6 @@
 name: Build check
 
-# Builds the debug APK on every branch except main so a change can be compiled
+# Builds the release APK on every branch except main so a change can be compiled
 # without publishing a release. Pushes to main are handled by release.yml.
 on:
   push:
@@ -20,14 +20,14 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Build debug APK
+      - name: Build release APK
         run: |
           chmod +x ./gradlew
-          ./gradlew assembleDebug --no-daemon --stacktrace
+          ./gradlew assembleRelease --no-daemon --stacktrace
 
       - name: Keep the APK so it can be installed
         uses: actions/upload-artifact@v4
         with:
           name: glass-widgets-${{ github.ref_name }}-${{ github.run_number }}
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: app/build/outputs/apk/release/app-release.apk
           retention-days: 14

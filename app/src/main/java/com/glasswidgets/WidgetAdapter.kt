@@ -4,6 +4,8 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -11,11 +13,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.widget.RemoteViews
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.chip.ChipGroup
+import java.util.concurrent.Executors
 
 /**
  * The whole first screen as one list: a header (live stage, look controls, category
@@ -29,6 +33,12 @@ class WidgetAdapter(
 
     private var filter: Category? = null
     private var visible: List<WidgetEntry> = all
+
+    // Previews are built once, off the main thread, and reused while scrolling. Building them
+    // on every bind (some read sensors and storage) is what made the list stutter.
+    private val previewCache = HashMap<String, RemoteViews>()
+    private val builder = Executors.newSingleThreadExecutor()
+    private val main = Handler(Looper.getMainLooper())
 
     private class HeaderHolder(view: View) : RecyclerView.ViewHolder(view) {
         val stage: View = view.findViewById(R.id.stage)
@@ -52,6 +62,7 @@ class WidgetAdapter(
         val description: TextView = view.findViewById(R.id.widget_desc)
         val add: MaterialButton = view.findViewById(R.id.btn_add)
         val secondary: MaterialButton = view.findViewById(R.id.btn_secondary)
+        var boundTitle: String? = null
     }
 
     override fun getItemViewType(position: Int): Int = when (position) {
@@ -81,8 +92,16 @@ class WidgetAdapter(
 
     /** Redraw the header and every card after the look changed, or the home screen count did. */
     fun refreshLook() {
+        previewCache.clear()
         notifyItemChanged(0)
         notifyItemRangeChanged(1, visible.size)
+    }
+
+    /** Rebuild the previews of widgets whose look is set elsewhere in the app (Scratchpad, Monitor). */
+    fun refreshOutsideLooks() {
+        val titles = setOf("Scratchpad", "System Monitor")
+        previewCache.keys.removeAll(titles)
+        visible.forEachIndexed { i, entry -> if (entry.title in titles) notifyItemChanged(i + 1) }
     }
 
     /** Re-read how many widgets are on the home screen. */
@@ -286,11 +305,38 @@ class WidgetAdapter(
         holder.container.layoutParams =
             FrameLayout.LayoutParams(width, (entry.previewHeightDp * density).toInt(), Gravity.CENTER)
         holder.container.removeAllViews()
+        holder.boundTitle = entry.title
+
+        val cached = previewCache[entry.title]
+        if (cached != null) {
+            showPreview(holder, entry, cached)
+            return
+        }
+        val appContext = context.applicationContext
+        builder.execute {
+            val built = try {
+                entry.preview(appContext)
+            } catch (e: Exception) {
+                Log.e("GlassWidgets", "Preview failed for ${entry.title}", e)
+                null
+            }
+            main.post {
+                if (built != null) previewCache[entry.title] = built
+                // The card may have been reused for another widget while this was building.
+                if (holder.boundTitle == entry.title) showPreview(holder, entry, built)
+            }
+        }
+    }
+
+    private fun showPreview(holder: WidgetHolder, entry: WidgetEntry, views: RemoteViews?) {
+        val context = holder.itemView.context
+        holder.container.removeAllViews()
         try {
             // The application context has no AppCompat view factory; an activity does, and it
             // swaps TextView for AppCompatTextView, which RemoteViews can't restyle at run time.
             val appContext = context.applicationContext
-            holder.container.addView(entry.preview(appContext).apply(appContext, holder.container))
+            if (views == null) throw IllegalStateException("Preview could not be built")
+            holder.container.addView(views.apply(appContext, holder.container))
         } catch (e: Exception) {
             Log.e("GlassWidgets", "Preview failed for ${entry.title}", e)
             val cause = generateSequence<Throwable>(e) { it.cause }.last()

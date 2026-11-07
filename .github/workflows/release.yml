@@ -1,6 +1,6 @@
 name: Build APK and release
 
-# Every push to main builds a debug APK and attaches it to a new GitHub release.
+# Every push to main builds a release APK and attaches it to a new GitHub release.
 on:
   push:
     branches: [main]
@@ -22,10 +22,10 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Build debug APK
+      - name: Build release APK
         run: |
           chmod +x ./gradlew
-          ./gradlew assembleDebug --no-daemon --stacktrace
+          ./gradlew assembleRelease --no-daemon --stacktrace
 
       - name: Publish release
         env:
@@ -35,7 +35,7 @@ jobs:
           SHORT_SHA=$(git rev-parse --short HEAD)
           TAG="build-${RUN_NUMBER}"
           APK="refract-${TAG}.apk"
-          cp app/build/outputs/apk/debug/app-debug.apk "$APK"
+          cp app/build/outputs/apk/release/app-release.apk "$APK"
           git log -1 --pretty=%B > notes.md
           gh release create "$TAG" "$APK" \
             --target "$GITHUB_SHA" \

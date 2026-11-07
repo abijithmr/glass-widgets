@@ -192,4 +192,9 @@
         <item name="android:statusBarColor">#FFF4F6F9</item>
         <item name="android:navigationBarColor">#FFFFFFFF</item>
     </style>
+
+    <!-- Dark menus and dialogs for the Scratchpad editor in dark mode -->
+    <style name="ThemeOverlay.Scratch.Dark" parent="ThemeOverlay.Material3.Dark">
+        <item name="colorPrimary">#FF3FD0C6</item>
+    </style>
 </resources>

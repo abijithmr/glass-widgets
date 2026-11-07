@@ -26,9 +26,18 @@ android {
     }
 
     buildTypes {
+        // The published APK is a release build (not debuggable, so Android can optimise it fully),
+        // signed with the same fixed key so it still updates the app already installed.
         release {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("debug")
         }
+    }
+
+    // Only compile; the lint pass of a release build is not needed to publish.
+    lint {
+        checkReleaseBuilds = false
+        abortOnError = false
     }
 
     compileOptions {

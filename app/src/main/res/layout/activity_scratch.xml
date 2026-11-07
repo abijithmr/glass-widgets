@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scratch_page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFFFF"
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/scratch_bar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="#FFF4F6F9"
@@ -27,6 +29,7 @@
             android:textSize="13sp" />
 
         <TextView
+            android:id="@+id/scratch_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -74,6 +77,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/scratch_line_top"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#FFE1E6EE" />
@@ -97,6 +101,7 @@
         android:textSize="15sp" />
 
     <View
+        android:id="@+id/scratch_line_bottom"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#FFE1E6EE" />
