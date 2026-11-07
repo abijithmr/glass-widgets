@@ -179,14 +179,14 @@ object WidgetCatalog {
             onSecondary = { it.startActivity(Intent(it, FilesSetupActivity::class.java)) }
         ),
         WidgetEntry(
-            title = "Notes",
+            title = "Scratchpad",
             category = Category.CONTROLS,
-            description = "A checklist on your home screen. Tap a circle to tick, tap Add note to type.",
+            description = "A plain white text pad. Write a note, then save it as a .txt file.",
             sizeLabel = "3 × 3",
-            provider = GlassNotesWidget::class.java,
-            previewWidthDp = 230,
-            previewHeightDp = 270,
-            preview = { GlassNotesWidget.create(it, 0, preview = true) }
+            provider = GlassScratchWidget::class.java,
+            previewWidthDp = 240,
+            previewHeightDp = 250,
+            preview = { GlassScratchWidget.create(it, 0, preview = true) }
         ),
         WidgetEntry(
             title = "Search",

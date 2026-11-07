@@ -184,4 +184,12 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
+
+    <!-- The white Scratchpad editor page -->
+    <style name="Theme.Scratch" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">#FF0F9D94</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:statusBarColor">#FFF4F6F9</item>
+        <item name="android:navigationBarColor">#FFFFFFFF</item>
+    </style>
 </resources>

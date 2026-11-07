@@ -96,7 +96,7 @@
     <string name="a11y_torch">Torch</string>
     <string name="a11y_airplane">Airplane mode settings</string>
     <string name="widget_glass_files">Glass Files</string>
-    <string name="widget_glass_notes">Glass Notes</string>
-    <string name="widget_notes_description">A checklist on your home screen. Tap a circle to tick, tap Add note to type.</string>
+    <string name="widget_glass_scratch">Glass Scratchpad</string>
+    <string name="widget_scratch_description">A plain white text pad. Write a note, then save it as a .txt file.</string>
     <string name="widget_files_description">Your pinned folders and their contents, one tap away.</string>
 </resources>
