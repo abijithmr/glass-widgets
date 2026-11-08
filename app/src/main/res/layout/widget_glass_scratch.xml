@@ -180,7 +180,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:includeFontPadding="false"
-            android:text="Plain text"
+            android:text="Plain text · UTF-8"
             android:textColor="#FF7A849A"
             android:textSize="12sp" />
 

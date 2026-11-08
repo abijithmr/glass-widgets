@@ -85,7 +85,7 @@ class ScratchEditActivity : Activity() {
         val before = text.subSequence(0, pos)
         val line = before.count { it == '\n' } + 1
         val col = pos - before.lastIndexOf('\n')
-        status.text = "Ln $line, Col $col · ${text.length} characters · saved"
+        status.text = "Ln $line, Col $col · ${text.length} characters · UTF-8 · saved"
     }
 
     private fun share() {
