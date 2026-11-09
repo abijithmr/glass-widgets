@@ -83,7 +83,7 @@ object MonitorDraw {
         val barH = h - 30f
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)
         val label = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            color = 0xBFFFFFFF.toInt()
+            color = 0xD9FFFFFF.toInt()
             textSize = 15f
             textAlign = Paint.Align.CENTER
         }

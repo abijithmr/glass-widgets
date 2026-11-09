@@ -45,7 +45,11 @@
                     android:maxLines="1"
                     android:text="Recent"
                     android:textColor="#F2FFFFFF"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
             </LinearLayout>
 
             <TextView
@@ -57,8 +61,12 @@
                 android:layout_marginBottom="6dp"
                 android:includeFontPadding="false"
                 android:text="Pinned"
-                android:textColor="#80FFFFFF"
-                android:textSize="11sp" />
+                android:textColor="#CCFFFFFF"
+                android:textSize="11sp"
+                android:shadowColor="#66000000"
+                android:shadowDx="0"
+                android:shadowDy="1"
+                android:shadowRadius="3" />
 
             <LinearLayout
                 android:id="@+id/rail_row_0"
@@ -86,7 +94,11 @@
                     android:includeFontPadding="false"
                     android:maxLines="1"
                     android:textColor="#F2FFFFFF"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
             </LinearLayout>
 
             <LinearLayout
@@ -115,7 +127,11 @@
                     android:includeFontPadding="false"
                     android:maxLines="1"
                     android:textColor="#F2FFFFFF"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
             </LinearLayout>
 
             <LinearLayout
@@ -144,7 +160,11 @@
                     android:includeFontPadding="false"
                     android:maxLines="1"
                     android:textColor="#F2FFFFFF"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
             </LinearLayout>
 
             <LinearLayout
@@ -173,7 +193,11 @@
                     android:includeFontPadding="false"
                     android:maxLines="1"
                     android:textColor="#F2FFFFFF"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
             </LinearLayout>
 
             <LinearLayout
@@ -202,7 +226,11 @@
                     android:includeFontPadding="false"
                     android:maxLines="1"
                     android:textColor="#F2FFFFFF"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
             </LinearLayout>
 
             <LinearLayout
@@ -231,7 +259,11 @@
                     android:includeFontPadding="false"
                     android:maxLines="1"
                     android:textColor="#F2FFFFFF"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
             </LinearLayout>
 
             <LinearLayout
@@ -259,8 +291,12 @@
                     android:includeFontPadding="false"
                     android:maxLines="1"
                     android:text="Search"
-                    android:textColor="#99FFFFFF"
-                    android:textSize="13sp" />
+                    android:textColor="#CCFFFFFF"
+                    android:textSize="13sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
             </LinearLayout>
 
             <LinearLayout
@@ -288,8 +324,12 @@
                     android:includeFontPadding="false"
                     android:maxLines="1"
                     android:text="Pin folder"
-                    android:textColor="#99FFFFFF"
-                    android:textSize="13sp" />
+                    android:textColor="#CCFFFFFF"
+                    android:textSize="13sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
             </LinearLayout>
         </LinearLayout>
 
@@ -338,7 +378,11 @@
                         android:includeFontPadding="false"
                         android:maxLines="1"
                         android:textColor="#FFFFFFFF"
-                        android:textSize="17sp" />
+                        android:textSize="17sp"
+                        android:shadowColor="#66000000"
+                        android:shadowDx="0"
+                        android:shadowDy="1"
+                        android:shadowRadius="3" />
 
                     <TextView
                         android:id="@+id/files_sort_label"
@@ -348,8 +392,12 @@
                         android:ellipsize="end"
                         android:includeFontPadding="false"
                         android:maxLines="1"
-                        android:textColor="#80FFFFFF"
-                        android:textSize="11sp" />
+                        android:textColor="#CCFFFFFF"
+                        android:textSize="11sp"
+                        android:shadowColor="#66000000"
+                        android:shadowDx="0"
+                        android:shadowDy="1"
+                        android:shadowRadius="3" />
                 </LinearLayout>
 
                 <ImageView
@@ -399,8 +447,12 @@
                     android:gravity="center"
                     android:padding="12dp"
                     android:text="Pinned folders open here"
-                    android:textColor="#99FFFFFF"
-                    android:textSize="14sp" />
+                    android:textColor="#CCFFFFFF"
+                    android:textSize="14sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
             </FrameLayout>
         </LinearLayout>
     </LinearLayout>

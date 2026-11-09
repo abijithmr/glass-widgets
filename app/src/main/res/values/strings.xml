@@ -99,4 +99,15 @@
     <string name="widget_glass_scratch">Glass Scratchpad</string>
     <string name="widget_scratch_description">A plain white text pad. Write a note, then save it as a .txt file.</string>
     <string name="widget_files_description">Your pinned folders and their contents, one tap away.</string>
+    <string name="a11y_alarm">Alarm clock</string>
+    <string name="a11y_focus_mode">Focus mode</string>
+    <string name="a11y_focus_on">Focus mode, on</string>
+    <string name="a11y_focus_off">Focus mode, off</string>
+    <string name="a11y_torch_on">Torch, on</string>
+    <string name="a11y_torch_off">Torch, off</string>
+    <string name="a11y_music_pause">Pause</string>
+    <string name="a11y_music_play_only">Play</string>
+    <string name="label_sensors">Sensors</string>
+    <string name="label_files_widget">Files widget</string>
+    <string name="label_pick_folder">Pick a folder</string>
 </resources>

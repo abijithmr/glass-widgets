@@ -58,6 +58,10 @@ class GlassControlCenterWidget : AppWidgetProvider() {
 
             // Torch
             val torchOn = !preview && TorchReceiver.isOn(context)
+            views.setContentDescription(
+                R.id.cc_torch,
+                context.getString(if (torchOn) R.string.a11y_torch_on else R.string.a11y_torch_off)
+            )
             if (torchOn) {
                 views.setInt(R.id.cc_torch, "setBackgroundResource", R.drawable.glass_circle_on)
                 views.setInt(R.id.cc_torch_icon, "setColorFilter", Glass.TODAY_TEXT)

@@ -28,7 +28,7 @@
                     android:fontFamily="monospace"
                     android:text="glass@phone:~$ monitor"
                     android:textColor="#8CD9A0"
-                    android:textSize="10sp" />
+                    android:textSize="11sp" />
 
                 <TextView
                 android:id="@+id/mt_updated"
@@ -37,8 +37,12 @@
                     android:includeFontPadding="false"
                     android:fontFamily="monospace"
                     android:text=""
-                    android:textColor="#8CFFFFFF"
-                    android:textSize="10sp" />
+                    android:textColor="#CCFFFFFF"
+                    android:textSize="11sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
         </LinearLayout>
 
         <FrameLayout
@@ -294,8 +298,12 @@
                     android:fontFamily="monospace"
                     android:maxLines="1"
                     android:text=""
-                    android:textColor="#99FFFFFF"
-                    android:textSize="9.5sp" />
+                    android:textColor="#CCFFFFFF"
+                    android:textSize="11sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
                 <TextView
                 android:id="@+id/mt_f2"
                     android:layout_width="match_parent"
@@ -306,8 +314,12 @@
                     android:fontFamily="monospace"
                     android:maxLines="1"
                     android:text=""
-                    android:textColor="#99FFFFFF"
-                    android:textSize="9.5sp" />
+                    android:textColor="#CCFFFFFF"
+                    android:textSize="11sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
                 <TextView
                 android:id="@+id/mt_f3"
                     android:layout_width="match_parent"
@@ -318,7 +330,11 @@
                     android:fontFamily="monospace"
                     android:maxLines="1"
                     android:text=""
-                    android:textColor="#99FFFFFF"
-                    android:textSize="9.5sp" />
+                    android:textColor="#CCFFFFFF"
+                    android:textSize="11sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
     </LinearLayout>
 </FrameLayout>

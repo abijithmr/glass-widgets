@@ -61,7 +61,11 @@
                 android:includeFontPadding="false"
                 android:text="Sound"
                 android:textColor="#FFFFFFFF"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:shadowColor="#66000000"
+                android:shadowDx="0"
+                android:shadowDy="1"
+                android:shadowRadius="3" />
 
         </LinearLayout>
 

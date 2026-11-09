@@ -26,7 +26,11 @@
                 android:includeFontPadding="false"
                 android:maxLines="1"
                 android:textColor="#FFFFFFFF"
-                android:textSize="36sp" />
+                android:textSize="36sp"
+                android:shadowColor="#66000000"
+                android:shadowDx="0"
+                android:shadowDy="1"
+                android:shadowRadius="3" />
 
             <TextView
                 android:id="@+id/cal_date"
@@ -35,7 +39,11 @@
                 android:fontFamily="sans-serif-light"
                 android:includeFontPadding="false"
                 android:textColor="#FFFFFFFF"
-                android:textSize="36sp" />
+                android:textSize="36sp"
+                android:shadowColor="#66000000"
+                android:shadowDx="0"
+                android:shadowDy="1"
+                android:shadowRadius="3" />
 
         </LinearLayout>
 
@@ -50,64 +58,120 @@
             <LinearLayout style="@style/GlassWeekColumn">
                 <TextView
                     android:id="@+id/wk_l_0"
-                    style="@style/GlassWeekLetter" />
+                    style="@style/GlassWeekLetter"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
                 <TextView
                     android:id="@+id/wk_d_0"
-                    style="@style/GlassWeekDate" />
+                    style="@style/GlassWeekDate"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
             </LinearLayout>
 
             <LinearLayout style="@style/GlassWeekColumn">
                 <TextView
                     android:id="@+id/wk_l_1"
-                    style="@style/GlassWeekLetter" />
+                    style="@style/GlassWeekLetter"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
                 <TextView
                     android:id="@+id/wk_d_1"
-                    style="@style/GlassWeekDate" />
+                    style="@style/GlassWeekDate"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
             </LinearLayout>
 
             <LinearLayout style="@style/GlassWeekColumn">
                 <TextView
                     android:id="@+id/wk_l_2"
-                    style="@style/GlassWeekLetter" />
+                    style="@style/GlassWeekLetter"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
                 <TextView
                     android:id="@+id/wk_d_2"
-                    style="@style/GlassWeekDate" />
+                    style="@style/GlassWeekDate"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
             </LinearLayout>
 
             <LinearLayout style="@style/GlassWeekColumn">
                 <TextView
                     android:id="@+id/wk_l_3"
-                    style="@style/GlassWeekLetter" />
+                    style="@style/GlassWeekLetter"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
                 <TextView
                     android:id="@+id/wk_d_3"
-                    style="@style/GlassWeekDate" />
+                    style="@style/GlassWeekDate"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
             </LinearLayout>
 
             <LinearLayout style="@style/GlassWeekColumn">
                 <TextView
                     android:id="@+id/wk_l_4"
-                    style="@style/GlassWeekLetter" />
+                    style="@style/GlassWeekLetter"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
                 <TextView
                     android:id="@+id/wk_d_4"
-                    style="@style/GlassWeekDate" />
+                    style="@style/GlassWeekDate"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
             </LinearLayout>
 
             <LinearLayout style="@style/GlassWeekColumn">
                 <TextView
                     android:id="@+id/wk_l_5"
-                    style="@style/GlassWeekLetter" />
+                    style="@style/GlassWeekLetter"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
                 <TextView
                     android:id="@+id/wk_d_5"
-                    style="@style/GlassWeekDate" />
+                    style="@style/GlassWeekDate"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
             </LinearLayout>
 
             <LinearLayout style="@style/GlassWeekColumn">
                 <TextView
                     android:id="@+id/wk_l_6"
-                    style="@style/GlassWeekLetter" />
+                    style="@style/GlassWeekLetter"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
                 <TextView
                     android:id="@+id/wk_d_6"
-                    style="@style/GlassWeekDate" />
+                    style="@style/GlassWeekDate"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
             </LinearLayout>
 
         </LinearLayout>
@@ -126,7 +190,11 @@
             <TextView
                 android:id="@+id/btn_open_calendar"
                 style="@style/GlassChip"
-                android:text="Open calendar" />
+                android:text="Open calendar"
+                android:shadowColor="#66000000"
+                android:shadowDx="0"
+                android:shadowDy="1"
+                android:shadowRadius="3" />
 
             <FrameLayout
                 android:layout_width="0dp"
@@ -136,7 +204,11 @@
             <TextView
                 android:id="@+id/btn_new_event"
                 style="@style/GlassChip"
-                android:text="+ New event" />
+                android:text="+ New event"
+                android:shadowColor="#66000000"
+                android:shadowDx="0"
+                android:shadowDy="1"
+                android:shadowRadius="3" />
 
         </LinearLayout>
 

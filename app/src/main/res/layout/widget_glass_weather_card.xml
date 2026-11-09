@@ -21,6 +21,7 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
+                android:importantForAccessibility="no"
                 android:src="@drawable/ic_pin" />
 
             <TextView
@@ -34,11 +35,19 @@
                 android:includeFontPadding="false"
                 android:maxLines="1"
                 android:textColor="#FFFFFFFF"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:shadowColor="#66000000"
+                android:shadowDx="0"
+                android:shadowDy="1"
+                android:shadowRadius="3" />
 
             <TextView
                 android:id="@+id/card_unit"
-                style="@style/GlassChip" />
+                style="@style/GlassChip"
+                android:shadowColor="#66000000"
+                android:shadowDx="0"
+                android:shadowDy="1"
+                android:shadowRadius="3" />
 
         </LinearLayout>
 
@@ -58,7 +67,11 @@
                 android:includeFontPadding="false"
                 android:text="--°C"
                 android:textColor="#FFFFFFFF"
-                android:textSize="56sp" />
+                android:textSize="56sp"
+                android:shadowColor="#66000000"
+                android:shadowDx="0"
+                android:shadowDy="1"
+                android:shadowRadius="3" />
 
             <TextView
                 android:id="@+id/card_condition"
@@ -67,7 +80,11 @@
                 android:layout_marginTop="2dp"
                 android:includeFontPadding="false"
                 android:textColor="#E6FFFFFF"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:shadowColor="#66000000"
+                android:shadowDx="0"
+                android:shadowDy="1"
+                android:shadowRadius="3" />
 
         </LinearLayout>
 
@@ -85,10 +102,18 @@
                 android:orientation="vertical">
                 <TextView
                     style="@style/GlassStatLabel"
-                    android:text="Humidity" />
+                    android:text="Humidity"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
                 <TextView
                     android:id="@+id/card_humidity"
-                    style="@style/GlassStatValue" />
+                    style="@style/GlassStatValue"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
             </LinearLayout>
 
             <LinearLayout
@@ -98,10 +123,18 @@
                 android:orientation="vertical">
                 <TextView
                     style="@style/GlassStatLabel"
-                    android:text="Wind" />
+                    android:text="Wind"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
                 <TextView
                     android:id="@+id/card_wind"
-                    style="@style/GlassStatValue" />
+                    style="@style/GlassStatValue"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
             </LinearLayout>
 
             <LinearLayout
@@ -111,10 +144,18 @@
                 android:orientation="vertical">
                 <TextView
                     style="@style/GlassStatLabel"
-                    android:text="Feels like" />
+                    android:text="Feels like"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
                 <TextView
                     android:id="@+id/card_feels"
-                    style="@style/GlassStatValue" />
+                    style="@style/GlassStatValue"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
             </LinearLayout>
 
         </LinearLayout>

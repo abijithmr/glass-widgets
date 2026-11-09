@@ -27,6 +27,10 @@
         <item name="android:textSize">11sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:letterSpacing">0.04</item>
+        <item name="android:shadowColor">#66000000</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">3</item>
     </style>
 
     <!-- Small rounded label ("Feels like" chips, calendar buttons) -->
@@ -42,6 +46,10 @@
         <item name="android:textColor">#FFFFFFFF</item>
         <item name="android:textSize">12sp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#66000000</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">3</item>
     </style>
 
     <!-- Weekly calendar column: letter over date -->
@@ -59,6 +67,10 @@
         <item name="android:includeFontPadding">false</item>
         <item name="android:textColor">#99FFFFFF</item>
         <item name="android:textSize">12sp</item>
+        <item name="android:shadowColor">#66000000</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">3</item>
     </style>
 
     <style name="GlassWeekDate">
@@ -70,6 +82,10 @@
         <item name="android:includeFontPadding">false</item>
         <item name="android:textColor">#E6FFFFFF</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:shadowColor">#66000000</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">3</item>
     </style>
 
     <!-- Monthly calendar -->
@@ -82,6 +98,10 @@
         <item name="android:textColor">#99FFFFFF</item>
         <item name="android:textSize">11sp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#66000000</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">3</item>
     </style>
 
     <style name="GlassMonthCell">
@@ -94,6 +114,10 @@
         <item name="android:maxLines">1</item>
         <item name="android:textColor">#E6FFFFFF</item>
         <item name="android:textSize">12sp</item>
+        <item name="android:shadowColor">#66000000</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">3</item>
     </style>
 
     <!-- Round control tile -->
@@ -117,6 +141,10 @@
         <item name="android:includeFontPadding">false</item>
         <item name="android:textColor">#B3FFFFFF</item>
         <item name="android:textSize">12sp</item>
+        <item name="android:shadowColor">#66000000</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">3</item>
     </style>
 
     <style name="GlassStatValue">
@@ -128,12 +156,16 @@
         <item name="android:maxLines">1</item>
         <item name="android:textColor">#FFFFFFFF</item>
         <item name="android:textSize">14sp</item>
+        <item name="android:shadowColor">#66000000</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">3</item>
     </style>
 
     <!-- Focus panel -->
     <style name="GlassFocusCircle">
-        <item name="android:layout_width">40dp</item>
-        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_width">44dp</item>
+        <item name="android:layout_height">44dp</item>
         <item name="android:gravity">center</item>
         <item name="android:orientation">horizontal</item>
     </style>
@@ -154,6 +186,10 @@
         <item name="android:maxLines">1</item>
         <item name="android:textColor">#F2FFFFFF</item>
         <item name="android:textSize">15sp</item>
+        <item name="android:shadowColor">#66000000</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">3</item>
     </style>
 
     <!-- Dock -->

@@ -46,8 +46,12 @@
                     android:fontFamily="monospace"
                     android:gravity="center"
                     android:text=""
-                    android:textColor="#8CFFFFFF"
-                    android:textSize="9.5sp" />
+                    android:textColor="#CCFFFFFF"
+                    android:textSize="11sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
 
                 <TextView
                     android:id="@+id/nf_time"
@@ -57,8 +61,12 @@
                     android:layout_marginTop="3dp"
                     android:fontFamily="monospace"
                     android:text=""
-                    android:textColor="#8CFFFFFF"
-                    android:textSize="9.5sp" />
+                    android:textColor="#CCFFFFFF"
+                    android:textSize="11sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
         </LinearLayout>
 
         <LinearLayout
@@ -82,7 +90,7 @@
                     android:fontFamily="monospace"
                     android:text="OS"
                     android:textColor="#8FDAFF"
-                    android:textSize="10.5sp"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -96,7 +104,7 @@
                     android:maxLines="1"
                     android:text=""
                     android:textColor="#E8EEF5"
-                    android:textSize="10.5sp" />
+                    android:textSize="11sp" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -112,7 +120,7 @@
                     android:fontFamily="monospace"
                     android:text="Device"
                     android:textColor="#8FDAFF"
-                    android:textSize="10.5sp"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -126,7 +134,7 @@
                     android:maxLines="1"
                     android:text=""
                     android:textColor="#E8EEF5"
-                    android:textSize="10.5sp" />
+                    android:textSize="11sp" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -142,7 +150,7 @@
                     android:fontFamily="monospace"
                     android:text="SoC"
                     android:textColor="#8FDAFF"
-                    android:textSize="10.5sp"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -156,7 +164,7 @@
                     android:maxLines="1"
                     android:text=""
                     android:textColor="#E8EEF5"
-                    android:textSize="10.5sp" />
+                    android:textSize="11sp" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -172,7 +180,7 @@
                     android:fontFamily="monospace"
                     android:text="CPU"
                     android:textColor="#8FDAFF"
-                    android:textSize="10.5sp"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -186,7 +194,7 @@
                     android:maxLines="1"
                     android:text=""
                     android:textColor="#E8EEF5"
-                    android:textSize="10.5sp" />
+                    android:textSize="11sp" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -202,7 +210,7 @@
                     android:fontFamily="monospace"
                     android:text="Temp"
                     android:textColor="#FF8A5B"
-                    android:textSize="10.5sp"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -216,7 +224,7 @@
                     android:maxLines="1"
                     android:text=""
                     android:textColor="#E8EEF5"
-                    android:textSize="10.5sp" />
+                    android:textSize="11sp" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -232,7 +240,7 @@
                     android:fontFamily="monospace"
                     android:text="Memory"
                     android:textColor="#B48CFF"
-                    android:textSize="10.5sp"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -246,7 +254,7 @@
                     android:maxLines="1"
                     android:text=""
                     android:textColor="#E8EEF5"
-                    android:textSize="10.5sp" />
+                    android:textSize="11sp" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -262,7 +270,7 @@
                     android:fontFamily="monospace"
                     android:text="Disk"
                     android:textColor="#4DD0C8"
-                    android:textSize="10.5sp"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -276,7 +284,7 @@
                     android:maxLines="1"
                     android:text=""
                     android:textColor="#E8EEF5"
-                    android:textSize="10.5sp" />
+                    android:textSize="11sp" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -292,7 +300,7 @@
                     android:fontFamily="monospace"
                     android:text="Battery"
                     android:textColor="#6FD38B"
-                    android:textSize="10.5sp"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -306,7 +314,7 @@
                     android:maxLines="1"
                     android:text=""
                     android:textColor="#E8EEF5"
-                    android:textSize="10.5sp" />
+                    android:textSize="11sp" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"

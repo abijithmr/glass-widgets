@@ -23,7 +23,11 @@
             android:maxLines="1"
             android:text="Birthday"
             android:textColor="#E6FFFFFF"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:shadowColor="#66000000"
+            android:shadowDx="0"
+            android:shadowDy="1"
+            android:shadowRadius="3" />
 
         <TextView
             android:id="@+id/countdown_days"
@@ -37,7 +41,11 @@
             android:includeFontPadding="false"
             android:maxLines="1"
             android:text="18"
-            android:textColor="#FFFFFFFF" />
+            android:textColor="#FFFFFFFF"
+            android:shadowColor="#66000000"
+            android:shadowDx="0"
+            android:shadowDy="1"
+            android:shadowRadius="3" />
 
         <TextView
             android:id="@+id/countdown_unit"
@@ -48,7 +56,11 @@
             android:maxLines="1"
             android:text="days left"
             android:textColor="#CCFFFFFF"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:shadowColor="#66000000"
+            android:shadowDx="0"
+            android:shadowDy="1"
+            android:shadowRadius="3" />
 
         <TextView
             android:id="@+id/countdown_date"
@@ -59,8 +71,12 @@
             android:includeFontPadding="false"
             android:maxLines="1"
             android:text="18 Nov 2026"
-            android:textColor="#99FFFFFF"
-            android:textSize="12sp" />
+            android:textColor="#CCFFFFFF"
+            android:textSize="12sp"
+            android:shadowColor="#66000000"
+            android:shadowDx="0"
+            android:shadowDy="1"
+            android:shadowRadius="3" />
 
     </LinearLayout>
 

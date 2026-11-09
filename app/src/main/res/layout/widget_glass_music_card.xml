@@ -36,6 +36,7 @@
                         android:layout_width="26dp"
                         android:layout_height="26dp"
                         android:scaleType="fitCenter"
+                        android:importantForAccessibility="no"
                         android:src="@drawable/ic_music_note" />
                 </LinearLayout>
 
@@ -65,7 +66,11 @@
                     android:maxLines="1"
                     android:text="Music"
                     android:textColor="#FFFFFFFF"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
 
                 <TextView
                     android:id="@+id/mc_sub"
@@ -75,8 +80,12 @@
                     android:ellipsize="end"
                     android:includeFontPadding="false"
                     android:maxLines="1"
-                    android:textColor="#B3FFFFFF"
-                    android:textSize="12sp" />
+                    android:textColor="#D9FFFFFF"
+                    android:textSize="12sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
             </LinearLayout>
 
         </LinearLayout>
@@ -98,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
                 android:textColor="#CCFFFFFF"
-                android:textSize="10sp" />
+                android:textSize="11sp" />
 
             <ProgressBar
                 android:id="@+id/mc_bar"
@@ -118,7 +127,7 @@
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
                 android:textColor="#CCFFFFFF"
-                android:textSize="10sp" />
+                android:textSize="11sp" />
         </LinearLayout>
 
         <LinearLayout

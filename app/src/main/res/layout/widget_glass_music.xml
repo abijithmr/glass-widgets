@@ -37,6 +37,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:scaleType="fitCenter"
+                        android:importantForAccessibility="no"
                         android:src="@drawable/ic_music_note" />
                 </LinearLayout>
 
@@ -66,7 +67,11 @@
                     android:maxLines="1"
                     android:text="Music"
                     android:textColor="#FFFFFFFF"
-                    android:textSize="17sp" />
+                    android:textSize="17sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
 
                 <TextView
                     android:id="@+id/music_sub"
@@ -77,8 +82,12 @@
                     android:includeFontPadding="false"
                     android:maxLines="1"
                     android:text="Tap to open"
-                    android:textColor="#B3FFFFFF"
-                    android:textSize="12sp" />
+                    android:textColor="#D9FFFFFF"
+                    android:textSize="12sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
             </LinearLayout>
         </LinearLayout>
 

@@ -30,7 +30,7 @@ object Glass {
     val TODAY_TEXT: Int = 0xFF14202A.toInt()
 
     /** Text colour for ordinary labels on glass. */
-    val OTHER_TEXT: Int = 0xB3FFFFFF.toInt()
+    val OTHER_TEXT: Int = 0xD9FFFFFF.toInt()
 
     /** Text colour for days outside the current month. */
     val DIM_TEXT: Int = 0x4DFFFFFF

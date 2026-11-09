@@ -66,6 +66,10 @@ class GlassFocusWidget : AppWidgetProvider() {
             listOf(R.id.focus_alarm, R.id.focus_bell, R.id.focus_airplane).forEach {
                 Glass.applyTile(context, views, it)
             }
+            views.setContentDescription(
+                R.id.focus_moon,
+                context.getString(if (active) R.string.a11y_focus_on else R.string.a11y_focus_off)
+            )
             if (active) {
                 views.setInt(R.id.focus_moon, "setBackgroundResource", R.drawable.glass_circle_on)
                 views.setInt(R.id.focus_moon_icon, "setColorFilter", Glass.TODAY_TEXT)

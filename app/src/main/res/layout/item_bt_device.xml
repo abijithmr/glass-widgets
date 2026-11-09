@@ -36,7 +36,7 @@
             android:id="@+id/dev_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#B3FFFFFF"
+            android:textColor="#D9FFFFFF"
             android:textSize="12sp" />
     </LinearLayout>
 </LinearLayout>

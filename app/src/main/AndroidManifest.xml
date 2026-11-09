@@ -69,7 +69,7 @@
         <activity
             android:name=".SensorsActivity"
             android:exported="false"
-            android:label="Sensors" />
+            android:label="@string/label_sensors" />
 
         <!-- Bluetooth pop-up opened from the Controls widget -->
         <activity
@@ -100,7 +100,7 @@
         <activity
             android:name=".FilesSetupActivity"
             android:exported="true"
-            android:label="Files widget">
+            android:label="@string/label_files_widget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -109,7 +109,7 @@
         <activity
             android:name=".FolderPickerActivity"
             android:exported="false"
-            android:label="Pick a folder" />
+            android:label="@string/label_pick_folder" />
 
         <!-- Search pop-up opened from the Files widget -->
         <activity

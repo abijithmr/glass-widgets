@@ -28,7 +28,11 @@
                     android:text="SYSTEM MONITOR"
                     android:textColor="#FFFFFFFF"
                     android:textSize="11sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
 
                 <TextView
                 android:id="@+id/md_updated"
@@ -36,8 +40,12 @@
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
                     android:text=""
-                    android:textColor="#B3FFFFFF"
-                    android:textSize="10sp" />
+                    android:textColor="#D9FFFFFF"
+                    android:textSize="11sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
         </LinearLayout>
 
         <LinearLayout
@@ -61,7 +69,7 @@
                     android:letterSpacing="0.1"
                     android:text="CPU"
                     android:textColor="#FFB08F"
-                    android:textSize="9sp"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -78,7 +86,11 @@
                     android:fontFamily="sans-serif-light"
                     android:text="--"
                     android:textColor="#FFFFFFFF"
-                    android:textSize="40sp" />
+                    android:textSize="40sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
 
                 <TextView
                 android:id="@+id/md_cpu_small"
@@ -89,7 +101,11 @@
                     android:fontFamily="sans-serif"
                     android:text=""
                     android:textColor="#CCFFFFFF"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
                 </LinearLayout>
                 <ImageView
                     android:id="@+id/md_cpu_bar"
@@ -109,7 +125,11 @@
                     android:maxLines="1"
                     android:text=""
                     android:textColor="#CCFFFFFF"
-                    android:textSize="10sp" />
+                    android:textSize="11sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
@@ -126,7 +146,7 @@
                     android:letterSpacing="0.1"
                     android:text="BATTERY"
                     android:textColor="#FFDB8F"
-                    android:textSize="9sp"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -143,7 +163,11 @@
                     android:fontFamily="sans-serif-light"
                     android:text="--"
                     android:textColor="#FFFFFFFF"
-                    android:textSize="40sp" />
+                    android:textSize="40sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
 
                 <TextView
                 android:id="@+id/md_bt_small"
@@ -154,7 +178,11 @@
                     android:fontFamily="sans-serif"
                     android:text=""
                     android:textColor="#CCFFFFFF"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
                 </LinearLayout>
                 <ImageView
                     android:id="@+id/md_bt_bar"
@@ -174,7 +202,11 @@
                     android:maxLines="1"
                     android:text=""
                     android:textColor="#CCFFFFFF"
-                    android:textSize="10sp" />
+                    android:textSize="11sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
             </LinearLayout>
         </LinearLayout>
 
@@ -199,7 +231,7 @@
                     android:letterSpacing="0.08"
                     android:text="MEMORY"
                     android:textColor="#CDB3FF"
-                    android:textSize="9sp"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
             <ImageView
                 android:id="@+id/md_ram_bar"
@@ -220,7 +252,11 @@
                     android:maxLines="1"
                     android:text="--"
                     android:textColor="#E6FFFFFF"
-                    android:textSize="10sp" />
+                    android:textSize="11sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -238,7 +274,7 @@
                     android:letterSpacing="0.08"
                     android:text="STORAGE"
                     android:textColor="#8FE8E2"
-                    android:textSize="9sp"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
             <ImageView
                 android:id="@+id/md_stor_bar"
@@ -259,7 +295,11 @@
                     android:maxLines="1"
                     android:text="--"
                     android:textColor="#E6FFFFFF"
-                    android:textSize="10sp" />
+                    android:textSize="11sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -277,7 +317,7 @@
                     android:letterSpacing="0.08"
                     android:text="CHARGE"
                     android:textColor="#A3E8B5"
-                    android:textSize="9sp"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
             <ImageView
                 android:id="@+id/md_chg_bar"
@@ -298,7 +338,11 @@
                     android:maxLines="1"
                     android:text="--"
                     android:textColor="#E6FFFFFF"
-                    android:textSize="10sp" />
+                    android:textSize="11sp"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="3" />
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

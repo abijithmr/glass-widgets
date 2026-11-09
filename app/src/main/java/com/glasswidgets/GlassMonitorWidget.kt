@@ -68,7 +68,7 @@ object MonitorLook {
                 val start = length
                 append("\n").append(look.hint)
                 setSpan(RelativeSizeSpan(0.82f), start, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                setSpan(ForegroundColorSpan(0x99FFFFFF.toInt()), start, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                setSpan(ForegroundColorSpan(0xCCFFFFFF.toInt()), start, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             } as CharSequence
         }.toTypedArray()
         MaterialAlertDialogBuilder(context)

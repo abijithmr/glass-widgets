@@ -6,13 +6,24 @@
 -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!--
+      Dark base so white text stays readable on light wallpapers
+      (about 5:1 for main text on a light grey wallpaper).
+    -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#AD0B0F14" />
+            <corners android:radius="32dp" />
+        </shape>
+    </item>
+
     <!-- Body: see-through white tint, a bit stronger at the top-left -->
     <item>
         <shape android:shape="rectangle">
             <gradient
                 android:angle="315"
                 android:endColor="#14FFFFFF"
-                android:startColor="#38FFFFFF"
+                android:startColor="#20FFFFFF"
                 android:type="linear" />
             <corners android:radius="32dp" />
         </shape>
@@ -24,7 +35,7 @@
             <gradient
                 android:angle="270"
                 android:endColor="#00FFFFFF"
-                android:startColor="#26FFFFFF"
+                android:startColor="#10FFFFFF"
                 android:type="linear" />
             <corners
                 android:topLeftRadius="32dp"

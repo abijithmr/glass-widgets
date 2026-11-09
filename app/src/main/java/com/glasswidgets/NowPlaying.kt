@@ -170,6 +170,12 @@ object NowPlaying {
         views.setImageViewResource(
             ids.playIcon, if (info?.playing == true) R.drawable.ic_pause else R.drawable.ic_play
         )
+        if (access) {
+            views.setContentDescription(
+                ids.play,
+                context.getString(if (info?.playing == true) R.string.a11y_music_pause else R.string.a11y_music_play_only)
+            )
+        }
 
         if (ids.bar != 0) {
             val position = if (preview) 42_000L else info?.positionMs ?: 0L
