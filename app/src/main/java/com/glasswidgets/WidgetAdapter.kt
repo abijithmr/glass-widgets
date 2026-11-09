@@ -338,10 +338,11 @@ class WidgetAdapter(
             if (views == null) throw IllegalStateException("Preview could not be built")
             holder.container.addView(views.apply(appContext, holder.container))
         } catch (e: Exception) {
+            // Details go to the log only. Never put exception text on screen: it can
+            // include the package name and internal file names.
             Log.e("GlassWidgets", "Preview failed for ${entry.title}", e)
-            val cause = generateSequence<Throwable>(e) { it.cause }.last()
             holder.container.addView(TextView(context).apply {
-                text = "Preview unavailable\n${cause.javaClass.simpleName}: ${cause.message}"
+                text = context.getString(R.string.preview_unavailable)
                 setTextColor(0xFFFFFFFF.toInt())
                 textSize = 12f
             })

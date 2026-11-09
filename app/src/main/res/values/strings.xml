@@ -110,4 +110,5 @@
     <string name="label_sensors">Sensors</string>
     <string name="label_files_widget">Files widget</string>
     <string name="label_pick_folder">Pick a folder</string>
+    <string name="preview_unavailable">Preview unavailable</string>
 </resources>
