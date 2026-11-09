@@ -29,6 +29,7 @@ class GlassWeatherCardWidget : AppWidgetProvider() {
             WeatherRepository.toggleUnit(context)
             Glass.refresh(context, GlassWeatherCardWidget::class.java)
             Glass.refresh(context, GlassWeatherWidget::class.java)
+            Glass.refresh(context, GlassForecastWidget::class.java)
         }
     }
 

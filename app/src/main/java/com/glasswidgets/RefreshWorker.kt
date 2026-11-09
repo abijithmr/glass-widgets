@@ -23,6 +23,7 @@ class RefreshWorker(context: Context, params: WorkerParameters) : Worker(context
         }
         Glass.refresh(context, GlassWeatherWidget::class.java)
         Glass.refresh(context, GlassWeatherCardWidget::class.java)
+        Glass.refresh(context, GlassForecastWidget::class.java)
         Glass.refresh(context, GlassBatteryWidget::class.java)
         return if (ok) Result.success() else Result.retry()
     }
@@ -53,6 +54,7 @@ class RefreshWorker(context: Context, params: WorkerParameters) : Worker(context
         fun cancelIfUnused(context: Context) {
             val inUse = Glass.hasInstances(context, GlassWeatherWidget::class.java) ||
                 Glass.hasInstances(context, GlassWeatherCardWidget::class.java) ||
+                Glass.hasInstances(context, GlassForecastWidget::class.java) ||
                 Glass.hasInstances(context, GlassBatteryWidget::class.java)
             if (!inUse) {
                 WorkManager.getInstance(context).cancelUniqueWork(PERIODIC)

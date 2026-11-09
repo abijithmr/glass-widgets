@@ -271,6 +271,22 @@
                 android:resource="@xml/glass_calendar_month_info" />
         </receiver>
 
+        <!-- Calendar with Week / Month switch -->
+        <receiver
+            android:name=".GlassCalendarSwitchWidget"
+            android:exported="true"
+            android:label="@string/widget_glass_calendar_switch">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/glass_calendar_switch_info" />
+        </receiver>
+
         <!-- Control tiles -->
         <receiver
             android:name=".GlassControlsWidget"
@@ -350,6 +366,19 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/glass_weather_card_info" />
+        </receiver>
+
+        <!-- Forecast panel -->
+        <receiver
+            android:name=".GlassForecastWidget"
+            android:exported="true"
+            android:label="@string/widget_glass_forecast">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/glass_forecast_info" />
         </receiver>
 
         <!-- Focus (Do Not Disturb) -->

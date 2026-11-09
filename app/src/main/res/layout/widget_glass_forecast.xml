@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/glass_bg"
+    android:padding="14dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- City, radar link, unit switch -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_pin" />
+
+            <TextView
+                android:id="@+id/fc_city"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-medium"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:textColor="#FFFFFFFF"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/fc_radar"
+                style="@style/GlassChip"
+                android:layout_marginEnd="6dp"
+                android:text="Radar" />
+
+            <TextView
+                android:id="@+id/fc_unit"
+                style="@style/GlassChip" />
+
+        </LinearLayout>
+
+        <!-- Temperature on the left, condition and high / low on the right -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fc_temp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:includeFontPadding="false"
+                android:text="--"
+                android:textColor="#FFFFFFFF"
+                android:textSize="52sp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/fc_cond"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/fc_hilo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:textColor="#B3FFFFFF"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Next hours, every 3 hours -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/monitor_tile"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:weightSum="6">
+            <LinearLayout style="@style/GlassFcColumn">
+                <TextView
+                    android:id="@+id/fc_h_t_0"
+                    style="@style/GlassFcLabel" />
+                <TextView
+                    android:id="@+id/fc_h_i_0"
+                    style="@style/GlassFcIcon" />
+                <TextView
+                    android:id="@+id/fc_h_v_0"
+                    style="@style/GlassFcValue" />
+            </LinearLayout>
+            <LinearLayout style="@style/GlassFcColumn">
+                <TextView
+                    android:id="@+id/fc_h_t_1"
+                    style="@style/GlassFcLabel" />
+                <TextView
+                    android:id="@+id/fc_h_i_1"
+                    style="@style/GlassFcIcon" />
+                <TextView
+                    android:id="@+id/fc_h_v_1"
+                    style="@style/GlassFcValue" />
+            </LinearLayout>
+            <LinearLayout style="@style/GlassFcColumn">
+                <TextView
+                    android:id="@+id/fc_h_t_2"
+                    style="@style/GlassFcLabel" />
+                <TextView
+                    android:id="@+id/fc_h_i_2"
+                    style="@style/GlassFcIcon" />
+                <TextView
+                    android:id="@+id/fc_h_v_2"
+                    style="@style/GlassFcValue" />
+            </LinearLayout>
+            <LinearLayout style="@style/GlassFcColumn">
+                <TextView
+                    android:id="@+id/fc_h_t_3"
+                    style="@style/GlassFcLabel" />
+                <TextView
+                    android:id="@+id/fc_h_i_3"
+                    style="@style/GlassFcIcon" />
+                <TextView
+                    android:id="@+id/fc_h_v_3"
+                    style="@style/GlassFcValue" />
+            </LinearLayout>
+            <LinearLayout style="@style/GlassFcColumn">
+                <TextView
+                    android:id="@+id/fc_h_t_4"
+                    style="@style/GlassFcLabel" />
+                <TextView
+                    android:id="@+id/fc_h_i_4"
+                    style="@style/GlassFcIcon" />
+                <TextView
+                    android:id="@+id/fc_h_v_4"
+                    style="@style/GlassFcValue" />
+            </LinearLayout>
+            <LinearLayout style="@style/GlassFcColumn">
+                <TextView
+                    android:id="@+id/fc_h_t_5"
+                    style="@style/GlassFcLabel" />
+                <TextView
+                    android:id="@+id/fc_h_i_5"
+                    style="@style/GlassFcIcon" />
+                <TextView
+                    android:id="@+id/fc_h_v_5"
+                    style="@style/GlassFcValue" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Next 5 days -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/monitor_tile"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:weightSum="5">
+            <LinearLayout style="@style/GlassFcColumn">
+                <TextView
+                    android:id="@+id/fc_d_n_0"
+                    style="@style/GlassFcLabel" />
+                <TextView
+                    android:id="@+id/fc_d_i_0"
+                    style="@style/GlassFcIcon" />
+                <TextView
+                    android:id="@+id/fc_d_h_0"
+                    style="@style/GlassFcValue" />
+                <TextView
+                    android:id="@+id/fc_d_l_0"
+                    style="@style/GlassFcLow" />
+            </LinearLayout>
+            <LinearLayout style="@style/GlassFcColumn">
+                <TextView
+                    android:id="@+id/fc_d_n_1"
+                    style="@style/GlassFcLabel" />
+                <TextView
+                    android:id="@+id/fc_d_i_1"
+                    style="@style/GlassFcIcon" />
+                <TextView
+                    android:id="@+id/fc_d_h_1"
+                    style="@style/GlassFcValue" />
+                <TextView
+                    android:id="@+id/fc_d_l_1"
+                    style="@style/GlassFcLow" />
+            </LinearLayout>
+            <LinearLayout style="@style/GlassFcColumn">
+                <TextView
+                    android:id="@+id/fc_d_n_2"
+                    style="@style/GlassFcLabel" />
+                <TextView
+                    android:id="@+id/fc_d_i_2"
+                    style="@style/GlassFcIcon" />
+                <TextView
+                    android:id="@+id/fc_d_h_2"
+                    style="@style/GlassFcValue" />
+                <TextView
+                    android:id="@+id/fc_d_l_2"
+                    style="@style/GlassFcLow" />
+            </LinearLayout>
+            <LinearLayout style="@style/GlassFcColumn">
+                <TextView
+                    android:id="@+id/fc_d_n_3"
+                    style="@style/GlassFcLabel" />
+                <TextView
+                    android:id="@+id/fc_d_i_3"
+                    style="@style/GlassFcIcon" />
+                <TextView
+                    android:id="@+id/fc_d_h_3"
+                    style="@style/GlassFcValue" />
+                <TextView
+                    android:id="@+id/fc_d_l_3"
+                    style="@style/GlassFcLow" />
+            </LinearLayout>
+            <LinearLayout style="@style/GlassFcColumn">
+                <TextView
+                    android:id="@+id/fc_d_n_4"
+                    style="@style/GlassFcLabel" />
+                <TextView
+                    android:id="@+id/fc_d_i_4"
+                    style="@style/GlassFcIcon" />
+                <TextView
+                    android:id="@+id/fc_d_h_4"
+                    style="@style/GlassFcValue" />
+                <TextView
+                    android:id="@+id/fc_d_l_4"
+                    style="@style/GlassFcLow" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- UV, humidity, wind -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:orientation="horizontal"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:weightSum="3">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.2"
+                android:orientation="vertical">
+                <TextView
+                    style="@style/GlassStatLabel"
+                    android:text="UV index" />
+                <TextView
+                    android:id="@+id/fc_uv"
+                    style="@style/GlassStatValue" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.9"
+                android:orientation="vertical">
+                <TextView
+                    style="@style/GlassStatLabel"
+                    android:text="Humidity" />
+                <TextView
+                    android:id="@+id/fc_hum"
+                    style="@style/GlassStatValue" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.9"
+                android:orientation="vertical">
+                <TextView
+                    style="@style/GlassStatLabel"
+                    android:text="Wind" />
+                <TextView
+                    android:id="@+id/fc_wind"
+                    style="@style/GlassStatValue" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

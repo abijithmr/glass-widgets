@@ -27,6 +27,15 @@ object WeatherRepository {
         val windKmh: Int
     )
 
+    /** One hour of the forecast. [hour] is the local hour of day, 0 to 23. */
+    data class Hour(val hour: Int, val temp: Int, val code: Int)
+
+    /** One day of the forecast. [date] is "yyyy-MM-dd" in the city's own time zone. */
+    data class Day(val date: String, val hi: Int, val lo: Int, val code: Int)
+
+    /** Hours starting now (every 3 hours), the next 5 days and today's top UV index. */
+    data class Forecast(val hours: List<Hour>, val days: List<Day>, val uv: Int?)
+
     fun useFahrenheit(context: Context): Boolean =
         Glass.prefs(context).getBoolean("w_fahrenheit", false)
 
@@ -75,6 +84,9 @@ object WeatherRepository {
             .putString("w_lat", place.lat.toString())
             .putString("w_lon", place.lon.toString())
             .remove("w_temp") // old city's numbers no longer apply
+            .remove("w_days")
+            .remove("w_hours")
+            .remove("w_uv")
             .apply()
     }
 
@@ -91,6 +103,26 @@ object WeatherRepository {
             p.getInt("w_hum", 0),
             p.getInt("w_wind", 0)
         )
+    }
+
+    /** The cached forecast, or null until the first download has finished. */
+    fun forecast(context: Context): Forecast? {
+        val p = Glass.prefs(context)
+        val hoursRaw = p.getString("w_hours", null) ?: return null
+        val daysRaw = p.getString("w_days", null) ?: return null
+        return try {
+            val hours = hoursRaw.split(';').filter { it.isNotBlank() }.map {
+                val f = it.split('|')
+                Hour(f[0].toInt(), f[1].toInt(), f[2].toInt())
+            }
+            val days = daysRaw.split(';').filter { it.isNotBlank() }.map {
+                val f = it.split('|')
+                Day(f[0], f[1].toInt(), f[2].toInt(), f[3].toInt())
+            }
+            Forecast(hours, days, if (p.contains("w_uv")) p.getInt("w_uv", 0) else null)
+        } catch (e: Exception) {
+            null
+        }
     }
 
     /** Blocking. Call from a background thread. */
@@ -124,12 +156,15 @@ object WeatherRepository {
                 "?latitude=${place.lat}&longitude=${place.lon}" +
                 "&current=temperature_2m,apparent_temperature,weather_code," +
                 "relative_humidity_2m,wind_speed_10m" +
-                "&daily=temperature_2m_max,temperature_2m_min" +
-                "&forecast_days=1&timezone=auto"
+                "&hourly=temperature_2m,weather_code" +
+                "&daily=temperature_2m_max,temperature_2m_min,weather_code,uv_index_max" +
+                "&forecast_days=5&timezone=auto"
             val json = JSONObject(httpGet(url))
             val current = json.getJSONObject("current")
             val daily = json.getJSONObject("daily")
-            Glass.prefs(context).edit()
+            val edit = Glass.prefs(context).edit()
+            putForecast(edit, current.getString("time"), json.getJSONObject("hourly"), daily)
+            edit
                 .putInt("w_temp", current.getDouble("temperature_2m").roundToInt())
                 .putInt("w_feels", current.getDouble("apparent_temperature").roundToInt())
                 .putInt("w_code", current.getInt("weather_code"))
@@ -142,6 +177,48 @@ object WeatherRepository {
         } catch (e: Exception) {
             false
         }
+    }
+
+    /** Packs the hourly and daily arrays into the cache. Throws if the data is incomplete. */
+    private fun putForecast(
+        edit: android.content.SharedPreferences.Editor,
+        nowIso: String,
+        hourly: JSONObject,
+        daily: JSONObject
+    ) {
+        val times = hourly.getJSONArray("time")
+        val temps = hourly.getJSONArray("temperature_2m")
+        val codes = hourly.getJSONArray("weather_code")
+        // "2026-11-08T14:15" -> the hour that contains now.
+        val nowHour = nowIso.take(13)
+        var start = 0
+        for (i in 0 until times.length()) {
+            if (times.getString(i).startsWith(nowHour)) { start = i; break }
+        }
+        val hours = ArrayList<String>()
+        var i = start
+        while (i < times.length() && hours.size < 6) {
+            val hour = times.getString(i).substring(11, 13).toInt()
+            hours.add("$hour|${temps.getDouble(i).roundToInt()}|${codes.getInt(i)}")
+            i += 3
+        }
+
+        val dates = daily.getJSONArray("time")
+        val his = daily.getJSONArray("temperature_2m_max")
+        val los = daily.getJSONArray("temperature_2m_min")
+        val dcodes = daily.getJSONArray("weather_code")
+        val days = ArrayList<String>()
+        for (d in 0 until minOf(5, dates.length())) {
+            days.add(
+                "${dates.getString(d)}|${his.getDouble(d).roundToInt()}|" +
+                    "${los.getDouble(d).roundToInt()}|${dcodes.getInt(d)}"
+            )
+        }
+        edit.putString("w_hours", hours.joinToString(";"))
+        edit.putString("w_days", days.joinToString(";"))
+        val uv = daily.optJSONArray("uv_index_max")
+        if (uv != null && !uv.isNull(0)) edit.putInt("w_uv", uv.getDouble(0).roundToInt())
+        else edit.remove("w_uv")
     }
 
     /** A simple symbol for a WMO weather code. */

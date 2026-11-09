@@ -17,6 +17,10 @@
     <string name="widget_glass_battery">Glass Battery</string>
     <string name="widget_battery_description">Battery level and charging state.</string>
 
+    <string name="widget_glass_forecast">Glass Forecast</string>
+    <string name="widget_forecast_description">Current weather, the next hours, 5 days ahead, and UV, humidity and wind.</string>
+    <string name="widget_glass_calendar_switch">Glass Calendar</string>
+    <string name="widget_calendar_switch_description">Switch between week and month. Buttons add a reminder or an event.</string>
     <string name="widget_glass_weather_card">Glass Weather Card</string>
     <string name="widget_weather_card_description">City, temperature, humidity, wind and feels-like, with a °C / °F switch.</string>
     <string name="widget_glass_focus">Glass Focus</string>

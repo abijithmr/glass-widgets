@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/glass_bg"
+    android:padding="14dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Month on the left, day of month (week view) or year (month view) on the right -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/cs_month"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-light"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:textColor="#FFFFFFFF"
+                android:textSize="34sp" />
+
+            <TextView
+                android:id="@+id/cs_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:includeFontPadding="false"
+                android:textColor="#FFFFFFFF"
+                android:textSize="34sp" />
+
+        </LinearLayout>
+
+        <!-- Week / Month switch -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/glass_chip"
+            android:orientation="horizontal"
+            android:padding="2dp">
+
+            <TextView
+                android:id="@+id/cs_mode_week"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:minWidth="64dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:text="Week"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/cs_mode_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:minWidth="64dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:text="Month"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <!-- Body: one of the two views is shown -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/cs_week_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="7">
+            <LinearLayout style="@style/GlassWeekColumn">
+                <TextView
+                    android:id="@+id/cs_wl_0"
+                    style="@style/GlassWeekLetter" />
+                <TextView
+                    android:id="@+id/cs_wd_0"
+                    style="@style/GlassWeekDate" />
+            </LinearLayout>
+            <LinearLayout style="@style/GlassWeekColumn">
+                <TextView
+                    android:id="@+id/cs_wl_1"
+                    style="@style/GlassWeekLetter" />
+                <TextView
+                    android:id="@+id/cs_wd_1"
+                    style="@style/GlassWeekDate" />
+            </LinearLayout>
+            <LinearLayout style="@style/GlassWeekColumn">
+                <TextView
+                    android:id="@+id/cs_wl_2"
+                    style="@style/GlassWeekLetter" />
+                <TextView
+                    android:id="@+id/cs_wd_2"
+                    style="@style/GlassWeekDate" />
+            </LinearLayout>
+            <LinearLayout style="@style/GlassWeekColumn">
+                <TextView
+                    android:id="@+id/cs_wl_3"
+                    style="@style/GlassWeekLetter" />
+                <TextView
+                    android:id="@+id/cs_wd_3"
+                    style="@style/GlassWeekDate" />
+            </LinearLayout>
+            <LinearLayout style="@style/GlassWeekColumn">
+                <TextView
+                    android:id="@+id/cs_wl_4"
+                    style="@style/GlassWeekLetter" />
+                <TextView
+                    android:id="@+id/cs_wd_4"
+                    style="@style/GlassWeekDate" />
+            </LinearLayout>
+            <LinearLayout style="@style/GlassWeekColumn">
+                <TextView
+                    android:id="@+id/cs_wl_5"
+                    style="@style/GlassWeekLetter" />
+                <TextView
+                    android:id="@+id/cs_wd_5"
+                    style="@style/GlassWeekDate" />
+            </LinearLayout>
+            <LinearLayout style="@style/GlassWeekColumn">
+                <TextView
+                    android:id="@+id/cs_wl_6"
+                    style="@style/GlassWeekLetter" />
+                <TextView
+                    android:id="@+id/cs_wd_6"
+                    style="@style/GlassWeekDate" />
+            </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/cs_today_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center_horizontal"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:textColor="#B3FFFFFF"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cs_month_body"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="7">
+            <TextView
+                android:id="@+id/cs_ml_0"
+                style="@style/GlassMonthLetter" />
+            <TextView
+                android:id="@+id/cs_ml_1"
+                style="@style/GlassMonthLetter" />
+            <TextView
+                android:id="@+id/cs_ml_2"
+                style="@style/GlassMonthLetter" />
+            <TextView
+                android:id="@+id/cs_ml_3"
+                style="@style/GlassMonthLetter" />
+            <TextView
+                android:id="@+id/cs_ml_4"
+                style="@style/GlassMonthLetter" />
+            <TextView
+                android:id="@+id/cs_ml_5"
+                style="@style/GlassMonthLetter" />
+            <TextView
+                android:id="@+id/cs_ml_6"
+                style="@style/GlassMonthLetter" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="7">
+                <TextView
+                    android:id="@+id/cs_mc_0"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_1"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_2"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_3"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_4"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_5"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_6"
+                    style="@style/GlassMonthCell" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="7">
+                <TextView
+                    android:id="@+id/cs_mc_7"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_8"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_9"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_10"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_11"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_12"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_13"
+                    style="@style/GlassMonthCell" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="7">
+                <TextView
+                    android:id="@+id/cs_mc_14"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_15"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_16"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_17"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_18"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_19"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_20"
+                    style="@style/GlassMonthCell" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="7">
+                <TextView
+                    android:id="@+id/cs_mc_21"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_22"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_23"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_24"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_25"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_26"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_27"
+                    style="@style/GlassMonthCell" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="7">
+                <TextView
+                    android:id="@+id/cs_mc_28"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_29"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_30"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_31"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_32"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_33"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_34"
+                    style="@style/GlassMonthCell" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="7">
+                <TextView
+                    android:id="@+id/cs_mc_35"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_36"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_37"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_38"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_39"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_40"
+                    style="@style/GlassMonthCell" />
+                <TextView
+                    android:id="@+id/cs_mc_41"
+                    style="@style/GlassMonthCell" />
+            </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <!-- Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/cs_btn_reminder"
+                style="@style/GlassChip"
+                android:text="+ Add reminder" />
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/cs_btn_event"
+                style="@style/GlassChip"
+                android:text="+ New event" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

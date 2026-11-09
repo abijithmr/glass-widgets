@@ -105,6 +105,19 @@ object WidgetCatalog {
             onSecondary = chooseCity
         ),
         WidgetEntry(
+            title = "Forecast",
+            category = Category.WEATHER,
+            description = "Now, the next hours, 5 days ahead, and UV, humidity and wind. " +
+                "Radar opens a weather map in your browser.",
+            sizeLabel = "4 × 4",
+            provider = GlassForecastWidget::class.java,
+            previewWidthDp = null,
+            previewHeightDp = 300,
+            preview = { GlassForecastWidget.create(it, preview = true) },
+            secondaryLabel = "Choose city",
+            onSecondary = chooseCity
+        ),
+        WidgetEntry(
             title = "Week Calendar",
             category = Category.CALENDAR,
             description = "This week at a glance. Tap New event to add to your calendar.",
@@ -123,6 +136,17 @@ object WidgetCatalog {
             previewWidthDp = null,
             previewHeightDp = 260,
             preview = { GlassCalendarMonthWidget.create(it) }
+        ),
+        WidgetEntry(
+            title = "Calendar",
+            category = Category.CALENDAR,
+            description = "Switch between week and month on the widget. " +
+                "Add reminder and New event open your calendar app.",
+            sizeLabel = "4 × 4",
+            provider = GlassCalendarSwitchWidget::class.java,
+            previewWidthDp = null,
+            previewHeightDp = 280,
+            preview = { GlassCalendarSwitchWidget.create(it, 0, monthly = false) }
         ),
         WidgetEntry(
             title = "Focus",
